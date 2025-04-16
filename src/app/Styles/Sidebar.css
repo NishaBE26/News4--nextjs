@@ -1,0 +1,109 @@
+/* Sidebar */
+.sidebar {
+  width: 130px;
+  height: 100vh;
+  background-color: #1c1c1e; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  gap: 10px;
+  box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-link {
+  color: #f5f5f5;
+  font-size: 16px;
+  text-decoration: none;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+.sidebar-link:hover {
+  background-color: rgb(92, 92, 244);
+}
+
+/* Topnav */
+.topnav {
+  height: 50px;
+  width: 100%;
+  background-color: #2a2a2d; 
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 170px;
+  padding-right: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  color: #f5f5f5;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  margin-left: -35%;
+}
+
+.nav-links a {
+  color: #f5f5f5;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #bfa181;
+  text-decoration: underline;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.datetime {
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.datetime .day {
+  color: #bfa181;
+}
+
+.datetime .date {
+  color: #b6ccb6;
+}
+
+.datetime .time {
+  color: #d6a67a;
+}
+
+.user-icon {
+  color: #f5f5f5;
+  font-size: 28px;
+  background: #3a3a3d;
+  padding: 6px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.user-icon:hover {
+  background: #bfa181;
+  color: #1c1c1e;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  margin-left: -165px;
+}
