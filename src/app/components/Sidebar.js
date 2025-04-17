@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaFileAlt, FaPlus, FaListAlt, FaTags, FaInfoCircle, FaPhotoVideo, FaChartBar, FaPenFancy } from "react-icons/fa";
 import "../Styles/Sidebar.css";
 
 const Sidebar = () => {
@@ -19,7 +19,7 @@ const Sidebar = () => {
         </div>
         <div className="nav-links">
           <Link href="/">Home</Link>
-          <Link href="/posts">Posts</Link>
+          <Link href="/allposts">All Posts</Link>
           <Link href="/category/state">State</Link>
           <Link href="/category/national">National</Link>
           <Link href="/category/politics">Politics</Link>
@@ -36,30 +36,39 @@ const Sidebar = () => {
           <FaUser className="user-icon" />
         </div>
       </div>
+
       <div className="sidebar">
-        <Link href="/posts" className="sidebar-link">
-          All Posts
+        <div className="sidebar-section">
+          <Link href="/posts" className="sidebar-link">
+            <FaPenFancy className="sidebar-icon" />
+            Posts
+          </Link>
+          <div className="sidebar-submenu">
+            <Link href="/all-posts" className="sidebar-sublink">
+              All Posts
+            </Link>
+            <Link href="/add-new-post" className="sidebar-sublink">
+              Add New Post
+            </Link>
+            <Link href="/category" className="sidebar-sublink">
+              Category
+            </Link>
+            <Link href="/tags" className="sidebar-sublink">
+              Tags
+            </Link>
+          </div>
+        </div>
+        <Link href="/media" className="sidebar-link">
+          <FaPhotoVideo className="sidebar-icon" />
+          Media
         </Link>
-        <Link href="addpost" className="sidebar-link">
-          Add Post
-        </Link>
-        <Link href="Category" className="sidebar-link">
-          Category
-        </Link>
-        <Link href="Tags" className="sidebar-link">
-          Tags
-        </Link>
-        <Link href="details" className="sidebar-link">
-          Details
-        </Link>
-        <Link href="report" className="sidebar-link">
+        <Link href="/report" className="sidebar-link">
+          <FaChartBar className="sidebar-icon" />
           Report
         </Link>
-        <Link href="settings" className="sidebar-link">
-          Settings
-        </Link>
-        <Link href="profile" className="sidebar-link">
-          Profile
+        <Link href="/details" className="sidebar-link">
+          <FaInfoCircle className="sidebar-icon" />
+          Details
         </Link>
       </div>
     </>
