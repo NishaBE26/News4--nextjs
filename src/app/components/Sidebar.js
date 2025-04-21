@@ -2,7 +2,8 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaUser, FaFileAlt, FaPlus, FaListAlt, FaTags, FaInfoCircle, FaPhotoVideo, FaChartBar, FaPenFancy } from "react-icons/fa";
+import { FaUser, FaSignOutAlt, FaInfoCircle, FaPhotoVideo, FaChartBar, FaPenFancy,FaCog } from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 import "../Styles/Sidebar.css";
 
 const Sidebar = () => {
@@ -38,12 +39,16 @@ const Sidebar = () => {
       </div>
 
       <div className="sidebar">
+        <Link href="/dashboard" className="sidebar-link">
+          <MdDashboard className="sidebar-icon" />
+          Dashboard
+        </Link>
         <div className="sidebar-section">
           <Link href="/posts" className="sidebar-link">
             <FaPenFancy className="sidebar-icon" />
             Posts
           </Link>
-          <div className="sidebar-submenu">
+          <div className="sidebar-submenu" style={{marginTop:"-8px"}}>
             <Link href="/all-posts" className="sidebar-sublink">
               All Posts
             </Link>
@@ -69,6 +74,14 @@ const Sidebar = () => {
         <Link href="/details" className="sidebar-link">
           <FaInfoCircle className="sidebar-icon" />
           Details
+        </Link>
+        <Link href="/settings" className="sidebar-link">
+          <FaCog className="sidebar-icon" />
+          Settings
+        </Link>
+        <Link href="/logout" className="sidebar-link">
+          <FaSignOutAlt className="sidebar-icon" />
+          Profile
         </Link>
       </div>
     </>
