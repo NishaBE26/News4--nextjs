@@ -1,7 +1,6 @@
-
 import "./globals.css";
 import Sidebar from "./components/Sidebar";
- 
+import "./Styles/Sidebar.css"; 
 
 export const metadata = {
   title: "News4Tamil",
@@ -15,8 +14,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <div className="layout">
+          {/* Sidebar */}
           <Sidebar />
-          <main className="flex-1 p-4">
+
+          {/* Main Content */}
+          <main className="content">
             {children}
           </main>
         </div>
@@ -24,4 +26,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-

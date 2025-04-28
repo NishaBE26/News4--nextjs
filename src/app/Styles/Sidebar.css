@@ -2,13 +2,13 @@
 .sidebar {
   width: 130px;
   height: 100vh;
-  background-color: #1c1c1e; 
+  background-color: #2a2a2d; 
   display: flex;
   flex-direction: column;
   align-items:start;
   padding-top: 70px;
   position: fixed;
-  top: 50px;
+  top: 10px;
   left: 0;
   gap: 12px;
   box-shadow: 2px 0 12px rgba(0, 0, 0, 0.3);
@@ -26,6 +26,7 @@
 }
 .sidebar-link:hover {
   background-color: rgb(92, 92, 244);
+  color:#f4f4f4;
 }
 .sidebar-icon {
   font-size: 1rem;
@@ -52,7 +53,7 @@
 }
 
 .sidebar-sublink:hover {
-  color: #000;
+  color: #f4f4f4;;
   background-color:rgb(92, 92, 244);
 }
 /* Topnav */
@@ -76,7 +77,7 @@
 .nav-links {
   display: flex;
   gap: 15px;
-  margin-left: -30%;
+  margin-left: -40%;
 }
 
 .nav-links a {
@@ -101,6 +102,7 @@
   font-size: 18px;
   font-weight: 700;
   white-space: nowrap;
+  margin-left:-55%;
 }
 
 .datetime .day {
