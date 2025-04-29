@@ -1,13 +1,12 @@
-"use client"; // This is necessary for the client-side component in Next.js
+"use client"; 
 
 import Link from "next/link";
 import Image from "next/image";
 import { FaUser, FaSignOutAlt, FaInfoCircle, FaPhotoVideo, FaChartBar, FaPenFancy, FaCog } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
-import "../Styles/Sidebar.css"; // Make sure your CSS is properly included in the project
+import "../Styles/Sidebar.css";
 
 const Sidebar = () => {
-  // Get current date and time
   const now = new Date();
   const day = now.toLocaleDateString("en-US", { weekday: "long" });
   const date = now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
@@ -15,15 +14,11 @@ const Sidebar = () => {
 
   return (
     <div>
-      {/* Top Navigation */}
       <div className="topnav">
         <div className="nav-left">
-          {/* Logo with next/image */}
           <Image src="/assets/News4-logo.png" alt="Logo" width={100} height={100} priority />
         </div>
-
         <div className="nav-links">
-          {/* Links for the navigation */}
           <Link href="/">Home</Link>
           <Link href="/allposts">All Posts</Link>
           <Link href="/category/state">State</Link>
@@ -34,25 +29,19 @@ const Sidebar = () => {
         </div>
 
         <div className="nav-right">
-          {/* Displaying current date and time */}
           <p className="datetime">
             <span className="day">{day}, </span>
             <span className="date">{date}, </span>
             <span className="time">{time}</span>
           </p>
-          {/* User icon */}
           <FaUser className="user-icon" />
         </div>
       </div>
-
-      {/* Sidebar */}
       <div className="sidebar">
         <Link href="/dashboard" className="sidebar-link">
           <MdDashboard className="sidebar-icon" />
           Dashboard
         </Link>
-
-        {/* Posts Section with Submenu */}
         <div className="sidebar-section">
           <Link href="/posts" className="sidebar-link">
             <FaPenFancy className="sidebar-icon" />
@@ -73,7 +62,6 @@ const Sidebar = () => {
             </Link>
           </div>
         </div>
-        {/* Other Sidebar Links */}
         <Link href="/media" className="sidebar-link">
           <FaPhotoVideo className="sidebar-icon" />
           Media

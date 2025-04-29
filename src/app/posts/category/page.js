@@ -8,7 +8,7 @@ const CategoryPage = () => {
   
   useEffect(() => {
     const fetchCategories = async () => {
-      const response = await fetch('http://192.168.1.7:5000/api/category/get-all-category');
+      const response = await fetch('http://192.168.1.100:5000/api/category/get-all-category');
       console.log("response", response);
       const data = await response.json();
       setCategories(data);

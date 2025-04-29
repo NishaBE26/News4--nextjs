@@ -2,9 +2,13 @@
 
 /* Default body styles */
 body {
-  font-family: Arial, sans-serif; 
-  background-color: #f4f4f4; 
-  color: #333; 
-  line-height: 1.6; 
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
 }
 
+.main-content {
+  margin-left: 130px;
+  padding-top: 20px;
+}
