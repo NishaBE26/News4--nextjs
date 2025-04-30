@@ -1,64 +1,111 @@
-/* login-page styles */
+/* Reset and global layout */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Wrapper for background */
+.login-wrapper {
+  margin: 0;
+  padding: 0;
+  background-image: url('/assets/background.jpg');
+  background-size: cover; /* changed from 100% to cover for proper scaling */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .login-page {
   height: 88vh;
   display: flex;
-  justify-content:center;
+  justify-content: center;
   align-items: center;
-  margin: 0; 
-  padding: 0;
-  width: 88vw; 
-  margin-left:-350px;
+  width: 88vw;
 }
 
-.login-form {
-  background-color: #2a2a3b;
+/* Container for the right panel (login box) */
+.right-panel {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(1px);
   padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-  width: 320px;
-}
-.login-title{
-    color: #ffffff;
-    font-size: 24px;
-    text-align: center;
-    margin-top: 0px;
-}
-.form-group {
-  margin-bottom: 20px;
+  border-radius: 30px;
 }
 
-label {
-  display: block;
+/* Login form styling */
+.login-form {
+  width: auto; /* changed from fixed width to adapt inline */
+}
+
+/* Title */
+.login-title {
   color: #ffffff;
-  margin-bottom: 8px;
-  font-weight: 600;
+  font-size: 28px;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-input {
-  width: 90%;
+/* Inline form layout */
+.inline-form {
+  display: flex;
+  align-items: center; /* Updated to center inputs and button */
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Form Group */
+.inline-form .form-group {
+  margin: 0;
+  display: inline-block; /* Ensures each form group is inline */
+}
+
+.inline-form label {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.inline-form input {
+  width: 180px;
   padding: 10px;
   border: none;
   border-radius: 6px;
   background-color: #3a3a4f;
   color: #fff;
+  font-size: 16px;
 }
 
-input:focus {
+.inline-form input:focus {
   outline: 2px solid #4caf50;
 }
 
-button {
-  width: 30%;
-  padding: 10px;
+/* Button styling (inline with form elements) */
+.inline-form button {
+  padding: 10px 16px;
+  height: 38px;
   background-color: #4caf50;
   border: none;
   border-radius: 6px;
   color: white;
   font-size: 16px;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: inline-block;
+  margin-left: 10px;
+  margin-bottom: -27px; 
 }
 
-button:hover {
+.inline-form button:hover {
   background-color: #45a049;
 }
