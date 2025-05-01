@@ -11,6 +11,10 @@ const LoginPage = () => {
         router.push('/posts');
     };
 
+    const handleRegister = () => {
+        router.push('/login/register');
+    };
+
     return (
         <div className="login-wrapper">
             <div className="login-page">
@@ -28,6 +32,9 @@ const LoginPage = () => {
                             </div>
                             <button type="submit">Log in</button>
                         </div>
+                        <p className="register-link">
+                            New user? <span onClick={handleRegister} style={{ color: '#4caf50', cursor: 'pointer',fontWeight:"bold" }}>Register</span>
+                        </p>
                     </form>
                 </div>
             </div>

@@ -1,10 +1,14 @@
 "use client";
 import React from "react";
-import "../../Styles/all-posts.css"; 
+import "../../Styles/all-posts.css";
+import Sidebar from "../../components/Sidebar";
 const AllPostsPage = () => {
     return (
-        <div>
-            <h1 className="allpost">All Posts Page</h1>
+        <div className="container">
+            <Sidebar />
+            <div>
+                <h1 className="allpost">All Posts Page</h1>
+            </div>
         </div>
     );
 }

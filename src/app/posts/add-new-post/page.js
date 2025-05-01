@@ -1,10 +1,14 @@
-"use client"; 
+"use client";
 import React from "react";
-import "../../Styles/add-new-post.css"; 
+import "../../Styles/add-new-post.css";
+import Sidebar from "../../components/Sidebar";
 const AddNewPost = () => {
     return (
-        <div>
-            <h1 className="addnew">Add New Post</h1>
+        <div >
+            <Sidebar />
+            <div>
+                <h1 className="addnew">Add New Post</h1>
+            </div>
         </div>
     );
 }
