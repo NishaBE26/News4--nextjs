@@ -1,93 +1,79 @@
 "use client";
-import React, { useState } from 'react';
+import React from "react";
 import "../../Styles/register.css";
-import { useRouter } from 'next/navigation';
-
-const RegisterPage = () => {
-    const router = useRouter();
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        password: "",
-        role: "",
-        joiningDate: "",
-        dob: "",
-        mobile: "",
-        address: "",
-        department: "",
-        gender: "",
-        maritalStatus: "",
-        authorCode: ""
-    });
-
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        localStorage.setItem("registeredUser", JSON.stringify(formData));
-        router.push('/');
-    };
-
+const Register = () => {
     return (
-        <div className="register-wrapper">
-            <div className="register-page">
-                <div className="register-panel">
-                    <form className="register-form" onSubmit={handleSubmit}>
-                        <h2 className='register-title'>Author Registration</h2>
-                        <div className="register-form">
-                            {[
-                                { label: "Name", name: "name", type: "text" },
-                                { label: "Email", name: "email", type: "email" },
-                                { label: "Password", name: "password", type: "password" },
-                                { label: "Role", name: "role", type: "text" },
-                                { label: "Joining Date", name: "joiningDate", type: "date" },
-                                { label: "Date of Birth", name: "dob", type: "date" },
-                                { label: "Mobile Number", name: "mobile", type: "text" },
-                                { label: "Address", name: "address", type: "text" },
-                                { label: "Department", name: "department", type: "text" },
-                                { label: "Author Code", name: "authorCode", type: "text" }
-                            ].map((field) => (
-                                <div className="register-group" key={field.name}>
-                                    <label htmlFor={field.name}>{field.label}:</label>
-                                    <input
-                                        type={field.type}
-                                        id={field.name}
-                                        name={field.name}
-                                        value={formData[field.name]}
-                                        onChange={handleChange}
-                                        required
-                                    />
-                                </div>
-                            ))}
-
-                            <div className="register-group">
-                                <label>Gender:</label>
-                                <select name="gender" value={formData.gender} onChange={handleChange} required>
-                                    <option value="">Select Gender</option>
-                                    <option value="Male">Male</option>
-                                    <option value="Female">Female</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                            </div>
-
-                            <div className="register-group">
-                                <label>Marital Status:</label>
-                                <select name="maritalStatus" value={formData.maritalStatus} onChange={handleChange} required>
-                                    <option value="">Select Status</option>
-                                    <option value="Single">Single</option>
-                                    <option value="Married">Married</option>
-                                </select>
-                            </div>
-
-                            <button type="submit">Register</button>
-                        </div>
-                    </form>
+        <div className="register-page">
+            <h1 className="register-title">Author Register form</h1>
+            <form>
+                <div className="form-register">
+                    <label htmlFor="username">Authorname:</label>
+                    <input type="text" id="username" name="username" required />
                 </div>
-            </div>
+                <div className="form-register">
+                    <label htmlFor="author-code">Author Code:</label>
+                    <input type="text" id="author-code" name="author-code" required />
+                </div>
+                <div className="form-register">
+                    <label htmlFor="email">Email:</label>
+                    <input type="email" id="email" name="email" required />
+                </div>
+                <div className="form-register">
+                    <label htmlFor="password">Password:</label>
+                    <input type="password" id="password" name="password" required />
+                </div>
+                <div className="form-register">
+                    <label htmlFor="date-of-birth">Date of Birth:</label>
+                    <input type="date" id="date-of-birth" name="date-of-birth" required />
+                </div>
+                <div className="form-register">
+                    <label htmlFor="role">Role:</label>
+                    <select id="role" name="role" required>
+                        <option value="author">Author</option>
+                        <option value="editor">Editor</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div className="form-register">
+                    <label htmlFor="joining-date">Joining Date:</label>
+                    <input type="date" id="joining-date" name="joining-date" required />
+                </div>
+                <div className="form-register">
+                    <label htmlFor="mobile-number">Mobile Number:</label>
+                    <input type="tel" id="mobile-number" name="mobile-number" required />
+                </div>
+                <div className="form-register">
+                    <label htmlFor="address">Address:</label>
+                    <input type="text" id="address" name="address" required />
+                </div>
+                <div className="form-register">
+                    <label htmlFor="department">Department:</label>
+                    <input type="text" id="department" name="department" required />
+                </div>
+                <div className="form-register">
+                    <label htmlFor="gender">Gender:</label>
+                    <select id="gender" name="gender" required>
+                        <option value="">Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    </div>
+                    <div className="form-register">
+                        <label htmlFor="marital-status">Marital Status:</label>
+                        <select id="marital-status" name="marital-status" required>
+                            <option value="">Select Marital Status</option>
+                            <option value="Single">Single</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Widowed">Widowed</option>
+                        </select>
+                    </div>
+                <div className="form-register full-width">
+                    <button type="submit">Register</button>
+                </div>
+            </form>
         </div>
-    );
-};
-
-export default RegisterPage;
+    )
+}
+export default Register;
