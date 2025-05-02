@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Sidebar from "../components/Sidebar";
+
 const PostsPage = () => {
     return (
         <div className="container">

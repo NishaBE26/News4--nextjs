@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useEffect } from 'react';
 import "../Styles/login.css";
 import { useRouter } from 'next/navigation';
 
@@ -11,9 +11,20 @@ const LoginPage = () => {
         router.push('/posts');
     };
 
-    const handleRegister = () => {
-        router.push('/login/register');
-    };
+    // Inject stars on mount
+    useEffect(() => {
+        const container = document.querySelector(".login-wrapper");
+        if (!container) return;
+
+        for (let i = 0; i < 60; i++) {
+            const star = document.createElement("div");
+            star.classList.add("star");
+            star.style.top = `${Math.random() * 100}vh`;
+            star.style.left = `${Math.random() * 100}vw`;
+            star.style.animationDuration = `${Math.random() * 3 + 1}s`;
+            container.appendChild(star);
+        }
+    }, []);
 
     return (
         <div className="login-wrapper">
@@ -32,9 +43,6 @@ const LoginPage = () => {
                             </div>
                             <button type="submit">Log in</button>
                         </div>
-                        <p className="register-link">
-                            New user? <span onClick={handleRegister} style={{ color: '#4caf50', cursor: 'pointer',fontWeight:"bold" }}>Register</span>
-                        </p>
                     </form>
                 </div>
             </div>
