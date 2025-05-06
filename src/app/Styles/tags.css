@@ -1,5 +1,172 @@
-.tag{
-    text-align: center ;
-    font-size: 36px;
+/* General container */
+.tags-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-left: 110px;
+    margin-top: 30px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  /* Page Title */
+  .tag {
+    font-size: 28px;
+    margin-bottom: 20px;
     color: #333;
-}
+  }
+  
+  /* Layout: Add form (left) + Tag list table (right) */
+  .tag-page-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 20px;
+  }
+  
+  /* Add Tag Section */
+  .tag-add-container {
+    flex: 1;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .tag-add-container input[type="text"],
+  .tag-add-container textarea {
+    width: 95%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .tag-add-container textarea {
+    min-height: 100px;
+  }
+  
+  .tag-add-container button {
+    padding: 10px 16px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .tag-add-container button:hover {
+    background-color: #45a049;
+  }
+  
+  /* Table Container */
+  .tag-table-container {
+    flex: 2;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 160px);
+    overflow-y: auto;
+  }
+  
+  /* Scrollbar Styling */
+  .tag-table-container::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  .tag-table-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+  }
+  
+  .tag-table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+  
+  /* Table */
+  .tag-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  
+  .tag-table-container h2 {
+    margin-bottom: 15px;
+  }
+  
+  .tag-table th,
+  .tag-table td {
+    padding: 12px;
+    text-align: left;
+  }
+  
+  .tag-table th {
+    background-color: #f8f8f8;
+    color: #333;
+  }
+  
+  /* Editable inputs */
+  .tag-table input[type="text"],
+  .tag-table textarea {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .tag-table textarea {
+    min-height: 60px;
+    resize: vertical;
+  }
+  
+  /* Actions column */
+  .tag-table td.actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  /* Buttons */
+  .tag-table button {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  /* Edit */
+  .tag-table button.edit {
+    background-color: #f39c12;
+  }
+  
+  .tag-table button.edit:hover {
+    background-color: #e67e22;
+  }
+  
+  /* Delete */
+  .tag-table button.delete {
+    background-color: #e74c3c;
+  }
+  
+  .tag-table button.delete:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Save / Cancel (default button style not marked as edit/delete) */
+  .tag-table button:not(.edit):not(.delete) {
+    background-color: #3498db;
+  }
+  
+  .tag-table button:not(.edit):not(.delete):hover {
+    background-color: #2980b9;
+  }
+  

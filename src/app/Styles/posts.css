@@ -1,0 +1,121 @@
+
+.posts-wrapper {
+  margin-left: 115px;  
+  padding: 10px;
+  width: calc(98% - 110px); 
+}
+
+.posts-table-container {
+  overflow-x: hidden;  
+  width: 100%;
+  margin-top:-25px;
+}
+
+.posts-table {
+  width: 100%;  
+  table-layout: auto; 
+  border-collapse: collapse;  
+}
+
+.posts-table th, .posts-table td {
+  padding: 8px 5px;  
+  text-align: start;  
+  word-wrap: break-word;  
+  max-width: 150px;  
+  white-space: normal;  
+  border: 1px solid #ddd; 
+  overflow: hidden;  
+  font-size: 14px;  
+}
+/*s.no */
+.posts-table th:nth-child(1), .posts-table td:nth-child(1) {  
+  width: 30px;  
+ }
+/* title */
+.posts-table th:nth-child(3), .posts-table td:nth-child(3) {  
+  max-width: 200px;
+}
+/* author name */
+.posts-table th:nth-child(4), .posts-table td:nth-child(4) {  
+  max-width: 150px;
+}
+/* wordcount */
+.posts-table th:nth-child(5), .posts-table td:nth-child(5) {  
+  max-width: 100px;
+}
+/* category */
+.posts-table th:nth-child(6), .posts-table td:nth-child(6) {
+  max-width: 120px;
+}
+/* status */
+.posts-table th:nth-child(7), .posts-table td:nth-child(7) {
+  max-width: 100px;
+}
+/* create time */
+.posts-table th:nth-child(8), .posts-table td:nth-child(8) {  
+  max-width: 70px;
+}
+/* update time */
+.posts-table th:nth-child(9), .posts-table td:nth-child(9) {  
+  max-width: 70px;
+}
+/* actions */
+.posts-table th:nth-child(10), .posts-table td:nth-child(10) { 
+  width: 50px; 
+}
+
+/* Table header styling */
+.posts-table th {
+  background-color: #f4f4f4;  
+  font-weight: bold;
+}
+
+.edit-btn, .delete-btn {
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+  margin-right: 10px;  
+  display: inline-block;  
+}
+
+.edit-btn {
+  background-color: #4caf50;
+  color: white;
+}
+
+.edit-btn:hover {
+  background-color: #45a049;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  margin-top:2px;
+}
+
+.delete-btn:hover {
+  background-color: #e53935;
+}
+
+
+@media (max-width: 768px) {
+  .posts-table th, .posts-table td {
+    padding: 6px 5px; 
+    font-size: 12px;  
+  }
+
+  .edit-btn, .delete-btn {
+    padding: 5px 8px;  
+    font-size: 12px;  
+  }
+
+  .posts-wrapper {
+    width: 100%;  
+    margin-left: 0; 
+    padding: 5px;  
+  }
+
+}

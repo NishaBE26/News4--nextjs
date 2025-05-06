@@ -1,17 +1,21 @@
-"use client"; 
+"use client";
 
 import Link from "next/link";
 import Image from "next/image";
 import { FaUser, FaSignOutAlt, FaInfoCircle, FaPhotoVideo, FaChartBar, FaPenFancy, FaCog } from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import "../Styles/Sidebar.css";
+import { useEffect, useState } from "react";
 
 const Sidebar = () => {
+  const [currentTime, setCurrentTime] = useState({ day: "", date: "", time: "" });
+  useEffect (() => {
   const now = new Date();
   const day = now.toLocaleDateString("en-US", { weekday: "long" });
   const date = now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   const time = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
-
+setCurrentTime({ day, date, time });
+}, []);
   return (
     <div>
       <div className="topnav">
@@ -30,9 +34,9 @@ const Sidebar = () => {
 
         <div className="nav-right">
           <p className="datetime">
-            <span className="day">{day}, </span>
-            <span className="date">{date}, </span>
-            <span className="time">{time}</span>
+            <span className="day">{currentTime.day}, </span>
+            <span className="date">{currentTime.date}, </span>
+            <span className="time">{currentTime.time}</span>
           </p>
           <FaUser className="user-icon" />
         </div>

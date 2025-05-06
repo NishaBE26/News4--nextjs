@@ -158,8 +158,9 @@ html, body {
   font-size: 0.95rem;
   color: #fff;
   font-weight: bold;
+  width: 100%;
+  display: block; 
 }
-
 .register-link span {
   color: #4caf50;
   cursor: pointer;

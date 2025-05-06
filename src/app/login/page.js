@@ -5,13 +5,16 @@ import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
     const router = useRouter();
+    const [isRegistering, setIsRegistering] = React.useState(false);
 
     const handleLogin = (event) => {
         event.preventDefault();
         router.push('/posts');
     };
-
-    // Inject stars on mount
+    const handleRegister = (e) => {
+        e.preventDefault();
+        router.push('/login');
+    };
     useEffect(() => {
         const container = document.querySelector(".login-wrapper");
         if (!container) return;
@@ -30,20 +33,33 @@ const LoginPage = () => {
         <div className="login-wrapper">
             <div className="login-page">
                 <div className="right-panel">
-                    <form className="login-form" onSubmit={handleLogin}>
-                        <h2 className='login-title'>Login</h2>
-                        <div className="inline-form">
-                            <div className="form-group">
-                                <label htmlFor="username">Username:</label>
-                                <input type="text" id="username" name="username" />
+                    <form className="login-form" onSubmit={isRegistering ? handleRegister : handleLogin}>
+                        <h2 className='login-title'>{isRegistering ? 'Register' : 'Login'}</h2>
+
+                        {!isRegistering && (
+                            <div className="inline-form">
+                                <div className="form-group">
+                                    <label htmlFor="username">Username:</label>
+                                    <input type="text" id="username" name="username" />
+                                </div>
+                                <div className="form-group">
+                                    <label htmlFor="password">Password:</label>
+                                    <input type="password" id="password" name="password" />
+                                </div>
+                                <button type="submit">Log in</button>
                             </div>
-                            <div className="form-group">
-                                <label htmlFor="password">Password:</label>
-                                <input type="password" id="password" name="password" />
+                        )}
+
+                        {!isRegistering && (
+                            <div className="register-link">
+                                <p>
+                                    New user?{' '}
+                                    <span onClick={() => setIsRegistering(true)}>Register</span>
+                                </p>
                             </div>
-                            <button type="submit">Log in</button>
-                        </div>
+                        )}
                     </form>
+
                 </div>
             </div>
         </div>
