@@ -1,20 +1,64 @@
 "use client";
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from "react";
 import "../Styles/login.css";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { login, register, verifyToken } from "../services/Api";
 
 const LoginPage = () => {
     const router = useRouter();
-    const [isRegistering, setIsRegistering] = React.useState(false);
+    const [isRegistering, setIsRegistering] = useState(false);
 
-    const handleLogin = (event) => {
+    useEffect(() => {
+        const checkLogin = async () => {
+            const token = localStorage.getItem("token");
+            if (!token) return;
+
+            const data = await verifyToken(token);
+            if (data.success) {
+                if (data.user.designation === "admin") {
+                    router.push("/posts");
+                } else if (data.user.designation === "author") {
+                    router.push("/posts");
+                }
+            } else {
+                localStorage.clear();
+            }
+        };
+        checkLogin();
+    }, [router]);
+
+    const handleLogin = async (event) => {
         event.preventDefault();
-        router.push('/posts');
+        const email = event.target.username.value;
+        const password = event.target.password.value;
+        const data = await login({ email, password });
+
+        if (data.success) {
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("designation", data.user.designation);
+            if (data.user.designation === "admin") {
+                router.push("/posts");
+            } else if (data.user.designation === "author") {
+                router.push("/posts");
+            }
+        }
     };
-    const handleRegister = (e) => {
+
+    const handleRegister = async (e) => {
         e.preventDefault();
-        router.push('/login');
+        const name = e.target.name.value;
+        const email = e.target.username.value;
+        const password = e.target.password.value;
+        const data = await register({ name, email, password });
+
+        if (data.success) {
+            alert("Registered successfully! Please login.");
+            setIsRegistering(false);
+        } else {
+            alert(data.message || "Registration failed");
+        }
     };
+
     useEffect(() => {
         const container = document.querySelector(".login-wrapper");
         if (!container) return;
@@ -33,33 +77,62 @@ const LoginPage = () => {
         <div className="login-wrapper">
             <div className="login-page">
                 <div className="right-panel">
-                    <form className="login-form" onSubmit={isRegistering ? handleRegister : handleLogin}>
-                        <h2 className='login-title'>{isRegistering ? 'Register' : 'Login'}</h2>
+                    <form
+                        className="login-form"
+                        onSubmit={isRegistering ? handleRegister : handleLogin}
+                    >
+                        <h2 className="login-title">{isRegistering ? "Register" : "Login"}</h2>
 
-                        {!isRegistering && (
-                            <div className="inline-form">
+                        <div className="inline-form">
+                            {isRegistering && (
                                 <div className="form-group">
-                                    <label htmlFor="username">Username:</label>
-                                    <input type="text" id="username" name="username" />
+                                    <label htmlFor="name">Name:</label>
+                                    <input
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        required
+                                        placeholder="Enter your name"
+                                    />
                                 </div>
-                                <div className="form-group">
-                                    <label htmlFor="password">Password:</label>
-                                    <input type="password" id="password" name="password" />
-                                </div>
-                                <button type="submit">Log in</button>
+                            )}
+                            <div className="form-group">
+                                <label htmlFor="username">Email:</label>
+                                <input
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    required
+                                    placeholder="Enter your email"
+                                />
                             </div>
-                        )}
+                            <div className="form-group">
+                                <label htmlFor="password">Password:</label>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    required
+                                    placeholder="Enter your password"
+                                />
+                            </div>
+                            <button type="submit">{isRegistering ? "Register" : "Log in"}</button>
+                        </div>
 
-                        {!isRegistering && (
-                            <div className="register-link">
+                        <div className="register-link">
+                            {isRegistering ? (
                                 <p>
-                                    New user?{' '}
+                                    Already have an account?{" "}
+                                    <span onClick={() => setIsRegistering(false)}>Login</span>
+                                </p>
+                            ) : (
+                                <p>
+                                    New user?{" "}
                                     <span onClick={() => setIsRegistering(true)}>Register</span>
                                 </p>
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </form>
-
                 </div>
             </div>
         </div>
