@@ -68,6 +68,10 @@ const PostsPage = () => {
 
   return (
     <div className="posts-wrapper">
+      <h1 className="task-assign">Task Assign</h1>
+      <div className="task-table-container">
+        
+      </div>
       <h1 className="all-posts">All Posts</h1>
       <div className="posts-table-container">
         <table className="posts-table">
