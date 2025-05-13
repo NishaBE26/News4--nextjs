@@ -1,129 +1,129 @@
+/* Container styles */
 .form-container {
-  max-width: 1000px;
-  margin-top: 20px;
-  margin-left: 110px;
-  padding: 30px;
-  background: #ffffff;
+  max-width: 1200px;
+  margin-top:60px;
+  margin-left:127px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.new-post-form input[type="text"],
-.new-post-form input[type="url"],
-.new-post-form input[type="date"],
-.new-post-form textarea {
-  width: 100%;
+.addposttitle{
+  margin-top: -13px;
+  font-weight: 500;
+  font-size: 18px;
+}
+/* Form body layout */
+.form-body {
+  display: flex;
+  gap: 30px;
+}
+
+/* Left side - input fields */
+.form-left {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Right side - category and tag selectors */
+.form-right {
+  flex: 1;
+  max-height: 600px;
+  overflow-y: auto;
+  border-left: 1px solid #ccc;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+/* Placeholder styling for all inputs and textarea */
+input::placeholder,
+textarea::placeholder,
+select::placeholder {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 16px;
+  font-weight:500;
+  color: #666;
+}
+/* Input and textarea */
+input[type="text"],
+input[type="date"],
+input[type="url"],
+select,
+textarea {
   padding: 10px;
-  margin-bottom: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
   font-size: 15px;
-}
-
-.new-post-form textarea {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
   resize: vertical;
 }
 
-.tiptap-editor {
-  border: 1px solid #ddd;
+/* Textarea */
+textarea {
+  min-height: 250px;
+}
+
+/* Submit button */
+button[type="submit"] {
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 16px;
   padding: 12px;
-  min-height: 200px;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  background-color: #fefefe;
-}
-
-.toolbar {
-  display: flex;
-  gap: 8px;
-  margin-bottom: 10px;
-}
-
-.toolbar-button {
-  background-color: #f0f0f0;
   border: none;
-  padding: 6px 12px;
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
+  transition: background-color 0.3s ease;
 }
 
-.toolbar-button.is-active {
-  background-color: #007bff;
-  color: white;
+button[type="submit"]:hover {
+  background-color: #0056b3;
 }
 
-.word-count {
-  text-align: right;
-  margin-bottom: 20px;
-  font-size: 14px;
-  color: #555;
+/* Checkbox and radio group */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
 }
 
-/* Sections */
-.publisher-section,
-.format-section,
-.categories-section,
-.tags-section,
-.seo-section {
-  margin-top: 30px;
-  padding: 20px;
-  border: 1px solid #eee;
-  border-radius: 5px;
+.checkbox-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.checkbox-group strong {
+  margin-bottom: 10px;
+  display: inline-block;
+}
+
+/* Scrollable box for category/tag lists */
+.scroll-box {
+  max-height: 220px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   background-color: #fafafa;
 }
 
-.publisher-actions {
+/* Each item inside scroll box */
+.scroll-box label {
   display: flex;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  font-size: 14px;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.publish-button {
-  background-color: #28a745;
-  color: white;
-  padding: 8px 16px;
-  border: none;
-  font-weight: bold;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.trash-link {
-  color: red;
-  text-decoration: underline;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.format-option,
-.category-option,
-.tag-option {
-  display: block;
+  align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
   font-size: 14px;
 }
 
-.categories-list,
-.tags-list {
-  margin-top: 10px;
-}
-
-.add-category-button {
-  background: none;
-  border: none;
-  color: #007bff;
+/* No data fallback */
+.checkbox-group p {
+  color: #888;
+  font-style: italic;
   font-size: 14px;
-  cursor: pointer;
-  margin-top: 10px;
 }

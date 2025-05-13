@@ -15,9 +15,8 @@ const LoginPage = () => {
 
             const data = await verifyToken(token);
             if (data.success) {
-                if (data.user.designation === "admin") {
-                    router.push("/posts");
-                } else if (data.user.designation === "author") {
+                localStorage.setItem("user", JSON.stringify(data.user)); 
+                if (data.user.designation === "admin" || data.user.designation === "author") {
                     router.push("/posts");
                 }
             } else {
@@ -28,21 +27,26 @@ const LoginPage = () => {
     }, [router]);
 
     const handleLogin = async (event) => {
-        event.preventDefault();
-        const email = event.target.username.value;
-        const password = event.target.password.value;
-        const data = await login({ email, password });
+    event.preventDefault();
+    const email = event.target.username.value;
+    const password = event.target.password.value;
+    const data = await login({ email, password });
 
-        if (data.success) {
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("designation", data.user.designation);
-            if (data.user.designation === "admin") {
-                router.push("/posts");
-            } else if (data.user.designation === "author") {
-                router.push("/posts");
-            }
+    if (data.success) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("designation", data.user.designation);
+        localStorage.setItem("user", JSON.stringify(data.user));
+
+        console.log("User stored in localStorage:", JSON.parse(localStorage.getItem("user"))); 
+
+        if (data.user.designation === "admin" || data.user.designation === "author") {
+            router.push("/posts");
         }
-    };
+    } else {
+        alert(data.message || "Login failed");
+    }
+};
+
 
     const handleRegister = async (e) => {
         e.preventDefault();

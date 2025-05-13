@@ -1,163 +1,180 @@
-/* General Styles */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
 
-/* Wrapper */
 .posts-wrapper {
-  padding: 20px;
-  max-width: 1200px;
-  margin-top:20px;
-  margin-left:110px;
-}
-
-/* Task Create Form */
-.task-container {
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  margin-bottom: 40px;
-}
-
-.task-container h2 {
-  margin-bottom: 20px;
-  color: #333;
-}
-
-.task-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.task-form input,
-.task-form select,
-.task-form button {
-  padding: 10px;
-  margin: 10px 0;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.task-form input[type="file"] {
-  border: none;
-}
-
-.task-form button {
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.task-form button:hover {
-  background-color: #0056b3;
-}
-
-/* Posts Table */
-.all-posts {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
+  margin-left: 125px; 
+  padding: 0px;
+  width: calc(98% - 110px); 
 }
 
 .posts-table-container {
-  overflow-x: auto;
+  overflow-x: hidden;  
+  width: 100%;
+  margin-top:30px;
 }
-
 .posts-table {
   width: 100%;
+  table-layout: auto;
   border-collapse: collapse;
-  margin-top: 20px;
+  border: 1px solid #707B7C ; 
+  border-radius: 8px;
 }
 
-.posts-table th,
-.posts-table td {
-  padding: 12px;
-  text-align: left;
-  border: 1px solid #ddd;
+.posts-table th,.posts-table td{
+  padding: 8px 12px;
+  text-align: start;
+  word-wrap: break-word;
+  max-width: 150px;
+  white-space: normal;
+  font-size: 14px;
+  border-right:none; 
 }
-
-.posts-table th {
-  background-color: #f1f1f1;
+.posts-table tbody tr:nth-child(odd) {
+  background-color: #D7DBDD; 
 }
 
 .posts-table tbody tr:nth-child(even) {
-  background-color: #fafafa;
+  background-color: #ffffff; 
 }
 
-.posts-table tbody tr:hover {
-  background-color: #f1f1f1;
+/*s.no */
+.posts-table th:nth-child(1), .posts-table td:nth-child(1) {  
+  width: 30px;  
+ }
+/* title */
+.posts-table th:nth-child(3), .posts-table td:nth-child(3) {  
+  max-width: 200px;
+}
+/* author name */
+.posts-table th:nth-child(4), .posts-table td:nth-child(4) {  
+  max-width: 150px;
+}
+/* wordcount */
+.posts-table th:nth-child(5), .posts-table td:nth-child(5) {  
+  max-width: 100px;
+}
+/* category */
+.posts-table th:nth-child(6), .posts-table td:nth-child(6) {
+  max-width: 120px;
+}
+/* status */
+.posts-table th:nth-child(7), .posts-table td:nth-child(7) {
+  max-width: 100px;
+}
+/* create time */
+.posts-table th:nth-child(8), .posts-table td:nth-child(8) {  
+  max-width: 70px;
+}
+/* update time */
+.posts-table th:nth-child(9), .posts-table td:nth-child(9) {  
+  max-width: 70px;
+}
+/* actions */
+.posts-table th:nth-child(10), .posts-table td:nth-child(10) { 
+  width: 50px; 
 }
 
-.posts-table td img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 5px;
+/* Table header styling */
+.posts-table th {
+  background-color: #f4f4f4;  
+  font-weight: bold;
 }
 
-.posts-table .edit-btn,
-.posts-table .delete-btn {
+.edit-btn, .delete-btn {
   padding: 6px 12px;
-  margin: 2px;
   border-radius: 4px;
   font-size: 14px;
   cursor: pointer;
   border: none;
   transition: background-color 0.3s ease;
+  margin-right: 10px;  
+  display: inline-block;  
 }
 
-.posts-table .edit-btn {
-  background-color: #28a745;
+.edit-btn {
+  background-color: #4caf50;
   color: white;
 }
 
-.posts-table .edit-btn:hover {
-  background-color: #218838;
+.edit-btn:hover {
+  background-color: #45a049;
 }
 
-.posts-table .delete-btn {
-  background-color: #dc3545;
+.delete-btn {
+  background-color: #f44336;
   color: white;
+  margin-top:2px;
 }
 
-.posts-table .delete-btn:hover {
-  background-color: #c82333;
+.delete-btn:hover {
+  background-color: #e53935;
 }
 
-/* Responsive Adjustments */
+
 @media (max-width: 768px) {
-  .task-container {
-    padding: 15px;
+  .posts-table th, .posts-table td {
+    padding: 6px 5px; 
+    font-size: 12px;  
   }
 
-  .task-form input,
-  .task-form select,
-  .task-form button {
-    font-size: 12px;
+  .edit-btn, .delete-btn {
+    padding: 5px 8px;  
+    font-size: 12px;  
   }
 
-  .posts-table th,
-  .posts-table td {
-    padding: 10px;
+  .posts-wrapper {
+    width: 100%;  
+    margin-left: 0; 
+    padding: 5px;  
   }
 
-  .posts-table td img {
-    width: 50px;
-    height: 40px;
-  }
+}
+/**************************** task assign css ****************************/
+.task-table {
+  background-color: #f4f4f4;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 97%;            
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 
-  .posts-table {
-    font-size: 14px;
-  }
+.task-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 
-  .posts-table .edit-btn,
-  .posts-table .delete-btn {
-    font-size: 12px;
-  }
+.task-row label {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+  color: #333;
+}
+
+.task-row input,
+.task-row select {
+  padding: 8px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 5px;
+}
+
+.submit-btn {
+  padding: 10px 16px;
+  background-color: #007bff;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.submit-btn:hover {
+  background-color: #0056b3;
 }
