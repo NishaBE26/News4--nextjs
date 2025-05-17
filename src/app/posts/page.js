@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import Link from "next/link";
+import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import {
   getAllPosts,
@@ -9,54 +10,112 @@ import {
   getAllEmployees,
   createTask,
   getAllTypes,
+  getAllStatus,
+  updatePostById,
 } from "../services/Api";
+import TaskAssign from "../posts/TaskAssign/page";
+import PostsTable from "./PostsTable/page";
+import { FaUser ,FaClock} from "react-icons/fa";
 import "../Styles/posts.css";
 
+const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
+  const carouselRef = useRef();
+
+  const scrollLeft = () => {
+    carouselRef.current.scrollBy({ left: -300, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    carouselRef.current.scrollBy({ left: 300, behavior: "smooth" });
+  };
+
+  if (posts.length === 0) return null;
+
+  return (
+    <div className="carousel-wrapper">
+      <button className="nav-button" onClick={scrollLeft}>
+        &lt;
+      </button>
+
+      <div className="carousel" ref={carouselRef}>
+        {posts.map((post) => {
+          const d = new Date(post.createDate);
+          const dateStr = `${String(d.getDate()).padStart(2, "0")}.${String(
+            d.getMonth() + 1
+          ).padStart(2, "0")}.${d.getFullYear()}`;
+
+          return (
+            <div key={post._id} className="post-card">
+              <img
+                src={post.file || "/placeholder.png"}
+                alt={post.title}
+                className="post-card-image"
+              />
+              <div className="vertical-line" />
+              <div className="post-card-content">
+                <Link href={`/news/${post._id}`}>
+                  <h3 className="post-card-title">{post.title}</h3>
+                </Link>
+                <p className="post-card-author">
+                  <FaUser style={{ marginRight: "6px", verticalAlign: "middle" }} />
+                  {employeeNames[post.authorName] || "Unknown"}
+                </p>
+                <p className="post-card-date">
+                  <FaClock style={{ marginRight: "6px", verticalAlign: "middle" }} />
+                  {dateStr}
+                </p>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      <button className="nav-button" onClick={scrollRight}>
+        &gt;
+      </button>
+    </div>
+  );
+};
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
+  const [filteredPosts, setFilteredPosts] = useState([]);
   const [categoryNames, setCategoryNames] = useState({});
   const [employeeNames, setEmployeeNames] = useState({});
   const [typesList, setTypesList] = useState([]);
   const [employees, setEmployees] = useState([]);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [taskassign, setTaskAssign] = useState({
-    title: "",
-    link: "",
-    author: "",
-    assignedBy: "admin",
-    status: "Assigned",
-    types: "",
-  });
+  const [statusList, setStatusList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const postsPerPage = 10;
 
   const router = useRouter();
+
   const fetchPosts = async () => {
     const response = await getAllPosts();
     if (response?.newsList) {
-      setPosts(response.newsList);
+      const sortedPosts = response.newsList.sort((a, b) => {
+        if (a.status !== "Published" && b.status === "Published") return -1;
+        if (a.status === "Published" && b.status !== "Published") return 1;
+        return new Date(b.createDate) - new Date(a.createDate);
+      });
+      setPosts(sortedPosts);
+      setFilteredPosts(sortedPosts);
 
       const categoryMap = {};
       const employeeMap = {};
 
-      for (const post of response.newsList) {
+      for (const post of sortedPosts) {
         const categoryId = post.category;
         const authorId = post.authorName;
 
         if (categoryId && !categoryMap[categoryId]) {
-          try {
-            const categoryData = await getCategoryById(categoryId);
-            categoryMap[categoryId] = categoryData?.category?.name || "Unknown";
-          } catch {
-            categoryMap[categoryId] = "Unknown";
-          }
+          const categoryData = await getCategoryById(categoryId);
+          categoryMap[categoryId] = categoryData?.category?.name || "Unknown";
         }
 
         if (authorId && !employeeMap[authorId]) {
-          try {
-            const authorData = await getEmployeeById(authorId);
-            employeeMap[authorId] = authorData?.name || "Unknown";
-          } catch {
-            employeeMap[authorId] = "Unknown";
-          }
+          const authorData = await getEmployeeById(authorId);
+          employeeMap[authorId] = authorData?.name || "Unknown";
         }
       }
 
@@ -66,238 +125,115 @@ const PostsPage = () => {
   };
 
   const fetchAllEmployees = async () => {
-    try {
-      const employeesResponse = await getAllEmployees();
-      setEmployees(employeesResponse);
-    } catch (error) {
-      console.error("Error fetching employees:", error);
-    }
+    const employeesResponse = await getAllEmployees();
+    setEmployees(employeesResponse);
   };
 
   const fetchTypes = async () => {
-    try {
-      const typesResponse = await getAllTypes();
-      if (typesResponse?.Type) {
-        setTypesList(typesResponse.Type);
-      }
-    } catch (error) {
-      console.error("Error fetching types:", error);
+    const typesResponse = await getAllTypes();
+    if (typesResponse?.Type) {
+      setTypesList(typesResponse.Type);
     }
   };
 
-  useEffect(() => {
-    fetchPosts();
-    fetchAllEmployees();
-    fetchTypes();
-  }, []);
-
-  const handleEdit = (id) => {
-
-  };
-
-  const handleDelete = async (id) => {
-    const confirmed = confirm("Are you sure you want to delete this post?");
-    if (confirmed) {
-      await deletePostById(id);
-      setPosts(posts.filter((post) => post._id !== id));
-    }
-  };
-
-  const handleFileChange = (e) => {
-    const uploadedFile = e.target.files[0];
-    if (uploadedFile) {
-      setSelectedFile(uploadedFile);
-    }
-  };
-  const handleSubmit = async () => {
-    if (!taskassign.title || !selectedFile || !taskassign.author) {
-      alert("Please fill all required fields (title, file, author)");
+  const handleStatusChange = async (postId, newStatus) => {
+    const loggedInUser = JSON.parse(localStorage.getItem("user"));
+    if (!loggedInUser) {
+      alert("User not logged in.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("title", taskassign.title);
-    formData.append("file", selectedFile);
-    formData.append("link", taskassign.link);
-    formData.append("author", taskassign.author);
-    formData.append("assignedBy", taskassign.assignedBy);
-    formData.append("status", "Assigned");
-    formData.append("types", taskassign.types);
+    if (loggedInUser.designation !== "admin" && newStatus === "Published") {
+      alert("Only admins can publish posts.");
+      return;
+    }
+    const response = await updatePostById(postId, { status: newStatus });
+    console.log("Update response:", response);
 
-    try {
-      await createTask(formData);
-      alert("Task Assigned Successfully");
-      setTaskAssign({
-        title: "",
-        link: "",
-        author: "",
-        assignedBy: "admin",
-        status: "Assigned",
-        types: "",
-      });
-      setSelectedFile(null);
-    } catch (error) {
-      alert("Error assigning task");
-      console.error(error);
+    if (response.success) {
+      alert("Status updated successfully");
+      fetchPosts();
     }
   };
+  const fetchStatus = async () => {
+    const statusResponse = await getAllStatus();
+    if (statusResponse?.Status) {
+      const statusOnly = statusResponse.Status.map((item) => item.status);
+      const uniqueStatus = [...new Set(statusOnly)];
+      setStatusList(uniqueStatus);
+    }
+  };
+
+  const handleTaskSubmit = async (formData) => {
+    await createTask(formData);
+    fetchPosts();
+  };
+
+  const handleViewNewsDetail = (newsId) => {
+    router.push(`/news/${newsId}`);
+  };
+
+  const handleEdit = (id) => {
+    router.push(`/posts/AddNewPost?id=${id}`);
+  };
+
+  const handleDelete = async (id) => {
+    if (confirm("Are you sure you want to delete this post?")) {
+      await deletePostById(id);
+      setPosts(posts.filter((post) => post._id !== id));
+      setFilteredPosts(filteredPosts.filter((post) => post._id !== id));
+    }
+  };
+
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      setLoggedInUser(JSON.parse(user));
+    }
+    fetchPosts();
+    fetchAllEmployees();
+    fetchTypes();
+    fetchStatus();
+  }, []);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+
+  if (!loggedInUser) {
+    return null;
+  }
+  const publishedPosts = posts
+    .filter((post) => post.status === "Published")
+    .sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate));
   return (
     <div className="posts-wrapper">
-      <div className="task-table">
-        <div className="task-row">
-          <label>
-            Title:
-            <input
-              className="title"
-              placeholder="Enter Title"
-              value={taskassign.title}
-              onChange={(e) =>
-                setTaskAssign({ ...taskassign, title: e.target.value })
-              }
-            />
-          </label>
-
-          <label>
-            Upload File:
-            <input
-              type="file"
-              accept="image/*,video/*,audio/*,.doc,.docx,.pdf,.xls,.xlsx,.txt,.csv"
-              onChange={handleFileChange}
-            />
-          </label>
-
-          {selectedFile && <p>Selected File: {selectedFile.name}</p>}
-
-          <label>
-            Reference Link:
-            <input
-              className="link"
-              placeholder="Reference Link"
-              value={taskassign.link}
-              onChange={(e) =>
-                setTaskAssign({ ...taskassign, link: e.target.value })
-              }
-            />
-          </label>
-        </div>
-
-        <div className="task-row">
-          <label>
-            Select Author:
-            <select
-              className="author"
-              value={taskassign.author}
-              onChange={(e) =>
-                setTaskAssign({ ...taskassign, author: e.target.value })
-              }
-            >
-              <option value="">Select Author</option>
-              {employees
-                ?.filter((emp) => emp.designation === "author")
-                .map((emp) => (
-                  <option key={emp._id} value={emp._id}>
-                    {emp.name}
-                  </option>
-                ))}
-            </select>
-          </label>
-
-          <label>
-            Assigned By:
-            <input
-              className="assignedby"
-              value={taskassign.assignedBy}
-              readOnly
-            />
-          </label>
-
-          <label>
-            Select Type:
-            <select
-              className="types"
-              value={taskassign.types}
-              onChange={(e) =>
-                setTaskAssign({ ...taskassign, types: e.target.value })
-              }
-            >
-              <option value="">Select Type</option>
-              {typesList.map((type) => (
-                <option key={type._id} value={type.name}>
-                  {type.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <button className="submit-btn" onClick={handleSubmit}>
-            Assign Task
-          </button>
-        </div>
-      </div>
-      <div className="posts-table-container">
-        <table className="posts-table">
-          <thead>
-            <tr>
-              <th>S.No</th>
-              <th>Image</th>
-              <th>Title</th>
-              <th>Author Name</th>
-              <th>Words</th>
-              <th>Category</th>
-              <th>Status</th>
-              <th>Create Time</th>
-              <th>Update Time</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {posts.map((post, index) => (
-              <tr key={post._id}>
-                <td>{index + 1}</td>
-                <td>
-                  {post.file ? (
-                    <img
-                      src={post.file}
-                      alt="Post Thumbnail"
-                      width={80}
-                      height={60}
-                      style={{ objectFit: "cover", borderRadius: "7px" }}
-                      onError={(e) =>
-                        (e.target.src = "https://via.placeholder.com/80x60?text=No+Image")
-                      }
-                    />
-                  ) : (
-                    <span style={{ color: "#888", fontSize: "12px" }}>
-                      No image
-                    </span>
-                  )}
-                </td>
-                <td>{post.title}</td>
-                <td>{employeeNames[post.authorName]}</td>
-                <td>{post.wordCount}</td>
-                <td>{categoryNames[post.category]}</td>
-                <td>{post.status}</td>
-                <td>{new Date(post.createDate).toLocaleString()}</td>
-                <td>{new Date(post.updatedAt).toLocaleString()}</td>
-                <td>
-                  <button
-                    className="edit-btn"
-                    onClick={() => handleEdit(post._id)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="delete-btn"
-                    onClick={() => handleDelete(post._id)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      {loggedInUser?.designation === "admin" && (
+        <PublishedPostsCardGrid posts={publishedPosts} employeeNames={employeeNames} />
+      )}
+      {loggedInUser?.designation === "admin" && (
+        <TaskAssign
+          employees={employees}
+          typesList={typesList}
+          onTaskSubmit={handleTaskSubmit}
+        />)}
+      <PostsTable
+        posts={currentPosts}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        paginate={paginate}
+        indexOfFirstPost={indexOfFirstPost}
+        employeeNames={employeeNames}
+        categoryNames={categoryNames}
+        statusList={statusList}
+        handleViewNewsDetail={handleViewNewsDetail}
+        handleEdit={handleEdit}
+        handleDelete={handleDelete}
+        updatePostById={handleStatusChange}
+      />
     </div>
   );
 };

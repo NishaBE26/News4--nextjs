@@ -1,0 +1,169 @@
+/* General container */
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-left: 110px;
+    margin-top: 30px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  /* Page Title */
+  .status-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  /* Layout: Left add form and right status list */
+  .status-page-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 20px;
+  }
+
+  /* Add Status Section */
+  .status-add-container {
+    flex: 1;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .status-add-container input[type="text"],
+  .status-add-container textarea {
+    width: 95%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .status-add-container textarea {
+    min-height: 100px;
+  }
+
+  .status-add-container button {
+    padding: 10px 16px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .status-add-container button:hover {
+    background-color: #45a049;
+  }
+/* Status Table Section */
+.status-table-container {
+    flex: 2;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 160px); 
+    overflow-y: auto; 
+  }
+
+  /* Status Table */
+  .status-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Ensure a minimum width */
+  }
+  
+  /* Add the scrollbar styling */
+  .status-table-container::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .status-table-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+  }
+
+  .status-table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+
+  .status-table-container h2 {
+    margin-bottom: 15px;
+  }
+  .status-table th,
+  .status-table td {
+    padding: 12px;
+    text-align: left;
+  }
+
+  .status-table th {
+    background-color: #f8f8f8;
+    color: #333;
+  }
+  
+  /* Editable input in table */
+  .status-table input[type="text"],
+  .status-table textarea {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .status-table textarea {
+    min-height: 60px;
+    resize: vertical;
+  }
+  
+  /* Action Buttons */
+  .status-table td.actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  /* All buttons */
+  .status-table button {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  /* Edit button */
+  .status-table button.edit {
+    background-color: #f39c12;
+  }
+
+  .status-table button.edit:hover {
+    background-color: #e67e22;
+  }
+  
+  /* Delete button */
+  .status-table button.delete {
+    background-color: #e74c3c;
+  }
+
+  .status-table button.delete:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Save/Cancel button */
+  .status-table button:not(.edit):not(.delete) {
+    background-color: #3498db;
+  }
+
+  .status-table button:not(.edit):not(.delete):hover {
+    background-color: #2980b9;
+  }
+  

@@ -52,17 +52,20 @@ setCurrentTime({ day, date, time });
             Posts
           </Link>
           <div className="sidebar-submenu" style={{ marginTop: "-8px" }}>
-            <Link href="/posts/all-posts" className="sidebar-sublink">
+            <Link href="/posts/AllPostsPage" className="sidebar-sublink">
               All Posts
             </Link>
-            <Link href="/posts/add-new-post" className="sidebar-sublink">
+            <Link href="/posts/AddNewPost" className="sidebar-sublink">
               Add New Post
             </Link>
-            <Link href="/posts/category" className="sidebar-sublink">
+            <Link href="/posts/CategoryPage" className="sidebar-sublink">
               Category
             </Link>
-            <Link href="/posts/tags" className="sidebar-sublink">
+            <Link href="/posts/TagsPage" className="sidebar-sublink">
               Tags
+            </Link>
+            <Link href ="/posts/StatusPage" className="sidebar-sublink">
+              Status
             </Link>
           </div>
         </div>

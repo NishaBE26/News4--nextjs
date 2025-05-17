@@ -68,6 +68,25 @@ textarea {
 textarea {
   min-height: 250px;
 }
+.image-upload-button {
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.image-upload-button:hover {
+  background-color: #357ac8;
+}
+
+.image-preview img {
+  border-radius: 8px;
+  max-width: 100%;
+}
 
 /* Submit button */
 button[type="submit"] {

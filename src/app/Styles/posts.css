@@ -1,131 +1,234 @@
-
 .posts-wrapper {
-  margin-left: 125px; 
+  margin-left: 125px;
+  margin-top: 55px;
   padding: 0px;
-  width: calc(98% - 110px); 
+  width: calc(98% - 110px);
+}
+
+.carousel-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin: 20px 0;
+}
+
+.carousel {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 10px;
+  padding: 10px 6px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-button {
+  background-color: #eee;
+  border: none;
+  padding: 10px 14px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.nav-button:hover {
+  background-color: #ddd;
+}
+
+.post-card {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  background: #f4f3f3;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  width: 280px;
+  padding: 7px;
+}
+
+.post-card-title {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 11px;
+  font-weight: bold;
+  margin: 0 0 6px;
+  color: #333;
+}
+
+.post-card-title:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}
+
+.post-card-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  object-position: center center;
+  border-radius: 50%;
+}
+
+.vertical-line {
+  width: 2px;
+  height: 60px;
+  background-color: #ccc;
+  margin: 0 10px;
+}
+
+.post-card-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.post-card-author,
+.post-card-date {
+  font-size: 13px;
+  color: #555;
+  margin: 2px 0;
+}
+
+.allposts {
+  margin-top: 7px;
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .posts-table-container {
-  overflow-x: hidden;  
+  overflow-x: hidden;
   width: 100%;
-  margin-top:30px;
+  margin-top: 10px;
 }
+
 .posts-table {
   width: 100%;
   table-layout: auto;
   border-collapse: collapse;
-  border: 1px solid #707B7C ; 
+  border: 1px solid #707B7C;
   border-radius: 8px;
 }
 
-.posts-table th,.posts-table td{
+.posts-table thead {
+  color: #3498DB;
+}
+
+.posts-table th,
+.posts-table td {
   padding: 8px 12px;
   text-align: start;
   word-wrap: break-word;
   max-width: 150px;
   white-space: normal;
   font-size: 14px;
-  border-right:none; 
+  border-right: none;
 }
+
 .posts-table tbody tr:nth-child(odd) {
-  background-color: #D7DBDD; 
+  background-color: #E5E4E2;
 }
 
 .posts-table tbody tr:nth-child(even) {
-  background-color: #ffffff; 
+  background-color: #ffffff;
 }
 
 /*s.no */
-.posts-table th:nth-child(1), .posts-table td:nth-child(1) {  
-  width: 30px;  
- }
+.posts-table th:nth-child(1),
+.posts-table td:nth-child(1) {
+  width: 30px;
+}
+
 /* title */
-.posts-table th:nth-child(3), .posts-table td:nth-child(3) {  
+.posts-table th:nth-child(3),
+.posts-table td:nth-child(3) {
   max-width: 200px;
 }
+
 /* author name */
-.posts-table th:nth-child(4), .posts-table td:nth-child(4) {  
+.posts-table th:nth-child(4),
+.posts-table td:nth-child(4) {
   max-width: 150px;
 }
+
 /* wordcount */
-.posts-table th:nth-child(5), .posts-table td:nth-child(5) {  
+.posts-table th:nth-child(5),
+.posts-table td:nth-child(5) {
   max-width: 100px;
 }
+
 /* category */
-.posts-table th:nth-child(6), .posts-table td:nth-child(6) {
-  max-width: 120px;
-}
-/* status */
-.posts-table th:nth-child(7), .posts-table td:nth-child(7) {
+.posts-table th:nth-child(6),
+.posts-table td:nth-child(6) {
   max-width: 100px;
 }
+
+/* status */
+.posts-table th:nth-child(7),
+.posts-table td:nth-child(7) {
+  max-width: 130px;
+}
+
 /* create time */
-.posts-table th:nth-child(8), .posts-table td:nth-child(8) {  
+.posts-table th:nth-child(8),
+.posts-table td:nth-child(8) {
   max-width: 70px;
 }
+
 /* update time */
-.posts-table th:nth-child(9), .posts-table td:nth-child(9) {  
+.posts-table th:nth-child(9),
+.posts-table td:nth-child(9) {
   max-width: 70px;
 }
+
 /* actions */
-.posts-table th:nth-child(10), .posts-table td:nth-child(10) { 
-  width: 50px; 
+.posts-table th:nth-child(10),
+.posts-table td:nth-child(10) {
+  width: 50px;
 }
 
 /* Table header styling */
 .posts-table th {
-  background-color: #f4f4f4;  
+  background-color: #f4f4f4;
   font-weight: bold;
 }
 
-.edit-btn, .delete-btn {
-  padding: 6px 12px;
-  border-radius: 4px;
-  font-size: 14px;
+.action-link {
+  color: #007bff;
   cursor: pointer;
-  border: none;
-  transition: background-color 0.3s ease;
-  margin-right: 10px;  
-  display: inline-block;  
+  text-decoration: underline;
+  margin: 0 4px;
+  font-size: 14px;
 }
 
-.edit-btn {
-  background-color: #4caf50;
-  color: white;
+.action-link:hover {
+  color: #0056b3;
 }
 
-.edit-btn:hover {
-  background-color: #45a049;
+.status-select {
+  padding: 2px 0px;
+  font-size: 14px;
+  border: 1px solid #5eb4ed;
+  border-radius: 7px;
+  background-color: #d4e5f0;
+  color: #007bff;
+  cursor: pointer;
+  transition: border-color 0.3s ease;
 }
 
-.delete-btn {
-  background-color: #f44336;
-  color: white;
-  margin-top:2px;
+.status-select:disabled {
+  background-color: #f5f5f5;
+  color: #999;
+  cursor: not-allowed;
 }
 
-.delete-btn:hover {
-  background-color: #e53935;
-}
-
-
-@media (max-width: 768px) {
-  .posts-table th, .posts-table td {
-    padding: 6px 5px; 
-    font-size: 12px;  
-  }
-
-  .edit-btn, .delete-btn {
-    padding: 5px 8px;  
-    font-size: 12px;  
-  }
-
-  .posts-wrapper {
-    width: 100%;  
-    margin-left: 0; 
-    padding: 5px;  
-  }
-
+.status-select:hover:not(:disabled) {
+  border-color: #007bff;
 }
 /**************************** task assign css ****************************/
 .task-table {
@@ -133,7 +236,7 @@
   padding: 20px;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 97%;            
+  width: 97%;
   margin-top: 60px;
   display: flex;
   flex-direction: column;

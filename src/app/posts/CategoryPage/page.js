@@ -6,7 +6,7 @@ import {
   updateCategoryById,
   deleteCategoryById,
 } from '../../services/Api';
-import "../../Styles/category.css";
+import "../../Styles/CategoryPage.css";
 
 const CategoryPage = () => {
   const [categories, setCategories] = useState([]);

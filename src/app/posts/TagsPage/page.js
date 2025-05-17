@@ -6,7 +6,7 @@ import {
   deleteTagById,
   getAllTags,
 } from "../../services/Api";
-import "../../Styles/tags.css";
+import "../../Styles/TagsPage.css";
 
 const TagsPage = () => {
   const [tags, setTags] = useState([]);

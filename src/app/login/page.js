@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import "../Styles/login.css";
+import "../Styles/LoginPage.css";
 import { useRouter } from "next/navigation";
 import { login, register, verifyToken } from "../services/Api";
 

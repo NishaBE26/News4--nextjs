@@ -1,16 +1,18 @@
-const BACKEND_URL = "http://192.168.1.4:5000/api";
+const BACKEND_URL = "http://192.168.1.6:5000/api";
 
 const request = async (endpoint, method = "GET", body, headers = {}) => {
     const options = {
         method,
-        headers: {
-            "Content-Type": "application/json",
-            ...headers, // merge custom headers like Authorization
-        },
+        headers: { ...headers },
     };
 
+    const isFormData = body instanceof FormData;
+    if (!isFormData) {
+        options.headers["Content-Type"] = "application/json";
+    }
+
     if (body) {
-        options.body = JSON.stringify(body);
+        options.body = isFormData ? body : JSON.stringify(body);
     }
 
     const response = await fetch(`${BACKEND_URL}${endpoint}`, options);
@@ -22,12 +24,11 @@ const request = async (endpoint, method = "GET", body, headers = {}) => {
         if (contentType && contentType.includes("application/json")) {
             data = await response.json();
         } else {
-            data = await response.text(); 
-        } 
+            data = await response.text();
+        }
     }
     return data;
 };
-
 //========== Login APIs ==========
 export const login = (payload) => request("/auth/login", "POST", payload);
 export const register = (payload) => request("/auth/register", "POST", payload);
