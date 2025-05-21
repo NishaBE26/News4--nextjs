@@ -41,6 +41,7 @@ const AddNewPost = () => {
     setFormData((prev) => ({ ...prev, publishedDate: todayDate }));
 
     if (postId) {
+      console.log("Editing post with ID:", postId);
       fetchPostData(postId);
     }
   }, [postId]);
@@ -107,7 +108,7 @@ const AddNewPost = () => {
   };
 
   const handleCategorySelect = (categoryName) => {
-    setFormData((prev) => ({ ...prev, category: categoryName }));
+    setFormData({ ...formData, category: categoryName });
   };
 
   const handleTagToggle = (tagName) => {
@@ -121,26 +122,26 @@ const AddNewPost = () => {
       return { ...prev, tags: Array.from(tagsSet) };
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log("Form submission started");
+
     if (!formData.title.trim() || !formData.newsContent.trim()) {
       alert("Title and Content are required.");
+      console.log("Validation failed: Title or Content missing");
       return;
     }
 
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (!storedUser || !storedUser.name || !storedUser.id) {
       alert("User not found.");
+      console.log("User validation failed: No user in localStorage");
       return;
     }
 
-    const name = storedUser.name;
-    const id = storedUser.id;
-    const isEdit = !!postId;
-
     const form = new FormData();
-
     form.append("title", formData.title.trim());
     form.append("url", formData.url.trim());
     form.append("newsContent", formData.newsContent.trim());
@@ -155,46 +156,33 @@ const AddNewPost = () => {
       formData.publishedDate || new Date().toISOString()
     );
     form.append("category", formData.category);
-    form.append("authorName", isEdit ? id : name);
-    form.append("publishedBy", isEdit ? id : name);
-    form.append("updatedBy", isEdit ? name : null);
+    form.append("authorName", postId ? storedUser.id : storedUser.name);
+    form.append("publishedBy", postId ? storedUser.id : storedUser.name);
+    form.append("updatedBy", postId ? null : storedUser.name);
 
-    // Append tags array
     formData.tags.forEach((tag) => form.append("tags[]", tag));
 
     if (selectedfile) {
       form.append("file", selectedfile);
     }
 
+    // Log postId and form data keys/values
+    console.log("Submitting post with ID:", postId);
+    console.log("Form data entries:");
+    for (const pair of form.entries()) {
+      console.log(`${pair[0]}:`, pair[1]);
+    }
+
     try {
-      const response = isEdit
+      const response = postId
         ? await updatePostById(postId, form, true)
         : await createPost(form, true);
 
-      console.log("Response from API: ", response);
+      console.log("Response from API:", response);
 
-      if (response?.message === (isEdit ? "News Updated" : "News Created")) {
-        alert(isEdit ? "Post updated successfully!" : "Post created successfully!");
-
-        if (isEdit) {
-          // Update formData state with updated news from API response
-          const updatedPost = response.updatedNews;
-          setFormData({
-            title: updatedPost.title || "",
-            url: updatedPost.url || "",
-            newsContent: updatedPost.newsContent || "",
-            category: updatedPost.category || "",
-            tags: updatedPost.tags || [],
-            seoTitle: updatedPost.seoTitle || "",
-            seoMetaDescription: updatedPost.seoMetaDescription || "",
-            status: updatedPost.status || "Pending",
-            publishedDate: updatedPost.publishedDate
-              ? updatedPost.publishedDate.split("T")[0]
-              : new Date().toISOString().split("T")[0],
-          });
-          // Reset selected file if needed
-          setSelectedFile(null);
-        } else {
+      if (response?.message === (postId ? "News Updated" : "News Created")) {
+        alert(postId ? "Post updated successfully!" : "Post created successfully!");
+        if (!postId) {
           const today = new Date().toISOString().split("T")[0];
           setFormData({
             title: "",
@@ -209,6 +197,8 @@ const AddNewPost = () => {
           });
           setSelectedFile(null);
         }
+      } else {
+        console.warn("Unexpected response message:", response?.message);
       }
     } catch (error) {
       console.error("Failed to submit post:", error);
@@ -256,7 +246,7 @@ const AddNewPost = () => {
               onClick={() => document.getElementById("image-upload").click()}
               className="image-upload-button"
             >
-              {selectedfile ? `Selected: ${selectedfile.name}` : "Select Image"}
+              {selectedfile ? "Change Image" : "Upload Image"}
             </button>
             {selectedfile && (
               <div className="image-preview">
@@ -307,6 +297,7 @@ const AddNewPost = () => {
             />
             <button type="submit">{postId ? "Update Post" : "Create Post"}</button>
           </div>
+
           <div className="form-right">
             <div className="checkbox-group">
               <label>
@@ -336,6 +327,7 @@ const AddNewPost = () => {
                   })}
               </div>
             </div>
+
             <div className="checkbox-group">
               <label>
                 <strong>Select Tags</strong>
