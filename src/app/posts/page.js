@@ -15,7 +15,8 @@ import {
 } from "../services/Api";
 import TaskAssign from "../posts/TaskAssign/page";
 import PostsTable from "./PostsTable/page";
-import { FaUser ,FaClock} from "react-icons/fa";
+import TaskNotification from "../posts/TaskNotification/page"; 
+import { FaUser, FaClock } from "react-icons/fa";
 import "../Styles/posts.css";
 
 const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
@@ -76,6 +77,7 @@ const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
     </div>
   );
 };
+
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
@@ -136,6 +138,15 @@ const PostsPage = () => {
     }
   };
 
+  const fetchStatus = async () => {
+    const statusResponse = await getAllStatus();
+    if (statusResponse?.Status) {
+      const statusOnly = statusResponse.Status.map((item) => item.status);
+      const uniqueStatus = [...new Set(statusOnly)];
+      setStatusList(uniqueStatus);
+    }
+  };
+
   const handleStatusChange = async (postId, newStatus) => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
     if (!loggedInUser) {
@@ -148,25 +159,20 @@ const PostsPage = () => {
       return;
     }
     const response = await updatePostById(postId, { status: newStatus });
-    console.log("Update response:", response);
-
     if (response.success) {
       alert("Status updated successfully");
       fetchPosts();
     }
   };
-  const fetchStatus = async () => {
-    const statusResponse = await getAllStatus();
-    if (statusResponse?.Status) {
-      const statusOnly = statusResponse.Status.map((item) => item.status);
-      const uniqueStatus = [...new Set(statusOnly)];
-      setStatusList(uniqueStatus);
-    }
-  };
 
   const handleTaskSubmit = async (formData) => {
-    await createTask(formData);
+    if (!formData.get("assignedBy") && loggedInUser?.name) {
+      formData.set("assignedBy", loggedInUser.name);
+    }
+
+    const response = await createTask(formData);
     fetchPosts();
+    return response;
   };
 
   const handleViewNewsDetail = (newsId) => {
@@ -206,11 +212,16 @@ const PostsPage = () => {
   if (!loggedInUser) {
     return null;
   }
+
   const publishedPosts = posts
     .filter((post) => post.status === "Published")
     .sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate));
+
   return (
     <div className="posts-wrapper">
+      {loggedInUser?.designation === "author" && (
+        <TaskNotification authorId={loggedInUser._id} />
+      )}
       {loggedInUser?.designation === "admin" && (
         <PublishedPostsCardGrid posts={publishedPosts} employeeNames={employeeNames} />
       )}
@@ -219,7 +230,9 @@ const PostsPage = () => {
           employees={employees}
           typesList={typesList}
           onTaskSubmit={handleTaskSubmit}
-        />)}
+          loggedInAdmin={loggedInUser} 
+        />
+      )}
       <PostsTable
         posts={currentPosts}
         currentPage={currentPage}

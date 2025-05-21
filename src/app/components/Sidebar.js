@@ -67,6 +67,9 @@ setCurrentTime({ day, date, time });
             <Link href ="/posts/StatusPage" className="sidebar-sublink">
               Status
             </Link>
+            <Link href="/posts/TaskList" className="sidebar-sublink">
+              Task List
+            </Link>
           </div>
         </div>
         <Link href="/media" className="sidebar-link">

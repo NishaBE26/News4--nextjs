@@ -1,29 +1,28 @@
 "use client";
 import React, { useState } from "react";
 
-const TaskAssign= ({ 
-  employees, 
-  typesList, 
-  onTaskSubmit 
-}) => {
+const TaskAssign = ({ employees, typesList, onTaskSubmit, loggedInAdmin }) => {
   const [selectedFile, setSelectedFile] = useState(null);
+
   const [taskassign, setTaskAssign] = useState({
     title: "",
     link: "",
     author: "",
-    assignedBy: "admin",
+    assignedBy: loggedInAdmin?.name || "admin",
     status: "Assigned",
     types: "",
   });
 
   const handleFileChange = (e) => {
     const uploadedFile = e.target.files[0];
-    if (uploadedFile) setSelectedFile(uploadedFile);
+    if (uploadedFile) {
+      setSelectedFile(uploadedFile);
+    }
   };
 
   const handleSubmit = async () => {
-    if (!taskassign.title || !selectedFile || !taskassign.author) {
-      alert("Please fill all required fields (title, file, author)");
+    if (!taskassign.title || !selectedFile || !taskassign.author || !taskassign.types) {
+      alert("Please fill all required fields: Title, File, Author, and Type.");
       return;
     }
 
@@ -33,20 +32,27 @@ const TaskAssign= ({
     formData.append("link", taskassign.link);
     formData.append("author", taskassign.author);
     formData.append("assignedBy", taskassign.assignedBy);
-    formData.append("status", "Assigned");
+    formData.append("status", taskassign.status);
     formData.append("types", taskassign.types);
 
-    await onTaskSubmit(formData);
-    alert("Task Assigned Successfully");
-    setTaskAssign({
-      title: "",
-      link: "",
-      author: "",
-      assignedBy: "admin",
-      status: "Assigned",
-      types: "",
-    });
-    setSelectedFile(null);
+    try {
+      const response = await onTaskSubmit(formData);
+      console.log("Response from server:", response);
+      alert("Task Assigned Successfully");
+
+      setTaskAssign({
+        title: "",
+        link: "",
+        author: "",
+        assignedBy: loggedInAdmin?.name || "admin",
+        status: "Assigned",
+        types: "",
+      });
+      setSelectedFile(null);
+    } catch (error) {
+      alert("Failed to assign task. Please check console.");
+      console.error("Task Submit Error:", error);
+    }
   };
 
   return (
@@ -72,9 +78,6 @@ const TaskAssign= ({
             onChange={handleFileChange}
           />
         </label>
-
-        {selectedFile && <p>Selected File: {selectedFile.name}</p>}
-
         <label>
           Reference Link:
           <input
@@ -87,7 +90,6 @@ const TaskAssign= ({
           />
         </label>
       </div>
-
       <div className="task-row">
         <label>
           Select Author:
@@ -102,16 +104,19 @@ const TaskAssign= ({
             {employees
               ?.filter((emp) => emp.designation === "author")
               .map((emp) => (
-                <option key={emp._id} value={emp._id}>
+                <option key={emp._id} value={emp.name}>
                   {emp.name}
                 </option>
               ))}
           </select>
         </label>
-
         <label>
           Assigned By:
-          <input className="assignedby" value={taskassign.assignedBy} readOnly />
+          <input
+            className="assignedby"
+            value={taskassign.assignedBy}
+            readOnly
+          />
         </label>
 
         <label>
@@ -124,9 +129,9 @@ const TaskAssign= ({
             }
           >
             <option value="">Select Type</option>
-            {typesList.map((type) => (
-              <option key={type._id} value={type.name}>
-                {type.name}
+            {typesList.map((type, index) => (
+              <option key={index} value={typeof type.name === "object" ? type.name.name : type.name}>
+                {typeof type.name === "object" ? type.name.name : type.name}
               </option>
             ))}
           </select>

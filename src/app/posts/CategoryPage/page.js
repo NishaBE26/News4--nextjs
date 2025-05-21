@@ -58,16 +58,13 @@ const CategoryPage = () => {
   };
 
   const handleDelete = async (id) => {
-    if (confirm("Are you sure you want to delete this category?")) {
       await deleteCategoryById(id);
       loadCategories();
-    }
   };
 
   return (
     <div className="container">
       <div className="category-page-container">
-        {/* Add/Edit Category Form */}
         <div className="category-add-container">
           <h2>{editingId ? "Edit Category" : "Add New Category"}</h2>
           <input
@@ -90,8 +87,6 @@ const CategoryPage = () => {
             )}
           </div>
         </div>
-
-        {/* Category List */}
         <div className="category-table-container">
           <h2>Categories List</h2>
           <table className="category-table">
