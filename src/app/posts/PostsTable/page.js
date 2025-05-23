@@ -237,26 +237,26 @@ const PostsTable = ({
                   >
                     View
                   </span>{" "}
-                  |{" "}
-                  <span
-                    className="action-link"
-                    onClick={() => handleEdit(post._id)}
-                  >
-                    Edit
-                  </span>{" "}
-                  |{" "}
-                  <span
-                    className="action-link"
-                    onClick={() => handleDelete(post._id)}
-                  >
-                    Delete
-                  </span>
-                </td>
+                |{" "}
+                <span
+                  className="action-link"
+                  onClick={() => router.push(`/posts/Edit/${post._id}`)}
+                >
+                  Edit
+                </span>{" "}
+                |{" "}
+                <span
+                  className="action-link"
+                  onClick={() => handleDelete(post._id)}
+                >
+                  Delete
+                </span>
+              </td>
               </tr>
-            ))
+        ))
           )}
-        </tbody>
-      </table>
+      </tbody>
+    </table>
     </div >
   );
 };

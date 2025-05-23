@@ -15,7 +15,7 @@ import {
 } from "../services/Api";
 import TaskAssign from "../posts/TaskAssign/page";
 import PostsTable from "./PostsTable/page";
-import TaskNotification from "../posts/TaskNotification/page"; 
+import TaskNotification from "../posts/TaskNotification/page";
 import { FaUser, FaClock } from "react-icons/fa";
 import "../Styles/posts.css";
 
@@ -178,10 +178,10 @@ const PostsPage = () => {
   const handleViewNewsDetail = (newsId) => {
     router.push(`/news/${newsId}`);
   };
-
-  const handleEdit = (id) => {
-    router.push(`/posts/AddNewPost?id=${id}`);
+  const handleEdit = (postId) => {
+    router.push(`/Editpost?id=${postId}`);
   };
+
 
   const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this post?")) {
@@ -230,7 +230,7 @@ const PostsPage = () => {
           employees={employees}
           typesList={typesList}
           onTaskSubmit={handleTaskSubmit}
-          loggedInAdmin={loggedInUser} 
+          loggedInAdmin={loggedInUser}
         />
       )}
       <PostsTable

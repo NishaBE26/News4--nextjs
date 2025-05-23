@@ -1,27 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
-import {
-  createPost,
-  updatePostById,
-  getPostById,
-  getAllCategories,
-  getAllTags,
-} from "../../services/Api";
+import { createPost, getAllCategories, getAllTags } from "../../services/Api";
 import "../../Styles/AddNewPost.css";
 
 const AddNewPost = () => {
-  const searchParams = useSearchParams();
-  const postId = searchParams.get("id");
-
   const [formData, setFormData] = useState({
     title: "",
     url: "",
     newsContent: "",
     category: "",
-    categoryId: "",
     tags: [],
-    tagIds: [],
     seoTitle: "",
     seoMetaDescription: "",
     status: "Pending",
@@ -31,7 +19,7 @@ const AddNewPost = () => {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [user, setUser] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedfile, setSelectedFile] = useState(null);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -39,13 +27,9 @@ const AddNewPost = () => {
     loadCategories();
     loadTags();
 
-    const today = new Date().toISOString().split("T")[0];
-    setFormData((prev) => ({ ...prev, publishedDate: today }));
-
-    if (postId) {
-      fetchPostData(postId);
-    }
-  }, [postId]);
+    const todayDate = new Date().toISOString().split("T")[0];
+    setFormData((prev) => ({ ...prev, publishedDate: todayDate }));
+  }, []);
 
   const loadCategories = async () => {
     try {
@@ -65,80 +49,28 @@ const AddNewPost = () => {
     }
   };
 
-  const fetchPostData = async (id) => {
-    try {
-      const res = await getPostById(id);
-      const post = res?.news;
-      if (post) {
-        const categoryName =
-          typeof post.category?.name === "object"
-            ? post.category.name.name
-            : post.category?.name || post.category;
-
-        const tagNames = post.tags?.map((tag) =>
-          typeof tag.name === "object" ? tag.name.name : tag.name
-        );
-        const tagIds = post.tags?.map((tag) => tag._id);
-
-        setFormData({
-          title: post.title || "",
-          url: post.url || "",
-          newsContent: post.newsContent || "",
-          category: categoryName,
-          categoryId: post.category?._id || "",
-          tags: tagNames || [],
-          tagIds: tagIds || [],
-          seoTitle: post.seoTitle || "",
-          seoMetaDescription: post.seoMetaDescription || "",
-          status: post.status || "Pending",
-          publishedDate: post.publishedDate?.split("T")[0] || new Date().toISOString().split("T")[0],
-          authorName: post.authorName || "",
-          publishedBy: post.publishedBy || "",
-          createdAt: post.createdAt || "",
-        });
-
-        if (post.file) setSelectedFile(post.file);
-      }
-    } catch (error) {
-      console.error("Failed to fetch post data:", error);
-    }
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) setSelectedFile(file);
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile) {
+      setSelectedFile(uploadedFile);
+    }
   };
 
-  const handleCategorySelect = (cat) => {
-    const name = typeof cat.name === "object" ? cat.name.name : cat.name;
-    setFormData((prev) => ({
-      ...prev,
-      category: name,
-      categoryId: cat._id,
-    }));
+  const handleCategorySelect = (categoryName) => {
+    setFormData((prev) => ({ ...prev, category: categoryName }));
   };
 
-  const handleTagToggle = (tag) => {
-    const name = typeof tag.name === "object" ? tag.name.name : tag.name;
-
+  const handleTagToggle = (tagName) => {
     setFormData((prev) => {
-      const isSelected = prev.tags.includes(name);
-      const updatedTags = isSelected
-        ? prev.tags.filter((t) => t !== name)
-        : [...prev.tags, name];
-      const updatedTagIds = isSelected
-        ? prev.tagIds.filter((id) => id !== tag._id)
-        : [...prev.tagIds, tag._id];
-      return {
-        ...prev,
-        tags: updatedTags,
-        tagIds: updatedTagIds,
-      };
+      const updatedTags = prev.tags.includes(tagName)
+        ? prev.tags.filter((tag) => tag !== tagName)
+        : [...prev.tags, tagName];
+      return { ...prev, tags: updatedTags };
     });
   };
 
@@ -146,81 +78,63 @@ const AddNewPost = () => {
     e.preventDefault();
 
     if (!formData.title.trim() || !formData.newsContent.trim()) {
-      alert("Title and content are required.");
       return;
     }
 
-    const currentUser = JSON.parse(localStorage.getItem("user"));
-    if (!currentUser) {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser?.name || !storedUser?.id) {
       alert("User not found.");
       return;
     }
 
-    const formPayload = new FormData();
-    formPayload.append("title", formData.title.trim());
-    formPayload.append("url", formData.url.trim());
-    formPayload.append("newsContent", formData.newsContent.trim());
-    formPayload.append("category", formData.categoryId);
-    formPayload.append("tags", JSON.stringify(formData.tagIds));
-    formPayload.append("seoTitle", formData.seoTitle.trim());
-    formPayload.append("seoMetaDescription", formData.seoMetaDescription.trim());
-    formPayload.append(
-      "status",
-      currentUser.designation === "admin" ? formData.status : "Pending"
-    );
-    formPayload.append("publishedDate", formData.publishedDate);
+    const name = storedUser.name;
 
-    if (!postId) {
-  
-      formPayload.append("authorName", currentUser.name);  
-      formPayload.append("publishedBy", currentUser.name); 
-      formPayload.append("createdAt", new Date().toISOString());
-      formPayload.append("updatedBy", "");
-    } else {
-      formPayload.append("authorName", formData.authorName || ""); 
-      formPayload.append("publishedBy", formData.publishedBy || "");
-      formPayload.append("createdAt", formData.createdAt || "");
-      formPayload.append("updatedBy", currentUser.name);  
+    const cleanData = new FormData();
+    cleanData.append("title", formData.title.trim());
+    cleanData.append("url", formData.url.trim());
+    cleanData.append("newsContent", formData.newsContent.trim());
+    cleanData.append("tags", formData.tags);
+    cleanData.append("category", formData.category);
+    cleanData.append("seoTitle", formData.seoTitle.trim());
+    cleanData.append("seoMetaDescription", formData.seoMetaDescription.trim());
+    cleanData.append("status", storedUser.designation === "admin" ? formData.status : "Pending");
+    cleanData.append("publishedDate", formData.publishedDate || new Date().toISOString());
+    cleanData.append("authorName", name);
+    cleanData.append("publishedBy", name);
+    cleanData.append("updatedBy", "");
+    cleanData.append("createdAt", new Date().toISOString());
+
+    if (selectedfile) {
+      cleanData.append("file", selectedfile);
     }
 
-    if (selectedFile instanceof File) {
-      formPayload.append("file", selectedFile);
-    }
-console.log("Form data:", formPayload);
     try {
-      const res = postId
-        ? await updatePostById(postId, formPayload)
-        : await createPost(formPayload);
-        console.log("Response:", res);
-
-      if (res?.message) {
-        alert(postId ? "Post updated successfully!" : "Post created successfully!");
-        if (!postId) {
-          setFormData({
-            title: "",
-            url: "",
-            newsContent: "",
-            category: "",
-            categoryId: "",
-            tags: [],
-            tagIds: [],
-            seoTitle: "",
-            seoMetaDescription: "",
-            status: "Pending",
-            publishedDate: new Date().toISOString().split("T")[0],
-          });
-          setSelectedFile(null);
-        }
-        console.log("Post data:", res);
+      const response = await createPost(cleanData);
+      if (response?.message === "News Created") {
+        alert("Post created successfully!");
+        const today = new Date().toISOString().split("T")[0];
+        setFormData({
+          title: "",
+          url: "",
+          newsContent: "",
+          category: "",
+          tags: [],
+          seoTitle: "",
+          seoMetaDescription: "",
+          status: "Pending",
+          publishedDate: today,
+        });
+        setSelectedFile(null);
       }
     } catch (error) {
       console.error("Failed to submit post:", error);
+      alert("An error occurred while saving the post.");
     }
   };
 
   return (
     <div className="form-container">
-      <h1 className="addposttitle">{postId ? "Edit Post" : "Add New Post"}</h1>
+      <h1 className="addposttitle">Add New Post</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-body">
           <div className="form-left">
@@ -258,16 +172,12 @@ console.log("Form data:", formPayload);
               onClick={() => document.getElementById("image-upload").click()}
               className="image-upload-button"
             >
-              {selectedFile ? "Change Image" : "Upload Image"}
+              {selectedfile ? "Change Image" : "Upload Image"}
             </button>
-            {selectedFile && (
+            {selectedfile && (
               <div className="image-preview">
                 <img
-                  src={
-                    selectedFile instanceof File
-                      ? URL.createObjectURL(selectedFile)
-                      : selectedFile
-                  }
+                  src={URL.createObjectURL(selectedfile)}
                   alt="Preview"
                   style={{
                     width: "100%",
@@ -294,42 +204,34 @@ console.log("Form data:", formPayload);
               value={formData.seoMetaDescription}
               onChange={handleChange}
             />
-            <select
-              name="status"
-              value={formData.status}
-              onChange={handleChange}
-              disabled={user?.designation !== "admin"}
-            >
-              <option value="Pending">Pending</option>
-              <option value="Published">Published</option>
-              <option value="Rejected">Rejected</option>
-            </select>
             <input
               type="date"
               name="publishedDate"
               value={formData.publishedDate}
               onChange={handleChange}
             />
-            <button type="submit">{postId ? "Update Post" : "Create Post"}</button>
+            <button type="submit">Create Post</button>
           </div>
 
           <div className="form-right">
             <div className="checkbox-group">
               <label><strong>Select Category</strong></label>
               <div className="scroll-box">
-                {categories.map((cat) => {
-                  const name = typeof cat.name === "object" ? cat.name.name : cat.name;
+                {categories.map((category) => {
+                  const displayName = typeof category.name === "object" ? category.name.name : category.name;
                   return (
-                    <label key={cat._id}>
-                      <input
-                        type="radio"
-                        name="category"
-                        value={name}
-                        checked={formData.category === name}
-                        onChange={() => handleCategorySelect(cat)}
-                      />
-                      {name}
-                    </label>
+                    <div key={category._id}>
+                      <label>
+                        <input
+                          type="radio"
+                          name="category"
+                          value={displayName}
+                          checked={formData.category === displayName}
+                          onChange={() => handleCategorySelect(displayName)}
+                        />
+                        {displayName}
+                      </label>
+                    </div>
                   );
                 })}
               </div>
@@ -339,17 +241,19 @@ console.log("Form data:", formPayload);
               <label><strong>Select Tags</strong></label>
               <div className="scroll-box">
                 {tags.map((tag) => {
-                  const name = typeof tag.name === "object" ? tag.name.name : tag.name;
+                  const displayName = typeof tag.name === "object" ? tag.name.name : tag.name;
                   return (
-                    <label key={tag._id}>
-                      <input
-                        type="checkbox"
-                        value={name}
-                        checked={formData.tags.includes(name)}
-                        onChange={() => handleTagToggle(tag)}
-                      />
-                      {name}
-                    </label>
+                    <div key={tag._id}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          value={displayName}
+                          checked={formData.tags.includes(displayName)}
+                          onChange={() => handleTagToggle(displayName)}
+                        />
+                        {displayName}
+                      </label>
+                    </div>
                   );
                 })}
               </div>
