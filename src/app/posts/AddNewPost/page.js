@@ -1,6 +1,7 @@
 "use client";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { createPost, getAllCategories, getAllTags } from "../../services/Api";
+import { createPost, getAllCategories, getAllTags, getPostById, updatePostById } from "../../services/Api";
 import "../../Styles/AddNewPost.css";
 
 const AddNewPost = () => {
@@ -15,13 +16,39 @@ const AddNewPost = () => {
     status: "Pending",
     publishedDate: "",
   });
-
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
+  const [originalPost, setOriginalPost] = useState(null);
+  const [storedUser, setStoredUser] = useState(null);
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [user, setUser] = useState(null);
   const [selectedfile, setSelectedFile] = useState(null);
 
   useEffect(() => {
+    const fetchPost = async () => {
+      try {
+        const data = await getPostById(id);
+        console.log("Fetched post data:", data);
+        const post = data.news || data;
+        setOriginalPost(post);
+        setFormData({
+          title: post.title || "",
+          url: post.url || "",
+          newsContent: post.newsContent || "",
+          category: post.category || "",
+          tags: post.tags || [],
+          seoTitle: post.seoTitle || "",
+          seoMetaDescription: post.seoMetaDescription || "",
+          file: post.file || "",
+          status: post.status || "Pending",
+        });
+      } catch (err) {
+        console.error("Failed to fetch post:", err);
+      }
+    };
+    if (id) fetchPost();
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
     loadCategories();
@@ -29,7 +56,7 @@ const AddNewPost = () => {
 
     const todayDate = new Date().toISOString().split("T")[0];
     setFormData((prev) => ({ ...prev, publishedDate: todayDate }));
-  }, []);
+  }, [id]);
 
   const loadCategories = async () => {
     try {
@@ -78,6 +105,7 @@ const AddNewPost = () => {
     e.preventDefault();
 
     if (!formData.title.trim() || !formData.newsContent.trim()) {
+      alert("Title and Content are required.");
       return;
     }
 
@@ -88,12 +116,13 @@ const AddNewPost = () => {
     }
 
     const name = storedUser.name;
+    const employeeId = storedUser.employeeId;
 
     const cleanData = new FormData();
     cleanData.append("title", formData.title.trim());
     cleanData.append("url", formData.url.trim());
     cleanData.append("newsContent", formData.newsContent.trim());
-    cleanData.append("tags", formData.tags);
+    cleanData.append("tags", JSON.stringify(formData.tags));  
     cleanData.append("category", formData.category);
     cleanData.append("seoTitle", formData.seoTitle.trim());
     cleanData.append("seoMetaDescription", formData.seoMetaDescription.trim());
@@ -109,22 +138,47 @@ const AddNewPost = () => {
     }
 
     try {
-      const response = await createPost(cleanData);
-      if (response?.message === "News Created") {
-        alert("Post created successfully!");
-        const today = new Date().toISOString().split("T")[0];
-        setFormData({
-          title: "",
-          url: "",
-          newsContent: "",
-          category: "",
-          tags: [],
-          seoTitle: "",
-          seoMetaDescription: "",
-          status: "Pending",
-          publishedDate: today,
+      let response;
+      if (originalPost) {
+        // Update existing post
+        response = await updatePostById(id, {
+          title: formData.title,
+          newsContent: formData.newsContent,
+          category: formData.category,
+          file: formData.file,
+          status: formData.status,
+          url: formData.url,
+          seoTitle: formData.seoTitle,
+          seoMetaDescription: formData.seoMetaDescription,
+          tags: formData.tags,
+          publishedDate: formData.publishedDate || new Date().toISOString(),
+          authorName: originalPost.authorName,
+          publishedBy: originalPost.publishedBy,
+          updatedBy: employeeId,
         });
-        setSelectedFile(null);
+      } else {
+        // Create new post
+        response = await createPost(cleanData);
+      }
+
+      if (response?.message === "News Created" || response?.message === "News Updated") {
+        alert(originalPost ? "Post updated successfully!" : "Post created successfully!");
+        router.push("/posts");
+        if (!originalPost) {
+          const today = new Date().toISOString().split("T")[0];
+          setFormData({
+            title: "",
+            url: "",
+            newsContent: "",
+            category: "",
+            tags: [],
+            seoTitle: "",
+            seoMetaDescription: "",
+            status: "Pending",
+            publishedDate: today,
+          });
+          setSelectedFile(null);
+        }
       }
     } catch (error) {
       console.error("Failed to submit post:", error);
@@ -134,7 +188,7 @@ const AddNewPost = () => {
 
   return (
     <div className="form-container">
-      <h1 className="addposttitle">Add New Post</h1>
+      <h1 className="addposttitle">{originalPost ? "Edit Post" : "New Post"}</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-body">
           <div className="form-left">
@@ -205,12 +259,14 @@ const AddNewPost = () => {
               onChange={handleChange}
             />
             <input
-              type="date"
+              type="text"
               name="publishedDate"
-              value={formData.publishedDate}
+              placeholder="Published Date"
+              value={formData.publishedDate || ""}
               onChange={handleChange}
             />
-            <button type="submit">Create Post</button>
+
+            <button type="submit">{originalPost ? "Update Post" : "Create Post"}</button>
           </div>
 
           <div className="form-right">
