@@ -1,0 +1,195 @@
+.correction-container {
+  width: 101%;
+  background-color: #fff;
+  max-height: 500px;
+  border-radius: 12px;
+  padding: 0; 
+  margin-top: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #c1b6b6;
+  display: flex;
+  flex-direction: column;
+}
+
+.fixed-messages h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+}
+
+.fixed-messages p {
+  margin: 4px 0 0 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.correction-scroll-area {
+  overflow-y: auto;
+  max-height: 440px;
+  padding: 5px 20px;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for WebKit browsers */
+.correction-scroll-area::-webkit-scrollbar {
+  width: 6px;
+}
+
+.correction-scroll-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.correction-scroll-area::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}
+
+.correction-box {
+  background-color: #f9f9f9;
+  padding: 10px 20px;
+  border-radius: 10px;
+  border-left: 6px solid #e67e22;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  transition: background 0.3s ease;
+  margin-bottom: 12px;
+}
+
+.correction-box:hover {
+  background-color: #f4f4f4;
+}
+
+.correction-box p {
+  margin: 2px 0;
+  font-size: 1rem;
+  color: #333;
+}
+
+.correction-status {
+  font-weight: 600;
+  color: #d35400;
+  background: #fff3e0;
+  padding: 6px 12px;
+  display: inline-block;
+  border-radius: 6px;
+  margin-top: 8px;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: -10px;
+}
+
+.status-row span {
+  font-size: 16px;
+}
+
+.edit-resubmit-button {
+  background: none;
+  border: none;
+  color: #4caf50;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.edit-resubmit-button:hover {
+  color: #3cad40;
+  font-weight: 600;
+}
+/* ================admin post status================= */
+.resubmitted-container {
+  width: 99%;
+  max-height: 500px;        /* Fix container height */
+  padding: 12px;
+  margin-top: -24px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  font-family: Arial, sans-serif;
+  border: 1px solid rgb(183, 175, 175);
+
+  display: flex;
+  flex-direction: column;
+}
+
+.resubmitted-container h2 {
+  font-size: 18px;
+  color: #333;
+  margin: 0 0 10px 0;
+  position: sticky;       /* Stick heading on top while scrolling */
+  top: 0;
+  background: #f8f9fa;
+  padding: 8px 0;
+  z-index: 1;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Scrollable area for posts */
+.resubmitted-posts-scroll {
+  overflow-y: auto;
+  flex-grow: 1;            /* Fill remaining height */
+  padding-right: 8px;      /* Padding to avoid scrollbar overlap */
+}
+
+/* Keep your existing styles for .resubmitted-box and children */
+.resubmitted-box {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  padding: 0px 20px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
+  transition: box-shadow 0.2s ease;
+  margin-bottom: 12px;
+}
+
+.resubmitted-box:hover {
+  box-shadow: 0 4px 12px rgb(0 0 0 / 0.15);
+}
+
+.resubmitted-box p {
+  margin: 6px 0;
+  color: #444;
+  font-size: 1rem;
+}
+
+.author-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+  padding-top: 4px;
+}
+
+.author-name {
+  font-size: 1rem;
+  color: #333;
+}
+
+.review-post-button {
+  background: none;
+  color: #4caf50;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+  padding: 0;
+}
+
+.review-post-button:hover {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+/* Optional: custom scrollbar for WebKit */
+.resubmitted-posts-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.resubmitted-posts-scroll::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 4px;
+}

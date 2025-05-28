@@ -1,14 +1,17 @@
 .task-notification-wrapper {
-    padding: 30px 20px;
-    margin-top: -46px;
+    padding: 0px 27px;
+    margin-top: 1px;
     background-color: #f5f7fa;
+    border-radius: 11px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    border: 1px solid rgb(178, 174, 174);
+    margin-right:-12px;
 }
 
 .task-scroll-container {
     max-height: 220px;
     margin-left: -18px;
-    width:104%;
+    width:103%;
     overflow-y: auto;
     padding-right: 6px;
     border: 1px solid #dbe3ea;
@@ -78,6 +81,17 @@
     font-size: 15px;
     color: #1a237e;
 }
+.task-line-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 14px;
+  margin: 8px 0;
+}
+
+.task-line-info span {
+  white-space: nowrap;
+}
 
 .task-content p {
     margin: 4px 0;
@@ -87,7 +101,6 @@
 
 .task-link {
     display: inline-block;
-    margin-top: 8px;
     font-size: 14px;
     color: #4caf50;
     font-weight: 600;
@@ -98,4 +111,20 @@
 .task-link:hover {
     color: #388e3c;
     text-decoration: underline;
+}
+
+.work-task-link-button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #4caf50;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: underline transparent;
+  transition: text-decoration 0.2s;
+}
+
+.work-task-link-button:hover {
+  text-decoration: underline;
 }

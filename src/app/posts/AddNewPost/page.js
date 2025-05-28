@@ -25,6 +25,7 @@ const AddNewPost = () => {
   const [tags, setTags] = useState([]);
   const [user, setUser] = useState(null);
   const [selectedfile, setSelectedFile] = useState(null);
+  const resubmitted = searchParams.get("resubmitted") === "true";
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -91,7 +92,6 @@ const AddNewPost = () => {
   const handleCategorySelect = (categoryName) => {
     setFormData((prev) => ({ ...prev, category: categoryName }));
   };
-
   const handleTagToggle = (tagName) => {
     setFormData((prev) => {
       const updatedTags = prev.tags.includes(tagName)
@@ -105,13 +105,11 @@ const AddNewPost = () => {
     e.preventDefault();
 
     if (!formData.title.trim() || !formData.newsContent.trim()) {
-      alert("Title and Content are required.");
       return;
     }
 
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (!storedUser?.name || !storedUser?.id) {
-      alert("User not found.");
       return;
     }
 
@@ -122,7 +120,7 @@ const AddNewPost = () => {
     cleanData.append("title", formData.title.trim());
     cleanData.append("url", formData.url.trim());
     cleanData.append("newsContent", formData.newsContent.trim());
-    cleanData.append("tags", JSON.stringify(formData.tags));  
+    cleanData.append("tags",formData.tags);
     cleanData.append("category", formData.category);
     cleanData.append("seoTitle", formData.seoTitle.trim());
     cleanData.append("seoMetaDescription", formData.seoMetaDescription.trim());
@@ -136,59 +134,54 @@ const AddNewPost = () => {
     if (selectedfile) {
       cleanData.append("file", selectedfile);
     }
+    console.log("created post to the content:",formData)
 
-    try {
-      let response;
-      if (originalPost) {
-        // Update existing post
-        response = await updatePostById(id, {
-          title: formData.title,
-          newsContent: formData.newsContent,
-          category: formData.category,
-          file: formData.file,
-          status: formData.status,
-          url: formData.url,
-          seoTitle: formData.seoTitle,
-          seoMetaDescription: formData.seoMetaDescription,
-          tags: formData.tags,
-          publishedDate: formData.publishedDate || new Date().toISOString(),
-          authorName: originalPost.authorName,
-          publishedBy: originalPost.publishedBy,
-          updatedBy: employeeId,
+    let response;
+    if (originalPost) {
+      response = await updatePostById(id, {
+        title: formData.title,
+        newsContent: formData.newsContent,
+        category: formData.category,
+        file: formData.file,
+        status: resubmitted ? "Resubmitted" : formData.status,
+        url: formData.url,
+        seoTitle: formData.seoTitle,
+        seoMetaDescription: formData.seoMetaDescription,
+        tags: formData.tags,
+        publishedDate: formData.publishedDate || new Date().toISOString(),
+        authorName: originalPost.authorName,
+        publishedBy: originalPost.publishedBy,
+        updatedBy: employeeId,
+      });
+    } else {
+      response = await createPost(cleanData);
+    }
+
+    if (response?.message === "News Created" || response?.message === "News Updated") {
+      if (!originalPost) {
+        const today = new Date().toISOString().split("T")[0];
+        setFormData({
+          title: "",
+          url: "",
+          newsContent: "",
+          category: "",
+          tags: [],
+          seoTitle: "",
+          seoMetaDescription: "",
+          status: "Pending",
+          publishedDate: today,
         });
-      } else {
-        // Create new post
-        response = await createPost(cleanData);
+        setSelectedFile(null);
       }
-
-      if (response?.message === "News Created" || response?.message === "News Updated") {
-        alert(originalPost ? "Post updated successfully!" : "Post created successfully!");
-        router.push("/posts");
-        if (!originalPost) {
-          const today = new Date().toISOString().split("T")[0];
-          setFormData({
-            title: "",
-            url: "",
-            newsContent: "",
-            category: "",
-            tags: [],
-            seoTitle: "",
-            seoMetaDescription: "",
-            status: "Pending",
-            publishedDate: today,
-          });
-          setSelectedFile(null);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to submit post:", error);
-      alert("An error occurred while saving the post.");
+      router.push("/posts");
     }
   };
 
   return (
     <div className="form-container">
-      <h1 className="addposttitle">{originalPost ? "Edit Post" : "New Post"}</h1>
+      <h1 className="addposttitle">
+        {resubmitted ? "Change Post" : originalPost ? "Edit Post" : "New Post"}
+      </h1>
       <form onSubmit={handleSubmit}>
         <div className="form-body">
           <div className="form-left">
@@ -226,9 +219,9 @@ const AddNewPost = () => {
               onClick={() => document.getElementById("image-upload").click()}
               className="image-upload-button"
             >
-              {selectedfile ? "Change Image" : "Upload Image"}
+              {originalPost ? "Change Image" : "Upload Image"}
             </button>
-            {selectedfile && (
+            {selectedfile ? (
               <div className="image-preview">
                 <img
                   src={URL.createObjectURL(selectedfile)}
@@ -243,7 +236,22 @@ const AddNewPost = () => {
                   }}
                 />
               </div>
-            )}
+            ) : originalPost?.file ? (
+              <div className="image-preview">
+                <img
+                  src={originalPost.file}
+                  alt="Existing Image"
+                  style={{
+                    width: "100%",
+                    maxHeight: "300px",
+                    objectFit: "contain",
+                    marginTop: "10px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                  }}
+                />
+              </div>
+            ) : null}
             <input
               type="text"
               name="seoTitle"
@@ -260,12 +268,10 @@ const AddNewPost = () => {
             />
             <input
               type="text"
-              name="publishedDate"
-              placeholder="Published Date"
-              value={formData.publishedDate || ""}
+              name="status"
+              value={resubmitted ? "Resubmitted" : formData.status}
               onChange={handleChange}
             />
-
             <button type="submit">{originalPost ? "Update Post" : "Create Post"}</button>
           </div>
 

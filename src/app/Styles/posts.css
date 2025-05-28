@@ -230,17 +230,19 @@
 .status-select:hover:not(:disabled) {
   border-color: #007bff;
 }
+
 /**************************** task assign css ****************************/
 .task-table {
   background-color: #f4f4f4;
-  padding: 20px;
+  padding: 10px;
   border-radius: 12px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 97%;
-  margin-top: 60px;
+  width: 99%;
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+  border:1px solid rgb(193, 182, 182);
 }
 
 .task-row {

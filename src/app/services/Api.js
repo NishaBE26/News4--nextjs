@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://192.168.1.8:5000/api";
+const BACKEND_URL = "http://192.168.1.6:5000/api";
 
 const request = async (endpoint, method = "GET", body, headers = {}) => {
     const options = {
@@ -36,7 +36,7 @@ export const verifyToken = (token) =>
     request("/auth/verify", "POST", null, {
         Authorization: `Bearer ${token}`,
     });
-export const logout = () => request("/auth/logout", "POST");
+export const logout = () => request("/auth/logout", "POST"); //pending
 
 //========== Category APIs ==========
 export const createCategory = (payload) => request("/category/create-category", "POST", payload);
@@ -58,32 +58,32 @@ export const getAllPosts = () => request("/news/get-all-post");
 export const getPostById = (id) => request(`/news/get-post/${id}`);
 export const updatePostById = (id, payload) => request(`/news/update-post/${id}`, "PUT", payload);
 export const deletePostById = (id) => request(`/news/delete-post/${id}`, "DELETE");
-export const getPostsByCategoryId = (categoryId) => request(`/news/get-category-news/${categoryId}`);
+export const getPostsByCategoryId = (categoryId) => request(`/news/get-category-news/${categoryId}`); // pending
 
 //========== Employee APIs ==========
-export const createEmployee = (payload) => request("/employee/create-employee", "POST", payload);
-export const getAllEmployees = () => request("/employee", "GET");
-export const getEmployeeById = (id) => request(`/employee/get-employee/${id}`, "GET");
-export const updateEmployeeById = (id, payload) => request(`/employee/update-employee/${id}`, "PUT", payload);
-export const deleteEmployeeById = (id) => request(`/employee/delete-employee/${id}`, "DELETE");
+export const createEmployee = (payload) => request("/employee/create-employee", "POST", payload);// pending
+export const getAllEmployees = () => request("/employee", "GET"); 
+export const getEmployeeById = (id) => request(`/employee/get-employee/${id}`, "GET"); 
+export const updateEmployeeById = (id, payload) => request(`/employee/update-employee/${id}`, "PUT", payload);// pending
+export const deleteEmployeeById = (id) => request(`/employee/delete-employee/${id}`, "DELETE");// pending
 
 //========== Task APIs ==========
 export const createTask = (payload) => request("/task/create-task", "POST", payload);
 export const getAllTasks = () => request("/task/get-all-task", "GET");
-export const getTaskById = (id) => request(`/task/get-task/${id}`, "GET");
+export const getTaskById = (id) => request(`/task/get-task/${id}`, "GET");// pending
 export const getTasksByAuthorId = (authorId) => request(`/task/get-author-task/${authorId}`, "GET");
 export const updateTaskById = (id, payload) => request(`/task/update-task/${id}`, "PUT", payload);
 export const deleteTaskById = (id) => request(`/task/delete-task/${id}`, "DELETE");
 
 //========== Type Register APIs ==========
-export const createType = (payload) => request("/type/create-types", "POST", payload);
-export const getAllTypes = () => request("/type/get-all-types", "GET");
-export const getTypeById = (id) => request(`/type/get-types/${id}`, "GET");
-export const updateTypeById = (id, payload) => request(`/type/update-types/${id}`, "PUT", payload);
-export const deleteTypeById = (id) => request(`/type/delete-types/${id}`, "DELETE");
+export const createType = (payload) => request("/type/create-types", "POST", payload);// pending
+export const getAllTypes = () => request("/type/get-all-types", "GET"); 
+export const getTypeById = (id) => request(`/type/get-types/${id}`, "GET");// pending
+export const updateTypeById = (id, payload) => request(`/type/update-types/${id}`, "PUT", payload);// pending
+export const deleteTypeById = (id) => request(`/type/delete-types/${id}`, "DELETE");// pending
 // ===================== Status APIs ==================//
-export const createStatus = (payload) => request("/status/create-status", "POST", payload);
+export const createStatus = (payload) => request("/status/create-status", "POST", payload);// pending
 export const getAllStatus = () => request("/status/get-all-status", "GET");
-export const getStatusById = (id) => request(`/status/get-status/${id}`, "GET");
-export const updateStatusById = (id, payload) => request(`/status/update-status/${id}`, "PUT", payload);
-export const deleteStatusById = (id) => request(`/status/delete-status/${id}`, "DELETE");
+export const getStatusById = (id) => request(`/status/get-status/${id}`, "GET");// pending
+export const updateStatusById = (id, payload) => request(`/status/update-status/${id}`, "PUT", payload);// pending
+export const deleteStatusById = (id) => request(`/status/delete-status/${id}`, "DELETE");// pending

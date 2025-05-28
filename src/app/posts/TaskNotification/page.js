@@ -2,11 +2,13 @@
 import React, { useEffect, useState } from "react";
 import "../../Styles/TaskNotification.css";
 import { getTasksByAuthorId, getTypeById } from "@/app/services/Api";
+import { useRouter } from "next/navigation";
 
 const TaskNotification = () => {
   const [tasks, setTasks] = useState([]);
   const [typeNames, setTypeNames] = useState({});
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const router = useRouter();
 
   const fetchTasks = async (authorEmployeeId) => {
     try {
@@ -14,17 +16,15 @@ const TaskNotification = () => {
       const taskList = response?.task || [];
       setTasks(taskList);
 
-      // Extract unique type IDs (assuming task.types is correct field)
       const uniqueTypeIds = [...new Set(taskList.map((task) => task.types))];
       const typeNameMap = {};
 
       await Promise.all(
         uniqueTypeIds.map(async (id) => {
-          if (!id) return; // skip if id undefined/null
+          if (!id) return;
           try {
             const typeData = await getTypeById(id);
-            // Adjust if your API returns typeData.Type.name
-            if (typeData && typeData.Type && typeData.Type.name) {
+            if (typeData?.Type?.name) {
               typeNameMap[id] = typeData.Type.name;
             } else {
               typeNameMap[id] = "Unknown Type";
@@ -36,7 +36,6 @@ const TaskNotification = () => {
       );
 
       setTypeNames(typeNameMap);
-      console.log("Type names:", typeNameMap);
     } catch (error) {
       console.error("Error fetching tasks or types:", error);
     }
@@ -59,7 +58,8 @@ const TaskNotification = () => {
 
   return (
     <div className="task-notification-wrapper">
-      <h2 className="task-notification-title">Task Notifications</h2>
+      <h2 className="task-notification-title" style={{marginTop:"-7px"}}>Task Notifications</h2>
+
       <div className="task-scroll-container">
         <div className="task-list">
           {[...tasks].reverse().map((task) => (
@@ -69,21 +69,30 @@ const TaskNotification = () => {
               )}
               <div className="task-content">
                 <h3>{task.title}</h3>
-                <p>
-                  <strong>Type:</strong> {typeNames[task.types] || "Loading..."}
-                </p>
-                <p><strong>Status:</strong> {task.status}</p>
-                <p><strong>Created On:</strong> {new Date(task.createDate).toLocaleDateString()}</p>
-                {task.link && (
-                  <a
-                    href={task.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="task-link"
+                <div className="task-line-info">
+                  <span><strong>📌 Type:</strong> {typeNames[task.types] || "Loading..."}</span>
+                  <span><strong>📋 Status:</strong> {task.status}</span>
+                  <span><strong>📅 Created On:</strong> {new Date(task.createDate).toLocaleDateString()}</span>
+                  {task.link && (
+                    <span>
+                      <strong>🔗 Reference:</strong>{" "}
+                      <a
+                        href={task.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="task-link"
+                      >
+                        View Link
+                      </a>
+                    </span>
+                  )}
+                  <button
+                    className="work-task-link-button"
+                    onClick={() => router.push(`/posts/AddNewPost?id=${task._id}`)}
                   >
-                    🔗 View Reference link
-                  </a>
-                )}
+                    Work Task
+                  </button>
+                </div>
               </div>
             </div>
           ))}

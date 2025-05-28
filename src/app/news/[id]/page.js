@@ -15,11 +15,9 @@ const NewsDetailPage = () => {
       try {
         const postData = await getPostById(id);
         setPost(postData.news);
-
-        // Now fetch employee data using author ID from post
         if (postData.news && postData.news.publishedBy) {
           const employeeData = await getEmployeeById(postData.news.publishedBy);
-          setEmployee(employeeData); // assuming API returns employee directly
+          setEmployee(employeeData); 
         }
       } catch (error) {
         console.error("Failed to fetch data:", error);

@@ -15,7 +15,9 @@ import {
 } from "../services/Api";
 import TaskAssign from "../posts/TaskAssign/page";
 import PostsTable from "./PostsTable/page";
-import TaskNotification from "../posts/TaskNotification/page"; 
+import TaskNotification from "../posts/TaskNotification/page";
+import AuthorPostStatus from "../posts/AuthorPostStatus/page";
+import AdminPostStatus from "../posts/AdminPostStatus/page";
 import { FaUser, FaClock } from "react-icons/fa";
 import "../Styles/posts.css";
 
@@ -34,9 +36,7 @@ const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
 
   return (
     <div className="carousel-wrapper">
-      <button className="nav-button" onClick={scrollLeft}>
-        &lt;
-      </button>
+      <button className="nav-button" onClick={scrollLeft}>&lt;</button>
 
       <div className="carousel" ref={carouselRef}>
         {posts.map((post) => {
@@ -71,9 +71,7 @@ const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
         })}
       </div>
 
-      <button className="nav-button" onClick={scrollRight}>
-        &gt;
-      </button>
+      <button className="nav-button" onClick={scrollRight}>&gt;</button>
     </div>
   );
 };
@@ -88,6 +86,7 @@ const PostsPage = () => {
   const [statusList, setStatusList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loggedInUser, setLoggedInUser] = useState(null);
+
   const postsPerPage = 10;
 
   const router = useRouter();
@@ -103,23 +102,24 @@ const PostsPage = () => {
       setPosts(sortedPosts);
       setFilteredPosts(sortedPosts);
 
+      const uniqueCategoryIds = [...new Set(sortedPosts.map(p => p.category))];
+      const uniqueAuthorIds = [...new Set(sortedPosts.map(p => p.authorName))];
+
+      const categoryPromises = uniqueCategoryIds.map(getCategoryById);
+      const employeePromises = uniqueAuthorIds.map(getEmployeeById);
+
+      const categoryResults = await Promise.all(categoryPromises);
+      const employeeResults = await Promise.all(employeePromises);
+
       const categoryMap = {};
       const employeeMap = {};
 
-      for (const post of sortedPosts) {
-        const categoryId = post.category;
-        const authorId = post.authorName;
-
-        if (categoryId && !categoryMap[categoryId]) {
-          const categoryData = await getCategoryById(categoryId);
-          categoryMap[categoryId] = categoryData?.category?.name || "Unknown";
-        }
-
-        if (authorId && !employeeMap[authorId]) {
-          const authorData = await getEmployeeById(authorId);
-          employeeMap[authorId] = authorData?.name || "Unknown";
-        }
-      }
+      uniqueCategoryIds.forEach((id, i) => {
+        categoryMap[id] = categoryResults[i]?.category?.name || "Unknown";
+      });
+      uniqueAuthorIds.forEach((id, i) => {
+        employeeMap[id] = employeeResults[i]?.name || "Unknown";
+      });
 
       setCategoryNames(categoryMap);
       setEmployeeNames(employeeMap);
@@ -149,18 +149,14 @@ const PostsPage = () => {
 
   const handleStatusChange = async (postId, newStatus) => {
     const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    if (!loggedInUser) {
-      alert("User not logged in.");
-      return;
-    }
+    if (!loggedInUser || loggedInUser.designation !== "admin") return;
 
-    if (loggedInUser.designation !== "admin" && newStatus === "Published") {
-      alert("Only admins can publish posts.");
-      return;
-    }
-    const response = await updatePostById(postId, { status: newStatus });
+    const response = await updatePostById(postId, {
+      status: newStatus,
+    });
+
     if (response.success) {
-      alert("Status updated successfully");
+      alert("Status updated.");
       fetchPosts();
     }
   };
@@ -169,19 +165,13 @@ const PostsPage = () => {
     if (!formData.get("assignedBy") && loggedInUser?.name) {
       formData.set("assignedBy", loggedInUser.name);
     }
-
     const response = await createTask(formData);
     fetchPosts();
     return response;
   };
 
-  const handleViewNewsDetail = (newsId) => {
-    router.push(`/news/${newsId}`);
-  };
-
-  const handleEdit = (id) => {
-    router.push(`/posts/AddNewPost?id=${id}`);
-  };
+  const handleViewNewsDetail = (newsId) => router.push(`/news/${newsId}`);
+  const handleEdit = (id) => router.push(`/posts/AddNewPost?id=${id}`);
 
   const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this post?")) {
@@ -194,9 +184,9 @@ const PostsPage = () => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      setLoggedInUser(JSON.parse(user));
+    if (typeof window !== "undefined") {
+      const user = localStorage.getItem("user");
+      if (user) setLoggedInUser(JSON.parse(user));
     }
     fetchPosts();
     fetchAllEmployees();
@@ -209,28 +199,40 @@ const PostsPage = () => {
   const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
   const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
 
-  if (!loggedInUser) {
-    return null;
-  }
+  if (!loggedInUser) return null;
+
+  // Filter published posts only within last 24 hours
+  const now = new Date();
+  const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
 
   const publishedPosts = posts
-    .filter((post) => post.status === "Published")
+    .filter((post) => {
+      if (post.status !== "Published") return false;
+      const postDate = new Date(post.createDate || post.updateDate);
+      return postDate > oneDayAgo;
+    })
     .sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate));
 
   return (
     <div className="posts-wrapper">
-      {loggedInUser?.designation === "author" && (
+      {loggedInUser?.designation === "author" && publishedPosts.length > 0 && (
         <TaskNotification authorId={loggedInUser._id} />
+      )}
+      {loggedInUser?.designation === "author" && (
+        <AuthorPostStatus currentUser={loggedInUser} />
       )}
       {loggedInUser?.designation === "admin" && (
         <PublishedPostsCardGrid posts={publishedPosts} employeeNames={employeeNames} />
+      )}
+      {loggedInUser?.designation === "admin" && (
+        <AdminPostStatus currentUser={loggedInUser} />
       )}
       {loggedInUser?.designation === "admin" && (
         <TaskAssign
           employees={employees}
           typesList={typesList}
           onTaskSubmit={handleTaskSubmit}
-          loggedInAdmin={loggedInUser} 
+          loggedInAdmin={loggedInUser}
         />
       )}
       <PostsTable

@@ -42,10 +42,6 @@ setCurrentTime({ day, date, time });
         </div>
       </div>
       <div className="sidebar">
-        <Link href="/dashboard" className="sidebar-link">
-          <MdDashboard className="sidebar-icon" />
-          Dashboard
-        </Link>
         <div className="sidebar-section">
           <Link href="/posts" className="sidebar-link">
             <FaPenFancy className="sidebar-icon" />
@@ -72,13 +68,13 @@ setCurrentTime({ day, date, time });
             </Link>
           </div>
         </div>
-        <Link href="/media" className="sidebar-link">
-          <FaPhotoVideo className="sidebar-icon" />
-          Media
-        </Link>
         <Link href="/report" className="sidebar-link">
           <FaChartBar className="sidebar-icon" />
           Report
+        </Link>
+        <Link href="/resgistration" className="sidebar-link">
+          <FaPhotoVideo className="sidebar-icon" />
+          Registration
         </Link>
         <Link href="/details" className="sidebar-link">
           <FaInfoCircle className="sidebar-icon" />
