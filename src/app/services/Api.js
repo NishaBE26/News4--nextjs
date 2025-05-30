@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://192.168.1.6:5000/api";
+const BACKEND_URL = "http://192.168.1.8:5000/api";
 
 const request = async (endpoint, method = "GET", body, headers = {}) => {
     const options = {
@@ -76,14 +76,14 @@ export const updateTaskById = (id, payload) => request(`/task/update-task/${id}`
 export const deleteTaskById = (id) => request(`/task/delete-task/${id}`, "DELETE");
 
 //========== Type Register APIs ==========
-export const createType = (payload) => request("/type/create-types", "POST", payload);// pending
+export const createType = (payload) => request("/type/create-types", "POST", payload);
 export const getAllTypes = () => request("/type/get-all-types", "GET"); 
-export const getTypeById = (id) => request(`/type/get-types/${id}`, "GET");// pending
-export const updateTypeById = (id, payload) => request(`/type/update-types/${id}`, "PUT", payload);// pending
-export const deleteTypeById = (id) => request(`/type/delete-types/${id}`, "DELETE");// pending
+export const getTypeById = (id) => request(`/type/get-types/${id}`, "GET");
+export const updateTypeById = (id, payload) => request(`/type/update-types/${id}`, "PUT", payload);
+export const deleteTypeById = (id) => request(`/type/delete-types/${id}`, "DELETE");
 // ===================== Status APIs ==================//
-export const createStatus = (payload) => request("/status/create-status", "POST", payload);// pending
+export const createStatus = (payload) => request("/status/create-status", "POST", payload);
 export const getAllStatus = () => request("/status/get-all-status", "GET");
-export const getStatusById = (id) => request(`/status/get-status/${id}`, "GET");// pending
-export const updateStatusById = (id, payload) => request(`/status/update-status/${id}`, "PUT", payload);// pending
-export const deleteStatusById = (id) => request(`/status/delete-status/${id}`, "DELETE");// pending
+export const getStatusById = (id) => request(`/status/get-status/${id}`, "GET");
+export const updateStatusById = (id, payload) => request(`/status/update-status/${id}`, "PUT", payload);
+export const deleteStatusById = (id) => request(`/status/delete-status/${id}`, "DELETE");

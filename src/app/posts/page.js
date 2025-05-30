@@ -201,17 +201,10 @@ const PostsPage = () => {
 
   if (!loggedInUser) return null;
 
-  // Filter published posts only within last 24 hours
-  const now = new Date();
-  const oneDayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000); // 24 hours ago
+const publishedPosts = posts
+  .filter((post) => post.status === "Published")
+  .sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate));
 
-  const publishedPosts = posts
-    .filter((post) => {
-      if (post.status !== "Published") return false;
-      const postDate = new Date(post.createDate || post.updateDate);
-      return postDate > oneDayAgo;
-    })
-    .sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate));
 
   return (
     <div className="posts-wrapper">

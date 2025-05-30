@@ -9,13 +9,19 @@ import { useEffect, useState } from "react";
 
 const Sidebar = () => {
   const [currentTime, setCurrentTime] = useState({ day: "", date: "", time: "" });
-  useEffect (() => {
-  const now = new Date();
-  const day = now.toLocaleDateString("en-US", { weekday: "long" });
-  const date = now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
-  const time = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
-setCurrentTime({ day, date, time });
-}, []);
+  const [designation, setDesignation] = useState();
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      const user = JSON.parse(userData);
+      setDesignation(user.designation);
+    }
+    const now = new Date();
+    const day = now.toLocaleDateString("en-US", { weekday: "long" });
+    const date = now.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+    const time = now.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit", hour12: true });
+    setCurrentTime({ day, date, time });
+  }, []);
   return (
     <div>
       <div className="topnav">
@@ -60,12 +66,19 @@ setCurrentTime({ day, date, time });
             <Link href="/posts/TagsPage" className="sidebar-sublink">
               Tags
             </Link>
-            <Link href ="/posts/StatusPage" className="sidebar-sublink">
+            <Link href="/posts/StatusPage" className="sidebar-sublink">
               Status
             </Link>
-            <Link href="/posts/TaskList" className="sidebar-sublink">
-              Task List
-            </Link>
+            {designation === "admin" && (
+              <>
+                <Link href="/posts/TaskList" className="sidebar-sublink">
+                  Task List
+                </Link>
+                <Link href="/posts/Type" className="sidebar-sublink">
+                  Type
+                </Link>
+              </>
+            )}
           </div>
         </div>
         <Link href="/report" className="sidebar-link">

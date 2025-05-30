@@ -1,0 +1,169 @@
+/* General container */
+.type-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    margin-left: 110px;
+    margin-top: 30px;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  /* Page Title */
+  .type-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+
+  /* Layout: Left add form and right type list */
+  .type-page-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    margin: 20px;
+  }
+
+  /* Add type Section */
+  .type-add-container {
+    flex: 1;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .type-add-container input[type="text"],
+  .type-add-container textarea {
+    width: 95%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .type-add-container textarea {
+    min-height: 100px;
+  }
+
+  .type-add-container button {
+    padding: 10px 16px;
+    background-color: #4CAF50;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  .type-add-container button:hover {
+    background-color: #45a049;
+  }
+/* type Table Section */
+.type-table-container {
+    flex: 2;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    height: calc(100vh - 160px); 
+    overflow-y: auto; 
+  }
+
+  /* type Table */
+  .type-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px; /* Ensure a minimum width */
+  }
+  
+  /* Add the scrollbar styling */
+  .type-table-container::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .type-table-container::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 5px;
+  }
+
+  .type-table-container::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+
+  .type-table-container h2 {
+    margin-bottom: 15px;
+  }
+  .type-table th,
+  .type-table td {
+    padding: 12px;
+    text-align: left;
+  }
+
+  .type-table th {
+    background-color: #f8f8f8;
+    color: #333;
+  }
+  
+  /* Editable input in table */
+  .type-table input[type="text"],
+  .type-table textarea {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  .type-table textarea {
+    min-height: 60px;
+    resize: vertical;
+  }
+  
+  /* Action Buttons */
+  .type-table td.actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  
+  /* All buttons */
+  .type-table button {
+    padding: 6px 12px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  /* Edit button */
+  .type-table button.edit {
+    background-color: #f39c12;
+  }
+
+  .type-table button.edit:hover {
+    background-color: #e67e22;
+  }
+  
+  /* Delete button */
+  .type-table button.delete {
+    background-color: #e74c3c;
+  }
+
+  .type-table button.delete:hover {
+    background-color: #c0392b;
+  }
+  
+  /* Save/Cancel button */
+  .type-table button:not(.edit):not(.delete) {
+    background-color: #3498db;
+  }
+
+  .type-table button:not(.edit):not(.delete):hover {
+    background-color: #2980b9;
+  }
+  

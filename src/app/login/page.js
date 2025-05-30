@@ -3,10 +3,12 @@ import React, { useEffect, useState } from "react";
 import "../Styles/LoginPage.css";
 import { useRouter } from "next/navigation";
 import { login, register, verifyToken } from "../services/Api";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const LoginPage = () => {
   const router = useRouter();
   const [isRegistering, setIsRegistering] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -15,8 +17,6 @@ const LoginPage = () => {
 
       try {
         const data = await verifyToken(token);
-        console.log("verifyToken response:", data);
-
         if (
           data.success &&
           data.user &&
@@ -28,37 +28,23 @@ const LoginPage = () => {
           localStorage.clear();
         }
       } catch (error) {
-        console.error("Error verifying token:", error);
         localStorage.clear();
       }
     };
     checkLogin();
-  }, []); // no router dependency needed here
+  }, [router]);
 
   const handleLogin = async (event) => {
     event.preventDefault();
     const email = event.target.username.value;
     const password = event.target.password.value;
+    const data = await login({ email, password });
 
-    try {
-      const data = await login({ email, password });
-
-      if (data.success && data.user) {
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("designation", data.user.designation);
-        localStorage.setItem("user", JSON.stringify(data.user));
-
-        console.log("User data:", data.user);
-
-        if (data.user.designation === "admin" || data.user.designation === "author") {
-          router.push("/posts");
-        }
-      } else {
-        console.error("Login failed or user data missing");
-
-      }
-    } catch (error) {
-      console.error("Login error:", error);
+    if (data.success && data.user) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("designation", data.user.designation);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      router.push("/posts");
     }
   };
 
@@ -67,31 +53,13 @@ const LoginPage = () => {
     const name = e.target.name.value;
     const email = e.target.username.value;
     const password = e.target.password.value;
-
     try {
       const data = await register({ name, email, password });
-
-      if (data.success) {
-        setIsRegistering(false);
-      } 
+      if (data.success) setIsRegistering(false);
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error(error);
     }
   };
-
-  useEffect(() => {
-    const container = document.querySelector(".login-wrapper");
-    if (!container) return;
-
-    for (let i = 0; i < 60; i++) {
-      const star = document.createElement("div");
-      star.classList.add("star");
-      star.style.top = `${Math.random() * 100}vh`;
-      star.style.left = `${Math.random() * 100}vw`;
-      star.style.animationDuration = `${Math.random() * 3 + 1}s`;
-      container.appendChild(star);
-    }
-  }, []);
 
   return (
     <div className="login-wrapper">
@@ -126,15 +94,31 @@ const LoginPage = () => {
                   placeholder="Enter your email"
                 />
               </div>
-              <div className="form-group">
+              <div className="form-group password-group" style={{ position: "relative" }}>
                 <label htmlFor="password">Password:</label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   required
                   placeholder="Enter your password"
+                  style={{ paddingRight: "35px" }}
                 />
+                <span
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: "absolute",
+                    right: "10px",
+                    top: "75%",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                    color: "#888",
+                    fontSize: "1.2rem",
+                  }}
+                  title={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEye /> : <FaEyeSlash />}
+                </span>
               </div>
               <button type="submit">{isRegistering ? "Register" : "Log in"}</button>
             </div>
@@ -143,12 +127,16 @@ const LoginPage = () => {
               {isRegistering ? (
                 <p>
                   Already have an account?{" "}
-                  <span onClick={() => setIsRegistering(false)}>Login</span>
+                  <span onClick={() => setIsRegistering(false)} style={{ cursor: "pointer", color: "blue" }}>
+                    Login
+                  </span>
                 </p>
               ) : (
                 <p>
                   New user?{" "}
-                  <span onClick={() => setIsRegistering(true)}>Register</span>
+                  <span onClick={() => setIsRegistering(true)} style={{ cursor: "pointer", color: "blue" }}>
+                    Register
+                  </span>
                 </p>
               )}
             </div>

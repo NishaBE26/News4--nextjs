@@ -98,7 +98,7 @@ const StatusPage = () => {
                     <h2>{editingId ? "Edit Status" : "Add New Status"}</h2>
                     <input
                         type="text"
-                        placeholder="Status Name"
+                        placeholder="Stats Name"
                         value={editingId ? editingName : newName}
                         onChange={(e) =>
                             editingId ? setEditingName(e.target.value) : setNewName(e.target.value)
