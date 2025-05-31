@@ -85,19 +85,19 @@ const Sidebar = () => {
           <FaChartBar className="sidebar-icon" />
           Report
         </Link>
+        { designation === "admin" && (
+          <>
         <Link href="/resgistration" className="sidebar-link">
           <FaPhotoVideo className="sidebar-icon" />
           Registration
         </Link>
-        <Link href="/details" className="sidebar-link">
+        <Link href="posts/EmployeeDetails" className="sidebar-link">
           <FaInfoCircle className="sidebar-icon" />
           Details
         </Link>
-        <Link href="/settings" className="sidebar-link">
-          <FaCog className="sidebar-icon" />
-          Settings
-        </Link>
-        <Link href="/logout" className="sidebar-link">
+        </>
+        )}
+        <Link href="/posts/Profile" className="sidebar-link">
           <FaSignOutAlt className="sidebar-icon" />
           Profile
         </Link>

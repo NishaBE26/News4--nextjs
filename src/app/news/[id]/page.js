@@ -12,23 +12,16 @@ const NewsDetailPage = () => {
     if (!id) return;
 
     async function fetchData() {
-      try {
         const postData = await getPostById(id);
         setPost(postData.news);
         if (postData.news && postData.news.publishedBy) {
           const employeeData = await getEmployeeById(postData.news.publishedBy);
           setEmployee(employeeData); 
         }
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      }
     }
 
     fetchData();
   }, [id]);
-
-  if (!post) return <p>Loading post...</p>;
-
 return (
     <div style={{ maxWidth: "800px", margin: "auto", padding: "20px" }}>
       <h1>{post.title}</h1>

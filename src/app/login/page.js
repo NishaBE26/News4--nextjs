@@ -14,8 +14,6 @@ const LoginPage = () => {
     const checkLogin = async () => {
       const token = localStorage.getItem("token");
       if (!token) return;
-
-      try {
         const data = await verifyToken(token);
         if (
           data.success &&
@@ -27,9 +25,6 @@ const LoginPage = () => {
         } else {
           localStorage.clear();
         }
-      } catch (error) {
-        localStorage.clear();
-      }
     };
     checkLogin();
   }, [router]);
@@ -53,12 +48,8 @@ const LoginPage = () => {
     const name = e.target.name.value;
     const email = e.target.username.value;
     const password = e.target.password.value;
-    try {
       const data = await register({ name, email, password });
       if (data.success) setIsRegistering(false);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   return (
