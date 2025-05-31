@@ -1,0 +1,144 @@
+
+.employee-registration-wrapper {
+  padding: 30px; 
+  background-color: #f8f9fa;
+  min-height: calc(100vh - 60px); 
+  margin-left: 115px; 
+  margin-top: 20px; 
+  transition: margin-left 0.3s ease-in-out, margin-top 0.3s ease-in-out; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.registration-form-heading {
+  text-align: center;
+  color: #343a40; 
+  margin-bottom: 40px; 
+  font-size: 2.2em;
+  font-weight: 700; 
+  letter-spacing: 0.8px;
+  position: relative;
+  padding-bottom: 10px;
+}
+.employee-registration-form {
+  background-color: #ffffff; 
+  padding: 35px;
+  border-radius: 10px; 
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+  width: 100%;
+  max-width: 900px; 
+  box-sizing: border-box; 
+}
+.registration-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+  gap: 25px; 
+  margin-bottom: 30px;
+}
+.registration-form-group {
+  display: flex;
+  flex-direction: column;
+}
+.registration-form-label {
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #495057; 
+  font-size: 0.95em;
+}
+.registration-form-input {
+  padding: 12px 15px; 
+  border: 1px solid #ced4da; 
+  border-radius: 6px; 
+  font-size: 1em;
+  color: #343a40;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  background-color: #fdfdfd; 
+  box-sizing: border-box; 
+}
+.registration-form-input:focus {
+  border-color: #4caf50; 
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.25); 
+}
+
+textarea.registration-form-input {
+  resize: vertical;
+  min-height: 80px;
+}
+.registration-full-width {
+  grid-column: 1 / -1; 
+}
+.registration-form-actions {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  border-top: 1px solid #e9ecef; 
+}
+.register-submit-button {
+  background-color: #4caf50; 
+  color: white;
+  padding: 14px 30px; 
+  border: none;
+  border-radius: 8px; 
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: 600;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease;
+  box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); 
+}
+
+.register-submit-button:hover {
+  background-color: #4caf50; 
+  transform: translateY(-2px); 
+  box-shadow: 0 6px 12px rgba(0, 123, 255, 0.3);
+}
+
+@media (max-width: 1200px) {
+  .employee-registration-form {
+    max-width: 800px; 
+  }
+}
+
+@media (max-width: 992px) {
+  .employee-registration-wrapper {
+    margin-left: 0; 
+    padding: 20px;
+    margin-top: 15px; 
+  }
+
+  .employee-registration-form {
+    padding: 25px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); 
+  }
+
+  .registration-form-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .registration-form-heading {
+    font-size: 1.8em;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 576px) {
+  .employee-registration-wrapper {
+    padding: 15px;
+  }
+
+  .employee-registration-form {
+    padding: 20px;
+  }
+
+  .registration-form-input {
+    padding: 10px 12px;
+    font-size: 0.95em;
+  }
+
+  .register-submit-button {
+    padding: 12px 25px;
+    font-size: 1em;
+  }
+}

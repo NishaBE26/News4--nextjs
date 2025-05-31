@@ -86,6 +86,7 @@ const AddNewPost = () => {
     const uploadedFile = e.target.files[0];
     if (uploadedFile) {
       setSelectedFile(uploadedFile);
+      console.log("Selected file:", uploadedFile);
     }
   };
 

@@ -61,7 +61,7 @@ export const deletePostById = (id) => request(`/news/delete-post/${id}`, "DELETE
 export const getPostsByCategoryId = (categoryId) => request(`/news/get-category-news/${categoryId}`); // pending
 
 //========== Employee APIs ==========
-export const createEmployee = (payload) => request("/employee/create-employee", "POST", payload);// pending
+export const createEmployee = (payload) => request("/employee/employee-register", "POST", payload);// pending
 export const getAllEmployees = () => request("/employee", "GET"); 
 export const getEmployeeById = (id) => request(`/employee/get-employee/${id}`, "GET"); 
 export const updateEmployeeById = (id, payload) => request(`/employee/update-employee/${id}`, "PUT", payload);// pending

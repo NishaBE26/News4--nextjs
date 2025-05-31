@@ -2,8 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { FaUser, FaSignOutAlt, FaInfoCircle, FaPhotoVideo, FaChartBar, FaPenFancy, FaCog } from "react-icons/fa";
-import { MdDashboard } from "react-icons/md";
+import { FaUser, FaSignOutAlt, FaInfoCircle, FaCashRegister,FaPenFancy} from "react-icons/fa";
 import "../Styles/Sidebar.css";
 import { useEffect, useState } from "react";
 
@@ -81,17 +80,13 @@ const Sidebar = () => {
             )}
           </div>
         </div>
-        <Link href="/report" className="sidebar-link">
-          <FaChartBar className="sidebar-icon" />
-          Report
-        </Link>
         { designation === "admin" && (
           <>
-        <Link href="/resgistration" className="sidebar-link">
-          <FaPhotoVideo className="sidebar-icon" />
-          Registration
+        <Link href="/posts/EmployeeRegister" className="sidebar-link">
+         <FaCashRegister className="sidebar-icon" />
+          Register
         </Link>
-        <Link href="posts/EmployeeDetails" className="sidebar-link">
+        <Link href="/posts/EmployeeDetails" className="sidebar-link">
           <FaInfoCircle className="sidebar-icon" />
           Details
         </Link>
