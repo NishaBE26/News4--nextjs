@@ -25,7 +25,7 @@ const Sidebar = () => {
     <div>
       <div className="topnav">
         <div className="nav-left">
-          <Image src="/assets/News4-logo.png" alt="Logo" width={100} height={100} priority />
+          <Image src="/assets/News4-logo.png" alt="Logo" width={100} height={80} priority />
         </div>
         <div className="nav-links">
           <Link href="/">Home</Link>

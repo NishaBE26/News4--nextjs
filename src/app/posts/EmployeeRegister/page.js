@@ -6,7 +6,6 @@ import "../../Styles/EmployeeRegister.css";
 const EmployeeRegister = () => {
     const [formData, setFormData] = useState({
         rfidcardno: "",
-        photo: "",
         name: "",
         dob: "",
         email: "",
@@ -39,6 +38,9 @@ const EmployeeRegister = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(uploading){
+            setFormData(uploading);
+        }
         try {
             console.log("submitting data:",formData);
             const result = await createEmployee(formData);
