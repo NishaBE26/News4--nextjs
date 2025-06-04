@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://192.168.1.8:5000/api";
+const BACKEND_URL = "http://192.168.1.3:5000/api";
 
 const request = async (endpoint, method = "GET", body, headers = {}) => {
     const options = {
@@ -61,11 +61,11 @@ export const deletePostById = (id) => request(`/news/delete-post/${id}`, "DELETE
 export const getPostsByCategoryId = (categoryId) => request(`/news/get-category-news/${categoryId}`); // pending
 
 //========== Employee APIs ==========
-export const createEmployee = (payload) => request("/employee/employee-register", "POST", payload);// pending
+export const createEmployee = (payload) => request("/employee/employee-register", "POST", payload);
 export const getAllEmployees = () => request("/employee", "GET"); 
 export const getEmployeeById = (id) => request(`/employee/get-employee/${id}`, "GET"); 
-export const updateEmployeeById = (id, payload) => request(`/employee/update-employee/${id}`, "PUT", payload);// pending
-export const deleteEmployeeById = (id) => request(`/employee/delete-employee/${id}`, "DELETE");// pending
+export const updateEmployeeById = (id, payload) => request(`/employee/update-employee/${id}`, "PUT", payload);
+export const deleteEmployeeById = (id) => request(`/employee/delete-employee/${id}`, "DELETE");
 
 //========== Task APIs ==========
 export const createTask = (payload) => request("/task/create-task", "POST", payload);

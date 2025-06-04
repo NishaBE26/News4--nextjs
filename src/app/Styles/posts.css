@@ -233,53 +233,120 @@
 
 /**************************** task assign css ****************************/
 .task-table {
-  background-color: #f4f4f4;
-  padding: 10px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 99%;
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  border:1px solid rgb(193, 182, 182);
-}
-
-.task-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.task-row label {
-  flex: 1;
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-  font-weight: 500;
+  background-color: #fafafa;
+  padding: 20px 25px;
+  border-radius: 14px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 97%;
+  margin: 20px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
 
-.task-row input,
-.task-row select {
-  padding: 8px 10px;
-  font-size: 14px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  margin-top: 5px;
+/* First row: 3 inputs */
+.task-row:first-child {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  justify-content: space-between;
 }
 
-.submit-btn {
-  padding: 10px 16px;
-  background-color: #007bff;
-  color: white;
+.task-row:first-child label {
+  flex: 1 1 32%; 
+  min-width: 220px;
+  display: flex;
+  flex-direction: column;
   font-weight: 600;
+  font-size: 15px;
+  color: #444;
+}
+
+/* Second row: 4 inputs + button */
+.task-row:last-child {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 20px;
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+
+/* Each label in second row */
+.task-row:last-child label {
+  flex: 1 1 20%; 
+  min-width: 180px;
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  font-size: 15px;
+  color: #444;
+}
+
+/* Submit button aligned at bottom and fixed size */
+.submit-btn {
+  padding: 12px 28px;
+  background: linear-gradient(45deg, #3a86ff, #0057d9);
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
+  box-shadow: 0 4px 15px rgba(58, 134, 255, 0.5);
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+  margin-left: 10px;
+  flex-shrink: 0; 
   align-self: flex-end;
+  min-width: 140px;
 }
 
 .submit-btn:hover {
-  background-color: #0056b3;
+  background: linear-gradient(45deg, #0057d9, #3a86ff);
+  box-shadow: 0 6px 20px rgba(58, 134, 255, 0.7);
+}
+
+.task-row label input,
+.task-row label select {
+  margin-top: 6px;
+  padding: 9px 12px;
+  font-size: 14px;
+  border: 1.5px solid #ccc;
+  border-radius: 8px;
+  transition: border-color 0.3s ease;
+  outline-offset: 2px;
+}
+
+.task-row label input:focus,
+.task-row label select:focus {
+  border-color: #3a86ff;
+  box-shadow: 0 0 8px rgba(58, 134, 255, 0.3);
+}
+
+.task-row label input[type="file"] {
+  padding: 4px 8px;
+}
+.submit-btn {
+  align-self: flex-end;
+  padding: 12px 28px;
+  background: linear-gradient(45deg, #3a86ff, #0057d9);
+  color: white;
+  font-weight: 700;
+  font-size: 16px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(58, 134, 255, 0.5);
+  transition: background 0.35s ease, box-shadow 0.35s ease;
+  margin-top: 10px;
+}
+
+.submit-btn:disabled {
+  background: #aaa;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: linear-gradient(45deg, #0057d9, #3a86ff);
+  box-shadow: 0 6px 20px rgba(58, 134, 255, 0.7);
 }
