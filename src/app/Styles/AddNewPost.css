@@ -55,7 +55,8 @@ select::placeholder {
 input[type="text"],
 input[type="date"],
 input[type="url"],
-select {
+select,
+textarea {
   padding: 10px;
   font-size: 15px;
   border: 1px solid #ccc;
@@ -64,19 +65,9 @@ select {
   box-sizing: border-box;
   resize: vertical;
 }
-
-.editor-toolbar button {
-  margin-right: 5px;
-  padding: 5px 10px;
-  border: 1px solid #aaa;
-  background: #eee;
-  cursor: pointer;
+textarea {
+  min-height: 250px;
 }
-
-.editable-area {
-  font-family: sans-serif;
-}
-
 .image-upload-button {
   padding: 10px 20px;
   background-color: #4a90e2;

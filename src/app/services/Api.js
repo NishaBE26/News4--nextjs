@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://192.168.1.3:5000/api";
+const BACKEND_URL = "http://192.168.1.6:5000/api";
 
 const request = async (endpoint, method = "GET", body, headers = {}) => {
     const options = {

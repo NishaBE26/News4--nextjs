@@ -76,7 +76,6 @@ const Sidebar = () => {
             Posts
           </Link>
           <div className="sidebar-submenu" style={{ marginTop: "-8px" }}>
-            <Link href="/posts/AllPostsPage" className="sidebar-sublink">All Posts</Link>
             <Link href="/posts/AddNewPost" className="sidebar-sublink">Add New Post</Link>
             <Link href="/posts/CategoryPage" className="sidebar-sublink">Category</Link>
             <Link href="/posts/TagsPage" className="sidebar-sublink">Tags</Link>

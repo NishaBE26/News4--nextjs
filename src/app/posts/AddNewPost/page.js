@@ -67,50 +67,6 @@ const AddNewPost = () => {
     loadCategories();
     loadTags();
   }, [id]);
-
-  // ExecCommand wrapper (for toolbar buttons)
-  const execCommand = (command, value = null) => {
-    document.execCommand(command, false, value);
-  };
-
-  // New: Handle Shift+Alt+J to full width center align the selected block
-  const handleFullWidthCenterAlign = () => {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-
-    const range = selection.getRangeAt(0);
-
-    // Find the closest block element that contains the selection start
-    let selectedNode = range.startContainer;
-    while (selectedNode && selectedNode !== document && !isBlockElement(selectedNode)) {
-      selectedNode = selectedNode.parentNode;
-    }
-
-    if (selectedNode && selectedNode.style) {
-      selectedNode.style.display = "block";
-      selectedNode.style.width = "100%";
-      selectedNode.style.textAlign = "center";
-    }
-  };
-
-  // Helper: Check if element is block-level (simple check)
-  const isBlockElement = (el) => {
-    if (!el || el.nodeType !== 1) return false; // Not an element
-    const display = window.getComputedStyle(el).display;
-    return display === "block" || display === "flex" || display === "table" || display === "list-item" || display === "grid";
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.shiftKey && e.altKey && e.key.toLowerCase() === "j") {
-        e.preventDefault();
-        handleFullWidthCenterAlign();
-      }
-    };
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   const loadCategories = async () => {
     try {
       const res = await getAllCategories();
@@ -177,7 +133,7 @@ const AddNewPost = () => {
     cleanData.append("publishedBy", name);
     cleanData.append("updatedBy", "");
     cleanData.append("createdAt", new Date().toISOString());
-    cleanData.append("task", formData.task || "");
+    cleanData.append("taskId", formData.task || "");
 
     if (selectedfile) cleanData.append("file", selectedfile);
     console.log("submited data for new post:", formData);
@@ -197,7 +153,7 @@ const AddNewPost = () => {
         authorName: originalPost.authorName,
         publishedBy: originalPost.publishedBy,
         updatedBy: employeeId,
-        task: formData.task || taskid || originalPost?.task || null,
+        taskId: formData.task || taskid || originalPost?.task || null,
       });
     } else {
       response = await createPost(cleanData);
@@ -232,49 +188,13 @@ const AddNewPost = () => {
               value={formData.url}
               onChange={handleChange}
             />
-            <div className="editor-toolbar">
-              <button type="button" onClick={() => execCommand("bold")}>
-                <b>B</b>
-              </button>
-              <button type="button" onClick={() => execCommand("italic")}>
-                <i>I</i>
-              </button>
-              <button type="button" onClick={() => execCommand("formatBlock", "<h1>")}>
-                H1
-              </button>
-              <button type="button" onClick={() => execCommand("formatBlock", "<h2>")}>
-                H2
-              </button>
-              <button type="button" onClick={() => execCommand("formatBlock", "<h3>")}>
-                H3
-              </button>
-              <button type="button" onClick={() => execCommand("formatBlock", "<p>")}>
-                P
-              </button>
-              <button type="button" onClick={() => execCommand("justifyLeft")}>⬅</button>
-              <button type="button" onClick={() => execCommand("justifyCenter")}>⬍</button>
-              <button type="button" onClick={() => execCommand("justifyRight")}>➡</button>
-            </div>
-
-            <div
-              contentEditable
-              className="editable-area"
-              onInput={(e) => {
-                const target = e.currentTarget || e.target;
-                if (target) {
-                  setFormData((prev) => ({ ...prev, newsContent: target.innerHTML }));
-                }
-              }}
-
-              dangerouslySetInnerHTML={{ __html: formData.newsContent }}
-              style={{
-                border: "1px solid #ccc",
-                padding: "10px",
-                minHeight: "200px",
-                marginTop: "10px",
-                backgroundColor: "#fff",
-              }}
-            ></div>
+            <textarea
+              name="newsContent"
+              placeholder="Text Content"
+              value={formData.newsContent}
+              onChange={handleChange}
+              required
+            />
             {formData.task && <input type="hidden" name="task" value={formData.task} />}
             <input
               type="file"
