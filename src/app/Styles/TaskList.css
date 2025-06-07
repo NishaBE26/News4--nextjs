@@ -1,12 +1,10 @@
 /* TaskList.css */
 .task-table-container {
-  margin-top: 20px;
-  margin-left: 115px;
   padding: 20px;
   max-width: 95%;
   overflow-x: auto;
   background-color: #f9f9f9;
-  border-radius: 12px;
+  border-radius: 25px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 

@@ -8,7 +8,7 @@ import {
 } from '../../services/Api';
 import "../../Styles/CategoryPage.css";
 
-const CategoryPage = () => {
+export default function CategoryPage  () {
   const [categories, setCategories] = useState([]);
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
@@ -127,5 +127,3 @@ const CategoryPage = () => {
     </div>
   );
 };
-
-export default CategoryPage;

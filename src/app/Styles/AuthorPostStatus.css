@@ -102,16 +102,15 @@
 }
 /* ================admin post status================= */
 .resubmitted-container {
-  width: 99%;
-  max-height: 500px;        /* Fix container height */
+  width: 98%;
+  max-height: 500px;        
   padding: 12px;
-  margin-top: -24px;
+  margin-top: -4px;
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
   font-family: Arial, sans-serif;
   border: 1px solid rgb(183, 175, 175);
-
   display: flex;
   flex-direction: column;
 }
@@ -120,7 +119,7 @@
   font-size: 18px;
   color: #333;
   margin: 0 0 10px 0;
-  position: sticky;       /* Stick heading on top while scrolling */
+  position: sticky;       
   top: 0;
   background: #f8f9fa;
   padding: 8px 0;

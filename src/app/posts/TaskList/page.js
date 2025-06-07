@@ -8,7 +8,7 @@ import {
 } from "@/app/services/Api";
 import "../../Styles/TaskList.css";
 
-const TaskList = () => {
+export default function TaskList (){
     const [tasks, setTasks] = useState([]);
     const [employeeNames, setEmployeeNames] = useState({});
     const [editingTaskId, setEditingTaskId] = useState(null);
@@ -98,7 +98,7 @@ const TaskList = () => {
     };
 
     return (
-        <div className="task-table-container" style={{ marginTop: "20px", marginLeft: "115px" }}>
+        <div className="task-table-container" style={{ marginTop: "50px", marginLeft: "120px" }}>
             <h1 className="allposts">All Tasks</h1>
             {tasks.length === 0 ? (
                 <p>No tasks found.</p>
@@ -226,4 +226,3 @@ const TaskList = () => {
     );
 };
 
-export default TaskList;

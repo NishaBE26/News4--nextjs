@@ -1,147 +1,141 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createEmployee } from "../../services/Api";
 import "../../Styles/EmployeeRegister.css";
 
 const EmployeeRegister = () => {
-    const [formData, setFormData] = useState({
-        rfidcardno: "",
-        name: "",
-        dob: "",
-        email: "",
-        mobileno: "",
-        employeecode: "",
-        designation: "",
-        department: "",
-        gender: "",
-        maritalstatus: "",
-        joiningdate: "",
-        address: "",
-    });
-    const [uploading, setUploading] = useState(false);
+  const [formData, setFormData] = useState({
+    rfidcardno: "",
+    name: "",
+    dob: "",
+    email: "",
+    mobileno: "",
+    employeecode: "",
+    designation: "",
+    department: "",
+    gender: "",
+    maritalstatus: "",
+    joiningdate: "",
+    address: "",
+  });
 
-    const designations = ["author", "editor", "admin", "manager"];
-    const departments = ["news", "sports", "marketing", "finance"];
-    const genders = ["male", "female", "other"];
-    const maritalStatuses = ["single", "married", "divorced"];
+  const [uploading, setUploading] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState(null);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+  useEffect(() => {
+    if (!uploading) {
+      setPreviewUrl(null);
+      return;
+    }
+    const objectUrl = URL.createObjectURL(uploading);
+    setPreviewUrl(objectUrl);
+    return () => URL.revokeObjectURL(objectUrl);
+  }, [uploading]);
 
-    const handleFileChange = async (e) => {
-        const uploadfile = e.target.files[0];
-        if (uploadfile) {
-            setUploading(uploadfile);
-        }
-    };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if(uploading){
-            setFormData(uploading);
-        }
-        try {
-            console.log("submitting data:",formData);
-            const result = await createEmployee(formData);
-            alert("Employee created successfully!");
-            console.log("Created Employee:", result);
-        } catch (error) {
-            alert("Error creating employee: " + error.message);
-        }
-    };
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-    return (
-        <div className="employee-register-container">
-            <h2 className="employee-register-title">Employee Registration</h2>
-            <form onSubmit={handleSubmit} className="employee-register-form">
-                <div className="employee-register-grid">
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setUploading(file);
+    }
+  };
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">RFID Card No:</label>
-                        <input type="text" name="rfidcardno" value={formData.rfidcardno} onChange={handleChange} className="employee-form-input" required />
-                    </div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Upload Photo:</label>
-                        <input type="file" accept="image/*" onChange={handleFileChange} className="employee-form-input" />
-                        {formData.photo && <img src={formData.photo} alt="Uploaded" height="60" style={{ marginTop: "10px" }} />}
-                    </div>
+    if (!uploading) {
+      alert("Please upload a photo.");
+      return;
+    }
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Full Name:</label>
-                        <input type="text" name="name" value={formData.name} onChange={handleChange} className="employee-form-input" required />
-                    </div>
+    try {
+      const form = new FormData();
+      Object.entries(formData).forEach(([key, value]) => {
+        form.append(key, value);
+      });
+      form.append("photo", uploading); // ✅ field must match backend
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Date of Birth:</label>
-                        <input type="date" name="dob" value={formData.dob ? formData.dob.split("T")[0] : ""} onChange={handleChange} className="employee-form-input" />
-                    </div>
+      for (let [key, value] of form.entries()) {
+        console.log(`${key}:`, value);
+      }
+console.log("data send :",formData)
+      const result = await createEmployee(form);
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Email:</label>
-                        <input type="email" name="email" value={formData.email} onChange={handleChange} className="employee-form-input" required />
-                    </div>
+      if (result.success) {
+        alert("Employee created successfully!");
+        setFormData({
+          rfidcardno: "",
+          name: "",
+          dob: "",
+          email: "",
+          mobileno: "",
+          employeecode: "",
+          designation: "",
+          department: "",
+          gender: "",
+          maritalstatus: "",
+          joiningdate: "",
+          address: "",
+        });
+        setUploading(null);
+      } else {
+        alert("Error: " + result.message);
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      alert("Error creating employee.");
+    }
+  };
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Mobile No:</label>
-                        <input type="tel" name="mobileno" value={formData.mobileno} onChange={handleChange} className="employee-form-input" />
-                    </div>
+  return (
+    <div className="employee-register-container">
+      <h2>Employee Registration</h2>
+      <form onSubmit={handleSubmit} >
+        <input type="text" name="rfidcardno" placeholder="RFID Card No" value={formData.rfidcardno} onChange={handleChange} required />
+        <input type="file" accept="image/*" onChange={handleFileChange} required />
+        {previewUrl && <img src={previewUrl} height="60" alt="Preview" />}
+        <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
+        <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
+        <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
+        <input type="tel" name="mobileno" placeholder="Mobile No" value={formData.mobileno} onChange={handleChange} />
+        <input type="text" name="employeecode" placeholder="Employee Code" value={formData.employeecode} onChange={handleChange} />
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Employee Code:</label>
-                        <input type="text" name="employeecode" value={formData.employeecode} onChange={handleChange} className="employee-form-input" />
-                    </div>
+        <select name="designation" value={formData.designation} onChange={handleChange} required>
+          <option value="">Select Designation</option>
+          <option value="author">Author</option>
+          <option value="editor">Editor</option>
+          <option value="admin">Admin</option>
+        </select>
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Designation:</label>
-                        <select name="designation" value={formData.designation} onChange={handleChange} className="employee-form-input" required>
-                            <option value="">--Select Designation--</option>
-                            {designations.map((d) => <option key={d} value={d}>{d}</option>)}
-                        </select>
-                    </div>
+        <select name="department" value={formData.department} onChange={handleChange} required>
+          <option value="">Select Department</option>
+          <option value="news">News</option>
+          <option value="sports">Sports</option>
+        </select>
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Department:</label>
-                        <select name="department" value={formData.department} onChange={handleChange} className="employee-form-input" required>
-                            <option value="">--Select Department--</option>
-                            {departments.map((d) => <option key={d} value={d}>{d}</option>)}
-                        </select>
-                    </div>
+        <select name="gender" value={formData.gender} onChange={handleChange} required>
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Gender:</label>
-                        <select name="gender" value={formData.gender} onChange={handleChange} className="employee-form-input" required>
-                            <option value="">--Select Gender--</option>
-                            {genders.map((g) => <option key={g} value={g}>{g}</option>)}
-                        </select>
-                    </div>
+        <select name="maritalstatus" value={formData.maritalstatus} onChange={handleChange}>
+          <option value="">Select Marital Status</option>
+          <option value="single">Single</option>
+          <option value="married">Married</option>
+        </select>
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Marital Status:</label>
-                        <select name="maritalstatus" value={formData.maritalstatus} onChange={handleChange} className="employee-form-input">
-                            <option value="">--Select Marital Status--</option>
-                            {maritalStatuses.map((m) => <option key={m} value={m}>{m}</option>)}
-                        </select>
-                    </div>
+        <input type="date" name="joiningdate" value={formData.joiningdate} onChange={handleChange} />
+        <textarea name="address" placeholder="Address" value={formData.address} onChange={handleChange} />
 
-                    <div className="employee-form-group">
-                        <label className="employee-form-label">Joining Date:</label>
-                        <input type="date" name="joiningdate" value={formData.joiningdate ? formData.joiningdate.split("T")[0] : ""} onChange={handleChange} className="employee-form-input" />
-                    </div>
-
-                    <div className="employee-form-group full-width">
-                        <label className="employee-form-label">Address:</label>
-                        <textarea name="address" value={formData.address} onChange={handleChange} className="employee-form-input" rows="3" />
-                    </div>
-                </div>
-
-                <div className="employee-form-actions">
-                    <button type="submit" className="employee-submit-button">Register Employee</button>
-                </div>
-            </form>
-        </div>
-    );
+        <button type="submit">Register Employee</button>
+      </form>
+    </div>
+  );
 };
 
-export default EmployeeRegister; 
+export default EmployeeRegister;

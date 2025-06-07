@@ -8,7 +8,7 @@ import {
 } from "../../services/Api";
 import "../../Styles/TagsPage.css";
 
-const TagsPage = () => {
+export default function TagsPage () {
   const [tags, setTags] = useState([]);
   const [formData, setFormData] = useState({ name: "", description: "" });
   const [editing, setEditing] = useState(false);
@@ -131,5 +131,3 @@ const TagsPage = () => {
     </div>
   );
 };
-
-export default TagsPage;

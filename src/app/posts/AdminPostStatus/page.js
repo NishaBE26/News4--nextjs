@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { getAllPosts, getEmployeeById } from "../../services/Api";
 import "../../Styles/AuthorPostStatus.css";
 
-const AdminPostStatus = ({ currentUser }) => {
+export default function AdminPostStatus ({ currentUser }){
     const [resubmittedPosts, setResubmittedPosts] = useState([]);
     const [employeeNames, setEmployeeNames] = useState({});
     const router = useRouter();
@@ -82,4 +82,3 @@ const AdminPostStatus = ({ currentUser }) => {
     );
 };
 
-export default AdminPostStatus;

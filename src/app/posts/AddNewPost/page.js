@@ -7,14 +7,16 @@ import {
   getAllTags,
   getPostById,
   updatePostById,
+  getTaskById,
 } from "../../services/Api";
 import "../../Styles/AddNewPost.css";
 
-const AddNewPost = () => {
+export default function AddNewPost() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const taskid = searchParams.get("task");
+  const [taskData, setTaskData] = useState(null);
   console.log("task id :", taskid);
   const resubmitted = searchParams.get("resubmitted") === "true";
 
@@ -133,10 +135,12 @@ const AddNewPost = () => {
     cleanData.append("publishedBy", name);
     cleanData.append("updatedBy", "");
     cleanData.append("createdAt", new Date().toISOString());
-    cleanData.append("taskId", formData.task || "");
+    if (formData.task && formData.task.trim() !== "") {
+      cleanData.append("taskId", formData.task);
+    }
 
     if (selectedfile) cleanData.append("file", selectedfile);
-    console.log("submited data for new post:", formData);
+    console.log("submitted post:", formData)
     let response;
     if (originalPost) {
       response = await updatePostById(id, {
@@ -157,7 +161,7 @@ const AddNewPost = () => {
       });
     } else {
       response = await createPost(cleanData);
-      console.log("Api response:", response);
+      console.log("api response:", response)
     }
 
     if (response?.message === "News Created" || response?.message === "News Updated") {
@@ -320,4 +324,4 @@ const AddNewPost = () => {
     </div>
   );
 };
-export default AddNewPost;
+

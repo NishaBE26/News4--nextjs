@@ -1,9 +1,12 @@
 .details-container {
-  padding: 20px;
-  background-color: #f8f9fa;
   min-height: calc(100vh - 60px);
-  margin-left: 115px;
   transition: margin-left 0.3s ease-in-out;
+  padding: 11px;
+  margin-left: 120px;
+  margin-top: 50px;
+  background-color: whitesmoke;
+  height: calc(100% - 50px);
+  border-radius: 25px;
 }
 
 .details-container h2 {
@@ -27,6 +30,7 @@
   background-color: #4caf50;
   border-radius: 2px;
 }
+
 .details-table {
   width: calc(100% - 40px);
   margin: 0 auto;
@@ -52,6 +56,7 @@
 .details-table th:first-child {
   border-top-left-radius: 8px;
 }
+
 .details-table th:last-child {
   border-top-right-radius: 8px;
 }
@@ -59,9 +64,11 @@
 .details-table tbody tr {
   border-bottom: 1px solid #e9ecef;
 }
+
 .details-table tbody tr:last-child {
   border-bottom: none;
 }
+
 .details-table tbody tr:hover {
   background-color: #f2f2f2;
 }
@@ -109,6 +116,7 @@
   background-color: #28a745;
   color: white;
 }
+
 .details-table button:not(.delete-btn):not(.cancel-btn):hover {
   background-color: #218838;
 }
@@ -117,6 +125,7 @@
   background-color: #dc3545;
   color: white;
 }
+
 .details-table .delete-btn:hover {
   background-color: #c82333;
 }
@@ -125,12 +134,13 @@
   background-color: #6c757d;
   color: white;
 }
+
 .details-table .cancel-btn:hover {
   background-color: #5a6268;
 }
 
 @media (max-width: 992px) {
-  .details-container{
+  .details-container {
     margin-left: 0;
     padding: 15px;
   }
@@ -183,6 +193,7 @@
     text-align: center;
     padding-left: 0;
   }
+
   .details-table td:first-child::before {
     content: none;
   }
@@ -197,6 +208,7 @@
     padding-left: 0;
     padding-top: 15px;
   }
+
   .details-table td:last-child::before {
     content: none;
   }

@@ -2,12 +2,12 @@
 .form-container {
   max-width: 1200px;
   margin-top:60px;
-  margin-left:127px;
+  margin-left:120px;
   padding: 20px;
   border: 1px solid #ddd;
   background-color: #fff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  border-radius: 8px;
+  border-radius: 25px;
 }
 .post-form-container{
   margin-left:115px;

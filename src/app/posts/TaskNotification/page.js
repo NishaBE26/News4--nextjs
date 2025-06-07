@@ -3,7 +3,7 @@ import "../../Styles/TaskNotification.css";
 import { getTasksByAuthorId, getTypeById } from "@/app/services/Api";
 import { useRouter } from "next/navigation";
 
-const TaskNotification = () => {
+export default function TaskNotification (){
   const [tasks, setTasks] = useState([]);
   const [typeNames, setTypeNames] = useState({});
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -102,5 +102,3 @@ const TaskNotification = () => {
     </div>
   );
 };
-
-export default TaskNotification;

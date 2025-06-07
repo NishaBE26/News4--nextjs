@@ -1,5 +1,6 @@
 /* Reset and global layout */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -8,75 +9,55 @@ html, body {
   font-family: 'Segoe UI', sans-serif;
 }
 
-/* .login-wrapper {
-  margin: 0;
-  padding: 0;
-  background-image: url('/assets/background.jpg');
-  background-size: cover; 
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  height: 100vh;
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-} */
 .login-wrapper {
-  background: linear-gradient(135deg, #000015, #000044);
+  background: #131D4F;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  position: relative;
-  overflow: hidden;
 }
 
-/* Star animation */
-.star {
+.shiny-dot {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 3px;
+  height: 3px;
   background: white;
-  clip-path: polygon(
-    50% 0%,
-    61% 35%,
-    98% 35%,
-    68% 57%,
-    79% 91%,
-    50% 70%,
-    21% 91%,
-    32% 57%,
-    2% 35%,
-    39% 35%
-  );
-  animation: twinkle 2s infinite alternate ease-in-out, floatUp 10s infinite linear;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-              0 0 20px rgba(255, 255, 255, 0.6),
-              0 0 30px rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  opacity: 0.8;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(0.5px);
+  animation: glow 3.5s ease-in-out infinite alternate, float 10s ease-in-out infinite;
+  box-shadow:
+    0 0 3px rgba(255, 255, 255, 0.8),
+    0 0 6px rgba(255, 255, 255, 0.6),
+    0 0 12px rgba(255, 255, 255, 0.4);
 }
-
-@keyframes twinkle {
-  0% { opacity: 0.3; }
-  100% { opacity: 1; }
+@keyframes glow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
 }
-
-@keyframes floatUp {
-  from { transform: translateY(0px); }
-  to { transform: translateY(-50px); }
-}
-
 .login-page {
   height: 88vh;
   display: flex;
   justify-content: center;
+  position:relative;
+  z-index: 1;
   align-items: center;
   width: 88vw;
 }
 
 /* Container for the right panel (login box) */
 .right-panel {
-  background: rgba(0, 0, 0, 0.4);
+  background: whitesmoke;
   backdrop-filter: blur(1px);
   padding: 30px;
   border-radius: 30px;
@@ -84,12 +65,12 @@ html, body {
 
 /* Login form styling */
 .login-form {
-  width: auto; 
+  width: auto;
 }
 
 /* Title */
 .login-title {
-  color: #ffffff;
+  color: #333;
   font-size: 28px;
   text-align: center;
   margin-bottom: 15px;
@@ -99,7 +80,7 @@ html, body {
 /* Inline form layout */
 .inline-form {
   display: flex;
-  align-items: center; 
+  align-items: center;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -111,7 +92,7 @@ html, body {
 }
 
 .inline-form label {
-  color: #ffffff;
+  color: #333;
   font-weight: 600;
   font-size: 14px;
   margin-bottom: 4px;
@@ -123,8 +104,8 @@ html, body {
   padding: 5px;
   border: none;
   border-radius: 6px;
-  background-color: #3a3a4f;
-  color: #fff;
+  background-color: #D5D8DC;
+  color: #333;
   font-size: 16px;
 }
 
@@ -136,7 +117,7 @@ html, body {
 .inline-form button {
   padding: 5px 16px;
   height: 30px;
-  background-color: #4caf50;
+  background-image: linear-gradient(135deg, #4caf50 50%, #641E16 50%);
   border: none;
   border-radius: 6px;
   color: white;
@@ -146,12 +127,13 @@ html, body {
   transition: background-color 0.3s ease;
   display: inline-block;
   margin-left: 10px;
-  margin-bottom: -27px; 
+  margin-bottom: -27px;
 }
 
 .inline-form button:hover {
   background-color: #45a049;
 }
+
 .register-link {
   margin-top: 1rem;
   text-align: center;
@@ -159,8 +141,9 @@ html, body {
   color: #fff;
   font-weight: bold;
   width: 100%;
-  display: block; 
+  display: block;
 }
+
 .register-link span {
   color: #4caf50;
   cursor: pointer;

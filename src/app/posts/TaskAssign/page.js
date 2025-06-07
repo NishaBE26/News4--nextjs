@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const TaskAssign = ({ employees, typesList, onTaskSubmit, loggedInAdmin }) => {
+export default function TaskAssign ({ employees, typesList, onTaskSubmit, loggedInAdmin }) {
   const [selectedFile, setSelectedFile] = useState(null);
 
   const [taskassign, setTaskAssign] = useState({
@@ -144,5 +144,3 @@ const TaskAssign = ({ employees, typesList, onTaskSubmit, loggedInAdmin }) => {
     </div>
   );
 };
-
-export default TaskAssign;

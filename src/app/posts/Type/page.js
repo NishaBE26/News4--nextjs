@@ -8,7 +8,7 @@ import {
 } from "../../services/Api";
 import "../../Styles/Typepage.css";
 
-const Type = () => {
+export default function Type (){
   const [typelist, setTypeList] = useState([]);
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
@@ -155,4 +155,3 @@ const Type = () => {
   );
 };
 
-export default Type;

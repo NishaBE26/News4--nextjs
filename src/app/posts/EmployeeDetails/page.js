@@ -8,7 +8,7 @@ import {
 } from "../../services/Api";
 import "../../Styles/EmployeeDetails.css";
 
-const EmployeeDetails = () => {
+export default function EmployeeDetails  ()  {
   const [employees, setEmployees] = useState([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
@@ -135,4 +135,3 @@ const EmployeeDetails = () => {
   );
 };
 
-export default EmployeeDetails;

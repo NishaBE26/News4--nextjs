@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getPostById, getEmployeeById } from "../../services/Api";
 
-const NewsDetailPage = () => {
+export default function NewsDetailPage (){
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [employee, setEmployee] = useState(null);
@@ -60,4 +60,3 @@ return (
   );
 };
 
-export default NewsDetailPage;

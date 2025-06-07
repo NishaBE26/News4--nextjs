@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { getAllPosts } from "../../services/Api";
 import "../../Styles/AuthorPostStatus.css";
 
-const AuthorPostStatus = ({ currentUser }) => {
+function AuthorPostStatus  ({ currentUser }) {
   const [authorPosts, setAuthorPosts] = useState([]);
   const router = useRouter();
 
@@ -24,6 +24,7 @@ const AuthorPostStatus = ({ currentUser }) => {
           post.status !== "Published" &&
           post.status !== "Resubmitted"
       );
+        console.log("Filtered posts (need correction):", filteredPosts);
       setAuthorPosts(filteredPosts);
     };
 

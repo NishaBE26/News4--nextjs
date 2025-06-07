@@ -12,6 +12,8 @@ import {
   getAllTypes,
   getAllStatus,
   updatePostById,
+  updateTaskById,
+  getPostById,
 } from "../services/Api";
 import TaskAssign from "../posts/TaskAssign/page";
 import PostsTable from "./PostsTable/page";
@@ -21,6 +23,7 @@ import AdminPostStatus from "../posts/AdminPostStatus/page";
 import { FaUser, FaClock } from "react-icons/fa";
 import "../Styles/posts.css";
 
+// ✅ COMPONENT: Scrollable Card Grid (shows non-Published posts now)
 const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
   const carouselRef = useRef();
 
@@ -76,7 +79,8 @@ const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
   );
 };
 
-const PostsPage = () => {
+// ✅ MAIN POSTS PAGE
+export default function PostsPage() {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [categoryNames, setCategoryNames] = useState({});
@@ -88,7 +92,6 @@ const PostsPage = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
 
   const postsPerPage = 10;
-
   const router = useRouter();
 
   const fetchPosts = async () => {
@@ -99,17 +102,15 @@ const PostsPage = () => {
         if (a.status === "Published" && b.status !== "Published") return 1;
         return new Date(b.createDate) - new Date(a.createDate);
       });
+
       setPosts(sortedPosts);
       setFilteredPosts(sortedPosts);
 
       const uniqueCategoryIds = [...new Set(sortedPosts.map(p => p.category))];
       const uniqueAuthorIds = [...new Set(sortedPosts.map(p => p.authorName))];
 
-      const categoryPromises = uniqueCategoryIds.map(getCategoryById);
-      const employeePromises = uniqueAuthorIds.map(getEmployeeById);
-
-      const categoryResults = await Promise.all(categoryPromises);
-      const employeeResults = await Promise.all(employeePromises);
+      const categoryResults = await Promise.all(uniqueCategoryIds.map(getCategoryById));
+      const employeeResults = await Promise.all(uniqueAuthorIds.map(getEmployeeById));
 
       const categoryMap = {};
       const employeeMap = {};
@@ -141,23 +142,28 @@ const PostsPage = () => {
   const fetchStatus = async () => {
     const statusResponse = await getAllStatus();
     if (statusResponse?.Status) {
-      const statusOnly = statusResponse.Status.map((item) => item.status);
-      const uniqueStatus = [...new Set(statusOnly)];
-      setStatusList(uniqueStatus);
+      const statusOnly = statusResponse.Status.map(item => item.status);
+      setStatusList([...new Set(statusOnly)]);
     }
   };
 
   const handleStatusChange = async (postId, newStatus) => {
-    const loggedInUser = JSON.parse(localStorage.getItem("user"));
-    if (!loggedInUser || loggedInUser.designation !== "admin") return;
+    try {
+      const loggedInUser = JSON.parse(localStorage.getItem("user"));
+      if (!loggedInUser || loggedInUser.designation !== "admin") return;
 
-    const response = await updatePostById(postId, {
-      status: newStatus,
-    });
+      const postRes = await getPostById(postId);
+      const post = postRes?.news || postRes?.data || postRes;
+      const taskId = post?.task;
 
-    if (response.success) {
-      alert("Status updated.");
+      if (newStatus === "Published" && taskId) {
+        await updateTaskById(taskId, { status: "Completed" });
+      }
+
+      await updatePostById(postId, { status: newStatus });
       fetchPosts();
+    } catch (err) {
+      console.error("Error updating post status:", err);
     }
   };
 
@@ -201,32 +207,30 @@ const PostsPage = () => {
 
   if (!loggedInUser) return null;
 
-const publishedPosts = posts
-  .filter((post) => post.status === "Published")
-  .sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate));
-
+  // ✅ Show only non-published posts
+  const remainingPosts = posts
+    .filter((post) => post.status !== "Published")
+    .sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate));
 
   return (
     <div className="posts-wrapper">
-      {loggedInUser?.designation === "author" && publishedPosts.length > 0 && (
-        <TaskNotification authorId={loggedInUser._id} />
-      )}
       {loggedInUser?.designation === "author" && (
-        <AuthorPostStatus currentUser={loggedInUser} />
+        <>
+          <TaskNotification authorId={loggedInUser._id} />
+          <AuthorPostStatus currentUser={loggedInUser} />
+        </>
       )}
       {loggedInUser?.designation === "admin" && (
-        <PublishedPostsCardGrid posts={publishedPosts} employeeNames={employeeNames} />
-      )}
-      {loggedInUser?.designation === "admin" && (
-        <AdminPostStatus currentUser={loggedInUser} />
-      )}
-      {loggedInUser?.designation === "admin" && (
-        <TaskAssign
-          employees={employees}
-          typesList={typesList}
-          onTaskSubmit={handleTaskSubmit}
-          loggedInAdmin={loggedInUser}
-        />
+        <>
+          <PublishedPostsCardGrid posts={remainingPosts} employeeNames={employeeNames} />
+          <AdminPostStatus currentUser={loggedInUser} />
+          <TaskAssign
+            employees={employees}
+            typesList={typesList}
+            onTaskSubmit={handleTaskSubmit}
+            loggedInAdmin={loggedInUser}
+          />
+        </>
       )}
       <PostsTable
         posts={currentPosts}
@@ -244,6 +248,4 @@ const publishedPosts = posts
       />
     </div>
   );
-};
-
-export default PostsPage;
+}

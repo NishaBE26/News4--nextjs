@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { login, register, verifyToken } from "../services/Api";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-const LoginPage = () => {
+export default function LoginPage() {
   const router = useRouter();
   const [isRegistering, setIsRegistering] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -14,17 +14,17 @@ const LoginPage = () => {
     const checkLogin = async () => {
       const token = localStorage.getItem("token");
       if (!token) return;
-        const data = await verifyToken(token);
-        if (
-          data.success &&
-          data.user &&
-          (data.user.designation === "admin" || data.user.designation === "author")
-        ) {
-          localStorage.setItem("user", JSON.stringify(data.user));
-          router.push("/posts");
-        } else {
-          localStorage.clear();
-        }
+      const data = await verifyToken(token);
+      if (
+        data.success &&
+        data.user &&
+        (data.user.designation === "admin" || data.user.designation === "author")
+      ) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+        router.push("/posts");
+      } else {
+        localStorage.clear();
+      }
     };
     checkLogin();
   }, [router]);
@@ -48,10 +48,24 @@ const LoginPage = () => {
     const name = e.target.name.value;
     const email = e.target.username.value;
     const password = e.target.password.value;
-      const data = await register({ name, email, password });
-      if (data.success) setIsRegistering(false);
+    const data = await register({ name, email, password });
+    if (data.success) setIsRegistering(false);
   };
+  useEffect(() => {
+    const container = document.querySelector(".login-wrapper");
+    if (!container) return;
 
+    for (let i = 0; i < 80; i++) {
+      const dot = document.createElement("div");
+      dot.classList.add("shiny-dot");
+      dot.style.top = `${Math.random() * 100}vh`;
+      dot.style.left = `${Math.random() * 100}vw`;
+      dot.style.width = dot.style.height = `${Math.random() * 3 + 2}px`;
+      dot.style.animationDuration = `${Math.random() * 3 + 2}s`;
+      dot.style.animationDelay = `${Math.random() * 5}s`;
+      container.appendChild(dot);
+    }
+  }, []);
   return (
     <div className="login-wrapper">
       <div className="login-page">
@@ -113,23 +127,37 @@ const LoginPage = () => {
               </div>
               <button type="submit">{isRegistering ? "Register" : "Log in"}</button>
             </div>
-
             <div className="register-link">
               {isRegistering ? (
-                <p>
+                <p style={{ color: "black" }}>
                   Already have an account?{" "}
-                  <span onClick={() => setIsRegistering(false)} style={{ cursor: "pointer", color: "blue" }}>
+                  <span
+                    onClick={() => setIsRegistering(false)}
+                    style={{ cursor: "pointer", color: "#4caf50" }}
+                  >
                     Login
                   </span>
                 </p>
               ) : (
-                <p>
-                  New user?{" "}
-                  <span onClick={() => setIsRegistering(true)} style={{ cursor: "pointer", color: "blue" }}>
+                <p style={{ color: "black" }}>
+                  Don't have an account?{" "}
+                  <span
+                    onClick={() => setIsRegistering(true)}
+                    style={{ cursor: "pointer", color: "#4caf50" }}
+                  >
                     Register
                   </span>
                 </p>
               )}
+              <p style={{ marginTop: "-10px", color: "#333" }}>
+                New Empolyee Register?{""}
+                <span
+                  style={{ cursor: "pointer", textDecoration: "underline" }}
+                  onClick={() => router.push("/employee-register")}
+                >
+                  Employee Register
+                </span>
+              </p>
             </div>
           </form>
         </div>
@@ -138,4 +166,3 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;

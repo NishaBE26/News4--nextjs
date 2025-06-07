@@ -6,15 +6,16 @@ import { FaUser, FaSignOutAlt, FaInfoCircle, FaCashRegister, FaPenFancy } from "
 import "../Styles/Sidebar.css";
 import { useEffect, useState } from "react";
 
-const Sidebar = () => {
+export default function Sidebar() {
   const [currentTime, setCurrentTime] = useState({ day: "", date: "", time: "" });
   const [designation, setDesignation] = useState();
-
+  const [name, setName] = useState();
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
       const user = JSON.parse(userData);
       setDesignation(user.designation);
+      setName(user.name);
     }
 
     let frameId;
@@ -35,12 +36,12 @@ const Sidebar = () => {
       });
 
       setCurrentTime({ day, date, time });
-      frameId = requestAnimationFrame(updateTime); // continuously update
+      frameId = requestAnimationFrame(updateTime);
     };
 
-    updateTime(); // initial call
+    updateTime();
 
-    return () => cancelAnimationFrame(frameId); // cleanup
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   return (
@@ -50,13 +51,9 @@ const Sidebar = () => {
           <Image src="/assets/News4-logo.png" alt="Logo" width={100} height={80} priority />
         </div>
         <div className="nav-links">
-          <Link href="/">Home</Link>
-          <Link href="/allposts">All Posts</Link>
-          <Link href="/category/state">State</Link>
-          <Link href="/category/national">National</Link>
-          <Link href="/category/politics">Politics</Link>
-          <Link href="/category/cinema">Cinema</Link>
-          <Link href="/category/sports">Sports</Link>
+          <div className="name-display">
+            👋 Hi,<strong>{name} / {designation}</strong>
+          </div>
         </div>
 
         <div className="nav-right">
@@ -110,5 +107,3 @@ const Sidebar = () => {
     </div>
   );
 };
-
-export default Sidebar;

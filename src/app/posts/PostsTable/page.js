@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const PostsTable = ({
+export default function PostsTable ({
   posts,
   currentPage,
   totalPages,
@@ -15,7 +15,7 @@ const PostsTable = ({
   handleEdit,
   handleDelete,
   updatePostById,
-}) => {
+}) {
   const router = useRouter();
   const [loggedInUser, setLoggedInUser] = useState(null);
   useEffect(() => {
@@ -260,5 +260,3 @@ const PostsTable = ({
     </div >
   );
 };
-
-export default PostsTable;

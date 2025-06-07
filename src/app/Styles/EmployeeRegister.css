@@ -1,68 +1,72 @@
 .employee-register-container {
-  max-width: 900px;
-  margin: 0 auto;
-  background: #f9f9f9;
-  padding: 30px;
-  border-radius: 12px;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  margin-left: 120px;
+  width: 89%;
+  background-color: whitesmoke;
+  padding: 11px;
+  border-radius: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
 }
 
-.employee-register-title {
-  text-align: center;
-  font-size: 26px;
+.employee-register-container h2 {
   margin-bottom: 20px;
   color: #333;
-}
-
-.employee-register-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.employee-register-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-}
-
-.employee-form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.employee-form-label {
-  margin-bottom: 6px;
-  font-weight: 600;
-  color: #222;
-}
-
-.employee-form-input {
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 15px;
-}
-
-.full-width {
-  grid-column: 1 / -1;
-}
-
-.employee-form-actions {
   text-align: center;
-  margin-top: 30px;
 }
 
-.employee-submit-button {
-  background-color: #0070f3;
-  color: white;
-  padding: 12px 24px;
+.employee-register-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.employee-register-container input[type="text"],
+.employee-register-container input[type="email"],
+.employee-register-container input[type="tel"],
+.employee-register-container input[type="date"],
+.employee-register-container select,
+.employee-register-container textarea {
+  padding: 10px 12px;
   font-size: 16px;
-  border: none;
+  border: 1px solid #ccc;
   border-radius: 8px;
+  transition: border-color 0.3s ease;
+  resize: vertical;
+}
+
+.employee-register-container input[type="file"] {
+  border: none;
+  padding: 5px 0;
+}
+
+.employee-register-container input[type="text"]:focus,
+.employee-register-container input[type="email"]:focus,
+.employee-register-container input[type="tel"]:focus,
+.employee-register-container input[type="date"]:focus,
+.employee-register-container select:focus,
+.employee-register-container textarea:focus {
+  outline: none;
+  border-color: #2980B9;
+}
+
+.employee-register-container button {
+  padding: 12px;
+  background-color: #2980B9;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 12px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.employee-submit-button:hover {
-  background-color: #005bb5;
+.employee-register-container button:hover {
+  background-color: #1c5980;
+}
+
+.employee-register-container img {
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
 }

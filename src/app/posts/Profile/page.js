@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getEmployeeById, updateEmployeeById } from "../../services/Api";
 import "../../Styles/Profile.css";
 
-const Profile = () => {
+export default function Profile () {
   const [loggedInEmployeeId, setLoggedInEmployeeId] = useState(null);
   const [employee, setEmployee] = useState(null);
   const [editMode, setEditMode] = useState(false);
@@ -120,4 +120,3 @@ const Profile = () => {
   );
 };
 
-export default Profile;

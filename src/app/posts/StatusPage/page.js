@@ -8,7 +8,7 @@ import {
 } from '../../services/Api';
 import "../../Styles/StatusPage.css";
 
-const StatusPage = () => {
+export default function StatusPage() {
     const [statusList, setStatusList] = useState([]);
     const [newName, setNewName] = useState("");
     const [newDescription, setNewDescription] = useState("");
@@ -169,4 +169,3 @@ const StatusPage = () => {
     );
 };
 
-export default StatusPage;
