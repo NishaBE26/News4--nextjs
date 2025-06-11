@@ -7,6 +7,8 @@ import {
   getAllTags,
   getPostById,
   updatePostById,
+  getCategoryById,
+  getTagById,
 } from "../../services/Api";
 import "../../Styles/AddNewPost.css";
 
@@ -40,13 +42,19 @@ export default function AddNewPost() {
       try {
         const data = await getPostById(id);
         const post = data.news || data;
+        const category = await getCategoryById(post.category);
+        const categoryname = category?.name?.name || category?.name;
+        console.log("kkkkkkkkkkkkk", categoryname)
+        const tags=await getTagById(post.tags);
+        const tagsname=tags?.name?.name||tags?.name;
+        console.log("dddddddddddd",tagsname);
         setOriginalPost(post);
         setFormData({
           title: post.title || "",
           url: post.url || "",
           newsContent: post.newsContent || "",
-          category: post.category || "",
-          tags: post.tags || [],
+          category: post.categoryname || "",
+          tags: post.tagsname|| [],
           seoTitle: post.seoTitle || "",
           seoMetaDescription: post.seoMetaDescription || "",
           file: post.file || "",
@@ -98,51 +106,24 @@ export default function AddNewPost() {
       return { ...prev, tags: updatedTags };
     });
   };
-const handleSubmit = async (e) => {
-  e.preventDefault();
 
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  if (!storedUser?.name || !storedUser?.employeeId) return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-  const name = storedUser.name;
-  const employeeId = storedUser.employeeId;
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    if (!storedUser?.name || !storedUser?.employeeId) return;
 
-  if (!formData.title.trim() || !formData.newsContent.trim()) return;
-  const selectedCategoryObj = categories.find(
-    (cat) => (cat.name?.name || cat.name) === formData.category
-  );
-  const categoryId = selectedCategoryObj?._id || formData.category;
-  const selectedTagIds = tags
-    .filter((tag) => formData.tags.includes(tag.name?.name || tag.name))
-    .map((tag) => tag._id);
-  let response;
-  if (originalPost) {
-    const updatedPost = {
-      title: formData.title,
-      url: formData.url,
-      newsContent: formData.newsContent,
-      category: categoryId,
-      tags: selectedTagIds,
-      seoTitle: formData.seoTitle,
-      seoMetaDescription: formData.seoMetaDescription,
-      file: selectedfile ? selectedfile : formData.file,
-      status: resubmitted ? "Resubmitted" : formData.status,
-      publishedDate: formData.publishedDate,
-      authorName: originalPost.authorName,
-      publishedBy: originalPost.publishedBy,
-      updatedBy: employeeId,
-      taskId: formData.task || taskid || originalPost?.task || null,
-    };
+    const name = storedUser.name;
+    const employeeId = storedUser.employeeId;
 
-    response = await updatePostById(id, updatedPost);
-    console.log("api response:", response);
-  } else {
+    if (!formData.title.trim() || !formData.newsContent.trim()) return;
+
     const cleanData = new FormData();
     cleanData.append("title", formData.title);
     cleanData.append("url", formData.url);
     cleanData.append("newsContent", formData.newsContent);
-    cleanData.append("category", categoryId);
-    selectedTagIds.forEach((tagId) => cleanData.append("tags", tagId));
+    cleanData.append("category", formData.category);
+    cleanData.append("tags", formData.tags);
     cleanData.append("seoTitle", formData.seoTitle);
     cleanData.append("seoMetaDescription", formData.seoMetaDescription);
     cleanData.append("status", storedUser.designation === "admin" ? formData.status : "Pending");
@@ -151,24 +132,40 @@ const handleSubmit = async (e) => {
     cleanData.append("publishedBy", name);
     cleanData.append("updatedBy", "");
     cleanData.append("createdAt", new Date().toISOString());
-
-    if (formData.task?.trim()) {
+    if (formData.task && formData.task.trim() !== "") {
       cleanData.append("taskId", formData.task);
     }
 
-    if (selectedfile) {
-      cleanData.append("file", selectedfile);
+    if (selectedfile) cleanData.append("file", selectedfile);
+    console.log("submitted post:", formData)
+    let response;
+    if (originalPost) {
+      response = await updatePostById(id, {
+        title: formData.title,
+        url: formData.url,
+        newsContent: formData.newsContent,
+        category: formData.category,
+        tags: formData.tags,
+        seoTitle: formData.seoTitle,
+        seoMetaDescription: formData.seoMetaDescription,
+        file: formData.file,
+        status: resubmitted ? "Resubmitted" : formData.status,
+        publishedDate: formData.publishedDate,
+        authorName: originalPost.authorName,
+        publishedBy: originalPost.publishedBy,
+        updatedBy: employeeId,
+        taskId: formData.task || taskid || originalPost?.task || null,
+      });
+      console.log("api response:", response);
+    } else {
+      response = await createPost(cleanData);
+      console.log("api response:", response)
     }
 
-    response = await createPost(cleanData);
-    console.log("api response:", response);
-  }
-
-  if (response?.message === "News Created" || response?.message === "News Updated") {
-    router.push("/posts");
-  }
-};
-
+    if (response?.message === "News Created" || response?.message === "News Updated") {
+      router.push("/posts");
+    }
+  };
 
   return (
     <div className="form-container">
