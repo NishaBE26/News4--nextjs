@@ -55,7 +55,7 @@ export default function Sidebar() {
             src="/assets/News4-logo.png"
             alt="Logo"
             width={120}
-            height={110}
+            height={0} // Not needed if using style for responsiveness
             className="logo"
             priority
           />

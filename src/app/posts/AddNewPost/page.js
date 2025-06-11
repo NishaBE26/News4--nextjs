@@ -42,12 +42,8 @@ export default function AddNewPost() {
       try {
         const data = await getPostById(id);
         const post = data.news || data;
-
-        // Fetch category name
         const categoryRes = await getCategoryById(post.category);
         const categoryName = categoryRes?.category?.name || "Unknown Category";
-
-        // Fetch tag names (support array or single ID)
         const tagIds = Array.isArray(post.tags) ? post.tags : [post.tags];
         const tagNames = await Promise.all(
           tagIds.map(async (tagId) => {
@@ -311,7 +307,6 @@ export default function AddNewPost() {
                 })}
               </div>
             </div>
-
             <div className="checkbox-group">
               <label>
                 <strong>Select Tags</strong>
