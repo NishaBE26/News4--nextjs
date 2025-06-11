@@ -8,7 +8,7 @@ import {
 } from "../../services/Api";
 import "../../Styles/TagsPage.css";
 
-export default function TagsPage () {
+export default function TagsPage() {
   const [tags, setTags] = useState([]);
   const [formData, setFormData] = useState({ name: "", description: "" });
   const [editing, setEditing] = useState(false);
@@ -19,8 +19,8 @@ export default function TagsPage () {
   }, []);
 
   const fetchTags = async () => {
-      const data = await getAllTags();
-      setTags(data?.Tags || []);
+    const data = await getAllTags();
+    setTags(data?.Tags || []);
   };
 
   const handleChange = (e) => {
@@ -33,15 +33,17 @@ export default function TagsPage () {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.description) return;
-      if (editing) {
-        await updateTagById(editingTagId, formData);
-        setEditing(false);
-        setEditingTagId(null);
-      } else {
-        await createTag(formData);
-      }
-      setFormData({ name: "", description: "" });
-      fetchTags();
+
+    if (editing) {
+      await updateTagById(editingTagId, formData);
+      setEditing(false);
+      setEditingTagId(null);
+    } else {
+      await createTag(formData);
+    }
+
+    setFormData({ name: "", description: "" });
+    fetchTags();
   };
 
   const handleEdit = (tag) => {
@@ -57,8 +59,8 @@ export default function TagsPage () {
   };
 
   const handleDelete = async (id) => {
-      await deleteTagById(id);
-      fetchTags();
+    await deleteTagById(id);
+    fetchTags();
   };
 
   return (
@@ -101,14 +103,16 @@ export default function TagsPage () {
             <table className="tag-table">
               <thead>
                 <tr>
+                  <th>S.No</th>
                   <th>Tag Name</th>
                   <th>Description</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
-                {tags.map((tag) => (
+                {tags.map((tag, index) => (
                   <tr key={tag._id}>
+                    <td>{index + 1}</td>
                     <td>{tag.name}</td>
                     <td>{tag.description}</td>
                     <td className="actions">
@@ -130,4 +134,4 @@ export default function TagsPage () {
       </div>
     </div>
   );
-};
+}

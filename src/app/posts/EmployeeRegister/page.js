@@ -46,25 +46,17 @@ const EmployeeRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!uploading) {
-      alert("Please upload a photo.");
-      return;
-    }
-
+    console.log("submitted data:", formData)
     try {
       const form = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
         form.append(key, value);
       });
-      form.append("photo", uploading); // ✅ field must match backend
+      form.append("file", uploading);
 
-      for (let [key, value] of form.entries()) {
-        console.log(`${key}:`, value);
-      }
-console.log("data send :",formData)
-      const result = await createEmployee(form);
-
+      const result = await createEmployee(form);    // multipart form data
+      // application/json
+      console.log("api response:", result);
       if (result.success) {
         alert("Employee created successfully!");
         setFormData({
@@ -82,27 +74,27 @@ console.log("data send :",formData)
           address: "",
         });
         setUploading(null);
-      } else {
-        alert("Error: " + result.message);
       }
     } catch (error) {
       console.error("Submit error:", error);
-      alert("Error creating employee.");
     }
   };
 
   return (
     <div className="employee-register-container">
       <h2>Employee Registration</h2>
-      <form onSubmit={handleSubmit} >
+      <form onSubmit={handleSubmit}>
         <input type="text" name="rfidcardno" placeholder="RFID Card No" value={formData.rfidcardno} onChange={handleChange} required />
         <input type="file" accept="image/*" onChange={handleFileChange} required />
-        {previewUrl && <img src={previewUrl} height="60" alt="Preview" />}
+
         <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required />
         <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
+
         <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required />
         <input type="tel" name="mobileno" placeholder="Mobile No" value={formData.mobileno} onChange={handleChange} />
+
         <input type="text" name="employeecode" placeholder="Employee Code" value={formData.employeecode} onChange={handleChange} />
+        <input type="date" name="joiningdate" value={formData.joiningdate} onChange={handleChange} />
 
         <select name="designation" value={formData.designation} onChange={handleChange} required>
           <option value="">Select Designation</option>
@@ -121,6 +113,7 @@ console.log("data send :",formData)
           <option value="">Select Gender</option>
           <option value="male">Male</option>
           <option value="female">Female</option>
+          <option value="other">Other</option>
         </select>
 
         <select name="maritalstatus" value={formData.maritalstatus} onChange={handleChange}>
@@ -129,10 +122,21 @@ console.log("data send :",formData)
           <option value="married">Married</option>
         </select>
 
-        <input type="date" name="joiningdate" value={formData.joiningdate} onChange={handleChange} />
-        <textarea name="address" placeholder="Address" value={formData.address} onChange={handleChange} />
+        {previewUrl && (
+          <div className="full-width">
+            <img src={previewUrl} alt="Preview" />
+          </div>
+        )}
 
-        <button type="submit">Register Employee</button>
+        <textarea
+          className="full-width"
+          name="address"
+          placeholder="Address"
+          value={formData.address}
+          onChange={handleChange}
+        />
+
+        <button type="submit" className="full-width">Submit</button>
       </form>
     </div>
   );

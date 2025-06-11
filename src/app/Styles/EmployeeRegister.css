@@ -1,72 +1,69 @@
 .employee-register-container {
-  margin-top: 50px;
-  margin-left: 120px;
   width: 89%;
-  background-color: whitesmoke;
-  padding: 11px;
-  border-radius: 25px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  margin-left:120px;
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
 }
 
 .employee-register-container h2 {
-  margin-bottom: 20px;
-  color: #333;
   text-align: center;
+  margin-bottom: 25px;
+  color: #333;
 }
 
-.employee-register-container form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
 }
 
-.employee-register-container input[type="text"],
-.employee-register-container input[type="email"],
-.employee-register-container input[type="tel"],
-.employee-register-container input[type="date"],
-.employee-register-container select,
-.employee-register-container textarea {
-  padding: 10px 12px;
-  font-size: 16px;
+form input,
+form select,
+form textarea {
+  padding: 10px;
+  font-size: 14px;
   border: 1px solid #ccc;
-  border-radius: 8px;
-  transition: border-color 0.3s ease;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+form input[type="file"] {
+  padding: 6px;
+}
+
+form img {
+  max-height: 80px;
+  object-fit: contain;
+  display: block;
+}
+
+form textarea {
   resize: vertical;
+  min-height: 60px;
 }
 
-.employee-register-container input[type="file"] {
-  border: none;
-  padding: 5px 0;
+.full-width {
+  grid-column: span 2;
 }
 
-.employee-register-container input[type="text"]:focus,
-.employee-register-container input[type="email"]:focus,
-.employee-register-container input[type="tel"]:focus,
-.employee-register-container input[type="date"]:focus,
-.employee-register-container select:focus,
-.employee-register-container textarea:focus {
-  outline: none;
-  border-color: #2980B9;
-}
-
-.employee-register-container button {
-  padding: 12px;
-  background-color: #2980B9;
+button[type="submit"] {
+  padding: 12px 30px;
+  background-image:linear-gradient(135deg,blue 50%,brown 50%);
   color: white;
-  font-size: 18px;
   border: none;
-  border-radius: 12px;
+  border-radius:12px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  font-size: 16px;
+  grid-column: 1 / -1; 
+  justify-self: center; 
 }
 
-.employee-register-container button:hover {
-  background-color: #1c5980;
+button[type="submit"]:hover {
+  background-color: #0056b3;
 }
 
-.employee-register-container img {
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-}

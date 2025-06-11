@@ -149,15 +149,6 @@ export default function LoginPage() {
                   </span>
                 </p>
               )}
-              <p style={{ marginTop: "-10px", color: "#333" }}>
-                New Empolyee Register?{""}
-                <span
-                  style={{ cursor: "pointer", textDecoration: "underline" }}
-                  onClick={() => router.push("/employee-register")}
-                >
-                  Employee Register
-                </span>
-              </p>
             </div>
           </form>
         </div>

@@ -4,11 +4,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { FaUser, FaSignOutAlt, FaInfoCircle, FaCashRegister, FaPenFancy } from "react-icons/fa";
 import "../Styles/Sidebar.css";
+import { logout } from "../services/Api";
 import { useEffect, useState } from "react";
 
 export default function Sidebar() {
   const [currentTime, setCurrentTime] = useState({ day: "", date: "", time: "" });
   const [designation, setDesignation] = useState();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [name, setName] = useState();
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -17,7 +19,6 @@ export default function Sidebar() {
       setDesignation(user.designation);
       setName(user.name);
     }
-
     let frameId;
 
     const updateTime = () => {
@@ -43,12 +44,21 @@ export default function Sidebar() {
 
     return () => cancelAnimationFrame(frameId);
   }, []);
+  const openLogoutModal = () => setShowLogoutModal(true);
+  const closeLogoutModal = () => setShowLogoutModal(false);
 
   return (
     <div>
       <div className="topnav">
         <div className="nav-left">
-          <Image src="/assets/News4-logo.png" alt="Logo" width={100} height={80} priority />
+          <Image
+            src="/assets/News4-logo.png"
+            alt="Logo"
+            width={120}
+            height={110}
+            className="logo"
+            priority
+          />
         </div>
         <div className="nav-links">
           <div className="name-display">
@@ -103,6 +113,46 @@ export default function Sidebar() {
           <FaSignOutAlt className="sidebar-icon" />
           Profile
         </Link>
+        {showLogoutModal && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <p>Are you sure you want to logout?</p>
+              <div className="modal-buttons">
+                <button onClick={closeLogoutModal} className="modal-btn cancel-btn">Cancel</button>
+                <button
+                  onClick={async () => {
+                    const result = await logout();
+                    if (result.success) {
+                      localStorage.removeItem("user");
+                      router.push("/login");
+                    } else {
+                      alert("Logout failed: " + result.message);
+                    }
+                  }}
+                  className="modal-btn logout-btn"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+        <button
+          onClick={openLogoutModal}
+          className="sidebar-link logout-button"
+          style={{
+            cursor: "pointer",
+            background: "none",
+            border: "none",
+            color: "whitesmoke",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+          }}
+        >
+          <FaSignOutAlt className="sidebar-icon" />
+          Logout
+        </button>
       </div>
     </div>
   );
