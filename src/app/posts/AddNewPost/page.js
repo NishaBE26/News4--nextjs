@@ -42,19 +42,25 @@ export default function AddNewPost() {
       try {
         const data = await getPostById(id);
         const post = data.news || data;
-        const category = await getCategoryById(post.category);
-        const categoryname = category?.name?.name || category?.name;
-        console.log("kkkkkkkkkkkkk", categoryname)
-        const tags=await getTagById(post.tags);
-        const tagsname=tags?.name?.name||tags?.name;
-        console.log("dddddddddddd",tagsname);
-        setOriginalPost(post);
+
+        // Fetch category name
+        const categoryRes = await getCategoryById(post.category);
+        const categoryName = categoryRes?.category?.name || "Unknown Category";
+
+        // Fetch tag names (support array or single ID)
+        const tagIds = Array.isArray(post.tags) ? post.tags : [post.tags];
+        const tagNames = await Promise.all(
+          tagIds.map(async (tagId) => {
+            const tagRes = await getTagById(tagId);
+            return tagRes?.Tags?.name || "Unknown Tag";
+          })
+        );
         setFormData({
           title: post.title || "",
           url: post.url || "",
           newsContent: post.newsContent || "",
-          category: post.categoryname || "",
-          tags: post.tagsname|| [],
+          category: categoryName,
+          tags: tagNames,
           seoTitle: post.seoTitle || "",
           seoMetaDescription: post.seoMetaDescription || "",
           file: post.file || "",
@@ -62,11 +68,12 @@ export default function AddNewPost() {
           publishedDate: post.publishedDate || new Date().toISOString(),
           task: taskid || "",
         });
-      } catch (err) {
-        console.error("Failed to fetch post:", err);
+
+        setOriginalPost(post);
+      } catch (error) {
+        console.error("Error fetching post:", error);
       }
     };
-
     const today = new Date().toISOString().split("T")[0];
     setFormData((prev) => ({ ...prev, publishedDate: today }));
 
@@ -140,12 +147,22 @@ export default function AddNewPost() {
     console.log("submitted post:", formData)
     let response;
     if (originalPost) {
-      response = await updatePostById(id, {
+      const selectedCategory = categories.find(
+        (cat) => cat.name === formData.category || cat.name?.name === formData.category
+      );
+      const categoryId = selectedCategory?._id;
+      const tagIds = tags
+        .filter(
+          (tag) =>
+            formData.tags.includes(tag.name) || formData.tags.includes(tag.name?.name)
+        )
+        .map((tag) => tag._id);
+      const response = await updatePostById(id, {
         title: formData.title,
         url: formData.url,
         newsContent: formData.newsContent,
-        category: formData.category,
-        tags: formData.tags,
+        category: categoryId,         
+        tags: tagIds,                
         seoTitle: formData.seoTitle,
         seoMetaDescription: formData.seoMetaDescription,
         file: formData.file,
@@ -156,8 +173,10 @@ export default function AddNewPost() {
         updatedBy: employeeId,
         taskId: formData.task || taskid || originalPost?.task || null,
       });
+
       console.log("api response:", response);
-    } else {
+    }
+    else {
       response = await createPost(cleanData);
       console.log("api response:", response)
     }
