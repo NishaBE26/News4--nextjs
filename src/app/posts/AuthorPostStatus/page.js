@@ -24,7 +24,6 @@ function AuthorPostStatus  ({ currentUser }) {
           post.status !== "Published" &&
           post.status !== "Resubmitted"
       );
-        console.log("Filtered posts (need correction):", filteredPosts);
       setAuthorPosts(filteredPosts);
     };
 
@@ -38,7 +37,7 @@ function AuthorPostStatus  ({ currentUser }) {
   return (
     <div className="correction-container">
       <div className="fixed-messages">
-        <h2>⚠️ Correction Needed</h2>
+        <h2>⚠️Correction Needed</h2>
       </div>
       <div className="correction-scroll-area">
         {authorPosts.length === 0 ? (

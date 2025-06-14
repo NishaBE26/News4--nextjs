@@ -106,7 +106,8 @@ const EmployeeRegister = () => {
         <select name="department" value={formData.department} onChange={handleChange} required>
           <option value="">Select Department</option>
           <option value="news">News</option>
-          <option value="sports">Sports</option>
+          <option value="software">Software</option>
+          <option value="VideoEditor">Video-Editor</option>
         </select>
 
         <select name="gender" value={formData.gender} onChange={handleChange} required>

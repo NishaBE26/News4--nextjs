@@ -49,7 +49,7 @@ export default function Profile () {
     updatedData.append("email", email);
     updatedData.append("mobileno", phone);
     updatedData.append("address", address);
-    if (profilePic) updatedData.append("photo", profilePic);
+    if (profilePic) updatedData.append("file", profilePic);
 
     await updateEmployeeById(loggedInEmployeeId, updatedData);
     setEditMode(false);

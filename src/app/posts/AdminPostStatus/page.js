@@ -63,10 +63,10 @@ export default function AdminPostStatus ({ currentUser }){
             ) : (
                 resubmittedPosts.map((post) => (
                     <div key={post._id} className="resubmitted-box">
-                        <p><strong>Title:</strong> {post.title || "(Untitled Post)"}</p>
+                        <p><strong>Title:</strong> {post.title}</p>
                         <div className="author-row">
                             <p className="author-name">
-                                <strong>Author:</strong> {employeeNames[post.authorName] || "Loading..."}
+                                <strong>Author:</strong> {employeeNames[post.authorName]}
                             </p>
                             <button
                                 className="review-post-button"

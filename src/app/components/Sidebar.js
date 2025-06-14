@@ -2,25 +2,56 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { FaUser, FaSignOutAlt, FaInfoCircle, FaCashRegister, FaPenFancy } from "react-icons/fa";
+import {
+  FaInfoCircle,
+  FaCashRegister,
+  FaPenFancy,
+  FaUser,
+  FaFacebookF,
+  FaInstagram,
+  FaGlobe,
+  FaYoutube,
+} from "react-icons/fa";
+import { IoLogOut } from "react-icons/io5";
 import "../Styles/Sidebar.css";
-import { logout } from "../services/Api";
-import { useEffect, useState } from "react";
+import { logout, getEmployeeById } from "../services/Api";
+import { useEffect, useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Sidebar() {
+  const [loggedEmployeeId, setLoggedEmployeeId] = useState();
+  const [employeephoto, setEmployeePhoto] = useState();
   const [currentTime, setCurrentTime] = useState({ day: "", date: "", time: "" });
   const [designation, setDesignation] = useState();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [name, setName] = useState();
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const profileRef = useRef();
+  const router = useRouter();
+
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
       const user = JSON.parse(userData);
       setDesignation(user.designation);
       setName(user.name);
-    }
-    let frameId;
+      setLoggedEmployeeId(user.employeeId);
 
+      const fetchProfilePhoto = async () => {
+        try {
+          const value = await getEmployeeById(user.employeeId);
+          if (value && value.photo) {
+            setEmployeePhoto(value.photo);
+          }
+        } catch (error) {
+          console.error("Error fetching employee photo:", error);
+        }
+      };
+
+      fetchProfilePhoto();
+    }
+
+    let frameId;
     const updateTime = () => {
       const now = new Date();
       const day = now.toLocaleDateString("en-US", { weekday: "long" });
@@ -35,47 +66,118 @@ export default function Sidebar() {
         second: "2-digit",
         hour12: true,
       });
-
       setCurrentTime({ day, date, time });
       frameId = requestAnimationFrame(updateTime);
     };
-
     updateTime();
 
     return () => cancelAnimationFrame(frameId);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setShowProfileMenu(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const closeOnRouteChange = () => setShowProfileMenu(false);
+    router.events?.on("routeChangeStart", closeOnRouteChange);
+    return () => router.events?.off("routeChangeStart", closeOnRouteChange);
+  }, [router]);
+
   const openLogoutModal = () => setShowLogoutModal(true);
   const closeLogoutModal = () => setShowLogoutModal(false);
 
   return (
     <div>
+      {/* Top Navigation */}
       <div className="topnav">
         <div className="nav-left">
           <Image
             src="/assets/News4-logo.png"
             alt="Logo"
             width={120}
-            height={0} // Not needed if using style for responsiveness
+            height={0}
             className="logo"
             priority
           />
         </div>
         <div className="nav-links">
           <div className="name-display">
-            👋 Hi,<strong>{name} / {designation}</strong>
+            👋 Hi, <strong>{name} / {designation}</strong>
           </div>
         </div>
-
-        <div className="nav-right">
+        <div className="nav-right" ref={profileRef}>
           <p className="datetime">
             <span className="day">{currentTime.day}, </span>
             <span className="date">{currentTime.date}, </span>
             <span className="time">{currentTime.time}</span>
           </p>
-          <FaUser className="user-icon" />
+
+          <div className="social-icons-container">
+            <a href="https://news4tamil.com/" target="_blank" rel="noopener noreferrer" className="nav-icon">
+              <FaGlobe  style={{fontSize:"20px"}}/>
+            </a>
+            <a href="https://www.instagram.com/news4tamillive?igsh=MW9kd2Zkc2Zkc2I0dA==" target="_blank" rel="noopener noreferrer" className="nav-icon">
+              <FaInstagram style={{fontSize:"20px"}}/>
+            </a>
+            <a href="https://www.facebook.com/share/1GBDKfKBSU/" target="_blank" rel="noopener noreferrer" className="nav-icon">
+              <FaFacebookF style={{fontSize:"20px"}} />
+            </a>
+            <a href="https://youtube.com/@news4tamil?si=zuFg8UJORCf_6yXV" target="_blank" rel="noopener noreferrer" className="nav-icon">
+              <FaYoutube style={{fontSize:"20px"}}/>
+            </a>
+          </div>
+
+          {/* Profile Image & Dropdown */}
+          <div
+            className="profile-container"
+            onClick={() => setShowProfileMenu(!showProfileMenu)}
+            style={{ cursor: "pointer" }}
+          >
+            {employeephoto ? (
+              <img
+                src={employeephoto}
+                alt="User"
+                width={40}
+                height={40}
+                className="user-photo"
+                style={{ borderRadius: "50%" }}
+              />
+            ) : (
+              <div className="user-initial" style={{
+                width: "35px",
+                height: "35px",
+                backgroundColor: "#888",
+                color: "#fff",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                borderRadius: "50%",
+                fontWeight: "bold",
+                fontSize: "18px",
+              }}>
+                {name ? name.charAt(0).toUpperCase() : "U"}
+              </div>
+            )}
+            {showProfileMenu && (
+              <div className="profile-dropdown">
+                <Link href="/posts/Profile" className="dropdown-item"><FaUser /> Profile</Link>
+                <button onClick={openLogoutModal} className="dropdown-item">
+                  <IoLogOut style={{ fontSize: "20px" }} /> Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
+      {/* Sidebar */}
       <div className="sidebar">
         <div className="sidebar-section">
           <Link href="/posts" className="sidebar-link">
@@ -110,50 +212,41 @@ export default function Sidebar() {
         )}
 
         <Link href="/posts/Profile" className="sidebar-link">
-          <FaSignOutAlt className="sidebar-icon" />
+          <FaUser className="sidebar-icon" />
           Profile
         </Link>
-        {showLogoutModal && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <p>Are you sure you want to logout?</p>
-              <div className="modal-buttons">
-                <button onClick={closeLogoutModal} className="modal-btn cancel-btn">Cancel</button>
-                <button
-                  onClick={async () => {
-                    const result = await logout();
-                    if (result.success) {
-                      localStorage.removeItem("user");
-                      router.push("/login");
-                    } else {
-                      alert("Logout failed: " + result.message);
-                    }
-                  }}
-                  className="modal-btn logout-btn"
-                >
-                  Logout
-                </button>
-              </div>
+        <Link href="#"onClick={(e) => {
+            e.preventDefault();
+            openLogoutModal();
+          }} className="sidebar-link"
+        >
+          <IoLogOut className="sidebar-icon" style={{fontSize:"20px"}} />
+          Logout
+        </Link>
+      </div>
+      {/* Logout Modal */}
+      {showLogoutModal && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <p>Are you sure you want to logout?</p>
+            <div className="modal-buttons">
+              <button onClick={closeLogoutModal} className="modal-btn cancel-btn">Cancel</button>
+              <button
+                onClick={async () => {
+                  const result = await logout();
+                  if (result.success) {
+                    localStorage.removeItem("user");
+                    router.push("/login");
+                  }
+                }}
+                className="modal-btn logout-btn"
+              >
+                Logout
+              </button>
             </div>
           </div>
-        )}
-        <button
-          onClick={openLogoutModal}
-          className="sidebar-link logout-button"
-          style={{
-            cursor: "pointer",
-            background: "none",
-            border: "none",
-            color: "whitesmoke",
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-        >
-          <FaSignOutAlt className="sidebar-icon" />
-          Logout
-        </button>
-      </div>
+        </div>
+      )}
     </div>
   );
-};
+}
