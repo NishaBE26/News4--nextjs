@@ -192,3 +192,87 @@
   background-color: #ccc;
   border-radius: 4px;
 }
+/* ==================== Responsive: Tablets (≤1024px) ==================== */
+@media (max-width: 1024px) {
+  .resubmitted-container {
+    width: 100%;
+    padding: 4px;
+    max-height: 100%;
+  }
+
+  .resubmitted-box {
+    padding: 10px 16px;
+  }
+
+  .author-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+/* ==================== Responsive: Mobile Devices (≤768px) ==================== */
+@media (max-width: 768px) {
+  .resubmitted-container h2 {
+    font-size: 16px;
+    padding: 6px 0;
+  }
+
+  .resubmitted-box p {
+    font-size: 0.95rem;
+  }
+
+  .author-name,
+  .review-post-button {
+    font-size: 0.9rem;
+  }
+
+  .resubmitted-box {
+    padding: 10px 14px;
+  }
+
+  .resubmitted-posts-scroll {
+    max-height: 400px;
+    padding-right: 6px;
+  }
+}
+
+/* ==================== Extra Small Devices (≤480px) ==================== */
+@media (max-width: 480px) {
+  .resubmitted-container {
+    padding: 4px;
+    border-radius: 6px;
+  }
+
+  .resubmitted-container h2 {
+    font-size: 15px;
+  }
+
+  .resubmitted-box {
+    padding: 8px 12px;
+  }
+
+  .resubmitted-box p {
+    font-size: 0.9rem;
+  }
+
+  .author-name,
+  .review-post-button {
+    font-size: 0.85rem;
+  }
+
+  .review-post-button {
+    text-align: left;
+  }
+
+  .author-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .resubmitted-posts-scroll {
+    max-height: 350px;
+    padding-right: 4px;
+  }
+}

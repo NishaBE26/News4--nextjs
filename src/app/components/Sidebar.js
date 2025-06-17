@@ -11,6 +11,7 @@ import {
   FaInstagram,
   FaGlobe,
   FaYoutube,
+  FaBars,
 } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
 import "../Styles/Sidebar.css";
@@ -26,6 +27,7 @@ export default function Sidebar() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [name, setName] = useState();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
   const profileRef = useRef();
   const router = useRouter();
 
@@ -98,6 +100,9 @@ export default function Sidebar() {
       {/* Top Navigation */}
       <div className="topnav">
         <div className="nav-left">
+          <div className="hamburger-icon" onClick={() => setSidebarOpen(!isSidebarOpen)}>
+            <FaBars />
+          </div>
           <Image
             src="/assets/News4-logo.png"
             alt="Logo"
@@ -121,16 +126,16 @@ export default function Sidebar() {
 
           <div className="social-icons-container">
             <a href="https://news4tamil.com/" target="_blank" rel="noopener noreferrer" className="nav-icon">
-              <FaGlobe  style={{fontSize:"20px"}}/>
+              <FaGlobe />
             </a>
             <a href="https://www.instagram.com/news4tamillive?igsh=MW9kd2Zkc2Zkc2I0dA==" target="_blank" rel="noopener noreferrer" className="nav-icon">
-              <FaInstagram style={{fontSize:"20px"}}/>
+              <FaInstagram />
             </a>
             <a href="https://www.facebook.com/share/1GBDKfKBSU/" target="_blank" rel="noopener noreferrer" className="nav-icon">
-              <FaFacebookF style={{fontSize:"20px"}} />
+              <FaFacebookF />
             </a>
             <a href="https://youtube.com/@news4tamil?si=zuFg8UJORCf_6yXV" target="_blank" rel="noopener noreferrer" className="nav-icon">
-              <FaYoutube style={{fontSize:"20px"}}/>
+              <FaYoutube />
             </a>
           </div>
 
@@ -178,7 +183,7 @@ export default function Sidebar() {
       </div>
 
       {/* Sidebar */}
-      <div className="sidebar">
+      <div className={`sidebar ${isSidebarOpen ? "show" : ""}`}>
         <div className="sidebar-section">
           <Link href="/posts" className="sidebar-link">
             <FaPenFancy className="sidebar-icon" />
@@ -215,15 +220,18 @@ export default function Sidebar() {
           <FaUser className="sidebar-icon" />
           Profile
         </Link>
-        <Link href="#"onClick={(e) => {
-            e.preventDefault();
-            openLogoutModal();
-          }} className="sidebar-link"
+        <Link href="#" onClick={(e) => {
+          e.preventDefault();
+          openLogoutModal();
+        }} className="sidebar-link"
         >
-          <IoLogOut className="sidebar-icon" style={{fontSize:"20px"}} />
+          <IoLogOut className="sidebar-icon" />
           Logout
         </Link>
       </div>
+      {isSidebarOpen && (
+        <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)}></div>
+      )}
       {/* Logout Modal */}
       {showLogoutModal && (
         <div className="modal-overlay">

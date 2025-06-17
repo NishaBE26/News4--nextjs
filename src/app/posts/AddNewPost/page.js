@@ -116,7 +116,6 @@ export default function AddNewPost() {
 
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (!storedUser?.name || !storedUser?.employeeId) return;
-    
     const name = storedUser.name;
     if (!formData.title.trim() || !formData.newsContent.trim()) return;
 
@@ -152,7 +151,7 @@ export default function AddNewPost() {
       updateForm.append("url", formData.url);
       updateForm.append("newsContent", formData.newsContent);
       updateForm.append("category", formData.category);
-      updateForm.append("tags", JSON.stringify(formData.tags)); 
+      updateForm.append("tags", JSON.stringify(formData.tags));
       updateForm.append("seoTitle", formData.seoTitle);
       updateForm.append("seoMetaDescription", formData.seoMetaDescription);
       updateForm.append("status", resubmitted ? "Resubmitted" : formData.status);
@@ -163,174 +162,173 @@ export default function AddNewPost() {
       updateForm.append("taskId", formData.task || taskid || originalPost?.task || "");
 
       if (selectedfile) {
-        updateForm.append("file", selectedfile); 
+        updateForm.append("file", selectedfile);
+      }
 
       response = await updatePostById(id, updateForm);
+      console.log("api response:", response);
+    }
+    else {
+      response = await createPost(cleanData);
+      console.log("api response:", response)
     }
 
-    console.log("api response:", response);
-  }
-    else {
-    response = await createPost(cleanData);
-    console.log("api response:", response)
-  }
+    if (response?.message === "News Created" || response?.message === "News Updated") {
+      router.push("/posts");
+    }
+  };
 
-  if (response?.message === "News Created" || response?.message === "News Updated") {
-    router.push("/posts");
-  }
-};
-
-return (
-  <div className="form-container">
-    <h1 className="addposttitle">
-      {resubmitted ? "Change Post" : originalPost ? "Edit Post" : "New Post"}
-    </h1>
-    <form onSubmit={handleSubmit}>
-      <div className="form-body">
-        <div className="form-left">
-          <input
-            type="text"
-            name="title"
-            placeholder="Title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="text"
-            name="url"
-            placeholder="News URL"
-            value={formData.url}
-            onChange={handleChange}
-          />
-          <textarea
-            name="newsContent"
-            placeholder="Text Content"
-            value={formData.newsContent}
-            onChange={handleChange}
-            required
-          />
-          {formData.task && <input type="hidden" name="task" value={formData.task} />}
-          <input
-            type="file"
-            accept="image/*"
-            id="image-upload"
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
-          <button
-            type="button"
-            onClick={() => document.getElementById("image-upload").click()}
-            className="image-upload-button"
-          >
-            {originalPost ? "Change Image" : "Upload Image"}
-          </button>
-          {selectedfile ? (
-            <div className="image-preview">
-              <img
-                src={URL.createObjectURL(selectedfile)}
-                alt="Preview"
-                style={{
-                  width: "100%",
-                  maxHeight: "300px",
-                  objectFit: "contain",
-                  marginTop: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                }}
-              />
-            </div>
-          ) : originalPost?.file ? (
-            <div className="image-preview">
-              <img
-                src={originalPost.file}
-                alt="Existing Image"
-                style={{
-                  width: "100%",
-                  maxHeight: "300px",
-                  objectFit: "contain",
-                  marginTop: "10px",
-                  border: "1px solid #ccc",
-                  borderRadius: "8px",
-                }}
-              />
-            </div>
-          ) : null}
-          <input
-            type="text"
-            name="seoTitle"
-            placeholder="SEO Title"
-            value={formData.seoTitle}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="seoMetaDescription"
-            placeholder="SEO Description"
-            value={formData.seoMetaDescription}
-            onChange={handleChange}
-          />
-          <input
-            type="text"
-            name="status"
-            value={resubmitted ? "Resubmitted" : formData.status}
-            onChange={handleChange}
-          />
-          <button type="submit">{originalPost ? "Update Post" : "Create Post"}</button>
-        </div>
-        <div className="form-right">
-          <div className="checkbox-group">
-            <label>
-              <strong>Select Category</strong>
-            </label>
-            <div className="scroll-box">
-              {categories.map((category) => {
-                const displayName =
-                  typeof category.name === "object" ? category.name.name : category.name;
-                return (
-                  <div key={category._id}>
-                    <label>
-                      <input
-                        type="radio"
-                        name="category"
-                        value={displayName}
-                        checked={formData.category === displayName}
-                        onChange={() => handleCategorySelect(displayName)}
-                      />
-                      {displayName}
-                    </label>
-                  </div>
-                );
-              })}
-            </div>
+  return (
+    <div className="form-container">
+      <h1 className="addposttitle">
+        {resubmitted ? "Change Post" : originalPost ? "Edit Post" : "New Post"}
+      </h1>
+      <form onSubmit={handleSubmit}>
+        <div className="form-body">
+          <div className="form-left">
+            <input
+              type="text"
+              name="title"
+              placeholder="Title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+            />
+            <input
+              type="text"
+              name="url"
+              placeholder="News URL"
+              value={formData.url}
+              onChange={handleChange}
+            />
+            <textarea
+              name="newsContent"
+              placeholder="Text Content"
+              value={formData.newsContent}
+              onChange={handleChange}
+              required
+            />
+            {formData.task && <input type="hidden" name="task" value={formData.task} />}
+            <input
+              type="file"
+              accept="image/*"
+              id="image-upload"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
+            />
+            <button
+              type="button"
+              onClick={() => document.getElementById("image-upload").click()}
+              className="image-upload-button"
+            >
+              {originalPost ? "Change Image" : "Upload Image"}
+            </button>
+            {selectedfile ? (
+              <div className="image-preview">
+                <img
+                  src={URL.createObjectURL(selectedfile)}
+                  alt="Preview"
+                  style={{
+                    width: "100%",
+                    maxHeight: "300px",
+                    objectFit: "contain",
+                    marginTop: "10px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                  }}
+                />
+              </div>
+            ) : originalPost?.file ? (
+              <div className="image-preview">
+                <img
+                  src={originalPost.file}
+                  alt="Existing Image"
+                  style={{
+                    width: "100%",
+                    maxHeight: "300px",
+                    objectFit: "contain",
+                    marginTop: "10px",
+                    border: "1px solid #ccc",
+                    borderRadius: "8px",
+                  }}
+                />
+              </div>
+            ) : null}
+            <input
+              type="text"
+              name="seoTitle"
+              placeholder="SEO Title"
+              value={formData.seoTitle}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="seoMetaDescription"
+              placeholder="SEO Description"
+              value={formData.seoMetaDescription}
+              onChange={handleChange}
+            />
+            <input
+              type="text"
+              name="status"
+              value={resubmitted ? "Resubmitted" : formData.status}
+              onChange={handleChange}
+            />
+            <button type="submit">{originalPost ? "Update Post" : "Create Post"}</button>
           </div>
-          <div className="checkbox-group">
-            <label>
-              <strong>Select Tags</strong>
-            </label>
-            <div className="scroll-box">
-              {tags.map((tag) => {
-                const displayName = typeof tag.name === "object" ? tag.name.name : tag.name;
-                return (
-                  <div key={tag._id}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        value={displayName}
-                        checked={formData.tags.includes(displayName)}
-                        onChange={() => handleTagToggle(displayName)}
-                      />
-                      {displayName}
-                    </label>
-                  </div>
-                );
-              })}
+          <div className="form-right">
+            <div className="checkbox-group">
+              <label>
+                <strong>Select Category</strong>
+              </label>
+              <div className="scroll-box">
+                {categories.map((category) => {
+                  const displayName =
+                    typeof category.name === "object" ? category.name.name : category.name;
+                  return (
+                    <div key={category._id}>
+                      <label>
+                        <input
+                          type="radio"
+                          name="category"
+                          value={displayName}
+                          checked={formData.category === displayName}
+                          onChange={() => handleCategorySelect(displayName)}
+                        />
+                        {displayName}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            <div className="checkbox-group">
+              <label>
+                <strong>Select Tags</strong>
+              </label>
+              <div className="scroll-box">
+                {tags.map((tag) => {
+                  const displayName = typeof tag.name === "object" ? tag.name.name : tag.name;
+                  return (
+                    <div key={tag._id}>
+                      <label>
+                        <input
+                          type="checkbox"
+                          value={displayName}
+                          checked={formData.tags.includes(displayName)}
+                          onChange={() => handleTagToggle(displayName)}
+                        />
+                        {displayName}
+                      </label>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </form>
-  </div>
-);
+      </form>
+    </div>
+  );
 };
 

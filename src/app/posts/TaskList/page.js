@@ -98,7 +98,7 @@ export default function TaskList (){
     };
 
     return (
-        <div className="task-table-container" style={{ marginTop: "50px", marginLeft: "120px" }}>
+        <div className="task-table-container">
             <h1 className="allposts">All Tasks</h1>
             {tasks.length === 0 ? (
                 <p>No tasks found.</p>

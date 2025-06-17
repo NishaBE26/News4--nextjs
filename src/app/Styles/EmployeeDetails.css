@@ -138,78 +138,85 @@
 .details-table .cancel-btn:hover {
   background-color: #5a6268;
 }
+/* Base styles are kept as-is from your provided CSS */
 
-@media (max-width: 992px) {
+/* RESPONSIVE DESIGN */
+@media screen and (max-width: 1024px) {
   .details-container {
-    margin-left: 0;
+    margin-left: 0; /* Remove left margin on smaller screens */
+    margin-top: 60px;
     padding: 15px;
   }
 
+  .details-container h2 {
+    font-size: 1.6em;
+  }
+
   .details-table {
-    display: block;
     width: 100%;
-    box-shadow: none;
-    border-radius: 0;
+    font-size: 0.85em;
+    overflow-x: auto;
+    display: block;
   }
 
   .details-table thead {
-    display: none;
+    display: none; /* Hide table head on small screens for card layout */
   }
 
-  .details-table tr,
-  .details-table td {
-    display: block;
-    width: 100%;
-  }
-
-  .details-table tr {
+  .details-table tbody tr {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ccc;
     margin-bottom: 15px;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
     padding: 10px;
+    background: #fff;
   }
 
   .details-table td {
-    text-align: right;
-    padding-left: 50%;
-    position: relative;
-    word-break: break-word;
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 0.9em;
+    border: none;
+    border-bottom: 1px dashed #ccc;
   }
 
   .details-table td::before {
     content: attr(data-label);
-    position: absolute;
-    left: 10px;
-    width: calc(50% - 20px);
-    text-align: left;
     font-weight: bold;
-    color: #007bff;
-    font-size: 0.9em;
+    flex-shrink: 0;
+    margin-right: 10px;
+    color: #333;
   }
 
-  .details-table td:first-child {
-    text-align: center;
-    padding-left: 0;
+  .details-table td:last-child {
+    border-bottom: none;
   }
 
-  .details-table td:first-child::before {
-    content: none;
+  .details-table button {
+    font-size: 0.8em;
+    padding: 6px 10px;
   }
 
   .profile-thumbnail,
   .initial {
-    margin: 0 auto;
-  }
-
-  .details-table td:last-child {
-    text-align: center;
-    padding-left: 0;
-    padding-top: 15px;
-  }
-
-  .details-table td:last-child::before {
-    content: none;
+    width: 35px;
+    height: 35px;
   }
 }
+
+@media screen and (max-width: 480px) {
+  .details-container h2 {
+    font-size: 1.4em;
+  }
+
+  .details-table td {
+    font-size: 0.8em;
+  }
+
+  .details-table button {
+    font-size: 0.75em;
+  }
+}
+

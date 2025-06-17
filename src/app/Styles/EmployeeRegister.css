@@ -1,10 +1,10 @@
 .employee-register-container {
-  width: 89%;
-  margin-top: 50px;
-  margin-left:120px;
-  padding: 10px;
+  margin-left: 120px;    /* space for sidebar */
+  margin-top: 60px;      /* space for top navbar */
+  padding: 20px;
+  width: calc(98% - 140px); /* subtract margin and padding */
   background-color: #ffffff;
-  border-radius: 12px;
+  border-radius: 25px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
   font-family: Arial, sans-serif;
 }
@@ -53,17 +53,54 @@ form textarea {
 
 button[type="submit"] {
   padding: 12px 30px;
-  background-image:linear-gradient(135deg,blue 50%,brown 50%);
+  background-image: linear-gradient(135deg, blue 50%, brown 50%);
   color: white;
   border: none;
-  border-radius:12px;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 16px;
-  grid-column: 1 / -1; 
-  justify-self: center; 
+  grid-column: 1 / -1;
+  justify-self: center;
 }
 
 button[type="submit"]:hover {
   background-color: #0056b3;
 }
 
+/* ✅ Responsive Design */
+@media (max-width: 1024px) {
+  .employee-register-container {
+    width: 95%;
+    margin-left: 10px;
+    margin-top: 80px;
+  }
+
+  form {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 600px) {
+  .employee-register-container {
+    padding: 15px;
+    margin-left: 0;
+    margin-top: 80px;
+    width: 95%;
+  }
+
+  form input,
+  form select,
+  form textarea {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  button[type="submit"] {
+    font-size: 15px;
+    padding: 10px 20px;
+  }
+}

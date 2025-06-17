@@ -105,7 +105,7 @@
   font-size: 18px;
   font-weight: 500;
 }
-
+/* ==================================posts table =============================== */
 .posts-table-container {
   overflow-x: hidden;
   width: 100%;
@@ -355,4 +355,158 @@
 .submit-btn:hover:not(:disabled) {
   background: linear-gradient(45deg, #0057d9, #3a86ff);
   box-shadow: 0 6px 20px rgba(58, 134, 255, 0.7);
+}
+/* ========================== Responsive: Tablets & Smaller (≤1024px) ========================== */
+@media (max-width: 1024px) {
+  .posts-wrapper {
+    margin-left: 10px;
+    margin-right: 10px;
+    width: auto;
+  }
+
+  .carousel-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .post-card {
+    width: 240px;
+  }
+
+  .task-table {
+    width: 100%;
+    padding: 3px;
+  }
+
+  .task-row:first-child,
+  .task-row:last-child {
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .task-row label {
+    min-width: 100%;
+  }
+
+  .submit-btn {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
+/* ========================== Responsive: Mobile Devices (≤768px) ========================== */
+@media (max-width: 768px) {
+  .posts-wrapper {
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 10px;
+  }
+
+  .carousel {
+    gap: 6px;
+    padding: 8px 4px;
+  }
+
+  .post-card {
+    flex-direction: column;
+    width: 200px;
+    align-items: flex-start;
+  }
+
+  .vertical-line {
+    display: none;
+  }
+
+  .post-card-image {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 6px;
+  }
+
+  .post-card-title {
+    font-size: 12px;
+  }
+
+  .post-card-author,
+  .post-card-date {
+    font-size: 12px;
+  }
+
+  .allposts {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .posts-table-container {
+    overflow-x: auto;
+  }
+
+  .posts-table th,
+  .posts-table td {
+    font-size: 13px;
+    padding: 6px;
+  }
+
+  .task-table {
+    padding: 5px;
+  }
+
+  .task-row label {
+    font-size: 14px;
+  }
+
+  .task-row label input,
+  .task-row label select {
+    font-size: 13px;
+    padding: 8px;
+  }
+
+  .submit-btn {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+/* ========================== Extra Small Devices (≤480px) ========================== */
+@media (max-width: 480px) {
+  .post-card {
+    width: 100%;
+  }
+
+  .post-card-image {
+    width: 50px;
+    height: 50px;
+  }
+
+  .carousel-wrapper {
+    gap: 10px;
+  }
+
+  .nav-button {
+    padding: 6px 10px;
+    font-size: 16px;
+  }
+
+  .task-row:first-child,
+  .task-row:last-child {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .task-row label {
+    font-size: 13px;
+    min-width: 100%;
+  }
+
+  .submit-btn {
+    width: 100%;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .posts-table th,
+  .posts-table td {
+    font-size: 12px;
+    padding: 5px;
+  }
 }

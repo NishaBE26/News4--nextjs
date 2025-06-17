@@ -155,3 +155,58 @@ body {
 .register-link span:hover {
   color: #45a049;
 }
+@media (max-width: 768px) {
+  .login-page {
+    width: 95vw;
+    height: auto;
+    padding: 20px;
+  }
+
+  .right-panel {
+    width: 100%;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .inline-form {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .inline-form .form-group {
+    width: 100%;
+  }
+
+  .inline-form input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .inline-form button {
+    width: 100%;
+    margin: 10px 0 0 0;
+  }
+
+  .register-link {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .login-title {
+    font-size: 22px;
+  }
+
+  .inline-form input {
+    font-size: 14px;
+  }
+
+  .inline-form button {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .register-link {
+    font-size: 0.8rem;
+  }
+}

@@ -146,3 +146,56 @@ button[type="submit"]:hover {
   font-style: italic;
   font-size: 14px;
 }
+/* Mobile and Tablet View */
+@media (max-width: 1024px) {
+  .form-container {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 15px;
+  }
+
+  .post-form-container {
+    margin-left: 0;
+  }
+
+  .form-body {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .form-right {
+    border-left: none;
+    padding-left: 0;
+    max-height: none;
+  }
+
+  .addposttitle {
+    font-size: 16px;
+    margin-top: -8px;
+  }
+}
+
+@media (max-width: 600px) {
+  .form-container {
+    padding: 10px;
+  }
+
+  input[type="text"],
+  input[type="date"],
+  input[type="url"],
+  select,
+  textarea {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .image-upload-button,
+  button[type="submit"] {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .scroll-box label {
+    font-size: 13px;
+  }
+}

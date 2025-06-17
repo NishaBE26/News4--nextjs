@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { createEmployee } from "../../services/Api";
+import { useRouter } from "next/navigation";
 import "../../Styles/EmployeeRegister.css";
 
 const EmployeeRegister = () => {
@@ -21,6 +22,7 @@ const EmployeeRegister = () => {
 
   const [uploading, setUploading] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+  const route=useRouter();
 
   useEffect(() => {
     if (!uploading) {
@@ -47,7 +49,6 @@ const EmployeeRegister = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("submitted data:", formData)
-    try {
       const form = new FormData();
       Object.entries(formData).forEach(([key, value]) => {
         form.append(key, value);
@@ -56,7 +57,6 @@ const EmployeeRegister = () => {
 
       const result = await createEmployee(form);    // multipart form data
       // application/json
-      console.log("api response:", result);
       if (result.success) {
         alert("Employee created successfully!");
         setFormData({
@@ -74,10 +74,8 @@ const EmployeeRegister = () => {
           address: "",
         });
         setUploading(null);
+        route.push("/posts/EmployeeDetails");
       }
-    } catch (error) {
-      console.error("Submit error:", error);
-    }
   };
 
   return (
