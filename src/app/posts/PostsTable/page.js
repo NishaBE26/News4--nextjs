@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { IoMdArrowDropdown } from "react-icons/io";
 
 export default function PostsTable ({
   posts,
@@ -18,6 +19,7 @@ export default function PostsTable ({
 }) {
   const router = useRouter();
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [expandDropdown, setExpandDropdown] = useState(false);
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
@@ -142,6 +144,9 @@ export default function PostsTable ({
             <th>S.No</th>
             <th>Image</th>
             <th>Title</th>
+            <div className="dropdown-container" onClick={() => setExpandDropdown(!expandDropdown)}>
+              <IoMdArrowDropdown />
+            </div>
             <th>Author Name</th>
             <th>Words</th>
             <th>Category</th>

@@ -3,7 +3,7 @@
   background-color: #fff;
   max-height: 500px;
   border-radius: 12px;
-  padding: 0; 
+  padding: 0;
   margin-top: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid #c1b6b6;
@@ -100,12 +100,14 @@
   color: #3cad40;
   font-weight: 600;
 }
+
 /* ================admin post status================= */
 .resubmitted-container {
-  width: 98%;
-  max-height: 500px;        
-  padding: 12px;
-  margin-top: -4px;
+  width: 97%;
+  max-width: 1200px;
+  max-height: 500px;
+  padding: 10px;
+  margin: 0 auto;
   background-color: #f8f9fa;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
@@ -116,29 +118,27 @@
 }
 
 .resubmitted-container h2 {
-  font-size: 18px;
+  font-size: 20px;
   color: #333;
   margin: 0 0 10px 0;
-  position: sticky;       
+  position: sticky;
   top: 0;
   background: #f8f9fa;
-  padding: 8px 0;
+  padding: 10px 0;
   z-index: 1;
   border-bottom: 1px solid #ccc;
 }
 
-/* Scrollable area for posts */
 .resubmitted-posts-scroll {
   overflow-y: auto;
-  flex-grow: 1;            /* Fill remaining height */
-  padding-right: 8px;      /* Padding to avoid scrollbar overlap */
+  flex-grow: 1;
+  padding-right: 8px;
 }
 
-/* Keep your existing styles for .resubmitted-box and children */
 .resubmitted-box {
   background-color: #fff;
   border: 1px solid #ddd;
-  padding: 0px 20px;
+  padding: 12px 18px;
   border-radius: 6px;
   box-shadow: 0 2px 4px rgb(0 0 0 / 0.05);
   transition: box-shadow 0.2s ease;
@@ -161,6 +161,8 @@
   align-items: center;
   margin-top: 6px;
   padding-top: 4px;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .author-name {
@@ -183,96 +185,48 @@
   font-weight: 600;
 }
 
-/* Optional: custom scrollbar for WebKit */
+/* Scrollbar */
 .resubmitted-posts-scroll::-webkit-scrollbar {
   width: 6px;
 }
-
 .resubmitted-posts-scroll::-webkit-scrollbar-thumb {
   background-color: #ccc;
   border-radius: 4px;
 }
-/* ==================== Responsive: Tablets (≤1024px) ==================== */
-@media (max-width: 1024px) {
+
+@media (max-width: 768px) {
   .resubmitted-container {
-    width: 100%;
-    padding: 4px;
-    max-height: 100%;
+    padding: 8px;
   }
 
   .resubmitted-box {
-    padding: 10px 16px;
+    padding: 10px;
   }
 
-  .author-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-}
-
-/* ==================== Responsive: Mobile Devices (≤768px) ==================== */
-@media (max-width: 768px) {
-  .resubmitted-container h2 {
-    font-size: 16px;
-    padding: 6px 0;
-  }
-
-  .resubmitted-box p {
+  .resubmitted-box p,
+  .author-name,
+  .review-post-button {
     font-size: 0.95rem;
   }
-
-  .author-name,
-  .review-post-button {
-    font-size: 0.9rem;
-  }
-
-  .resubmitted-box {
-    padding: 10px 14px;
-  }
-
-  .resubmitted-posts-scroll {
-    max-height: 400px;
-    padding-right: 6px;
-  }
 }
 
-/* ==================== Extra Small Devices (≤480px) ==================== */
 @media (max-width: 480px) {
-  .resubmitted-container {
-    padding: 4px;
-    border-radius: 6px;
-  }
-
   .resubmitted-container h2 {
-    font-size: 15px;
+    font-size: 16px;
   }
 
   .resubmitted-box {
-    padding: 8px 12px;
+    padding: 8px;
   }
 
-  .resubmitted-box p {
-    font-size: 0.9rem;
-  }
-
+  .resubmitted-box p,
   .author-name,
   .review-post-button {
-    font-size: 0.85rem;
-  }
-
-  .review-post-button {
-    text-align: left;
+    font-size: 0.9rem;
   }
 
   .author-row {
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
-  }
-
-  .resubmitted-posts-scroll {
-    max-height: 350px;
-    padding-right: 4px;
   }
 }

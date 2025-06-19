@@ -14,8 +14,9 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
+import { MdDarkMode, MdLightMode } from "react-icons/md";
 import "../Styles/Sidebar.css";
-import { logout, getEmployeeById } from "../services/Api";
+import { logout, getEmployeeById, getAllCategories } from "../services/Api";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
@@ -28,8 +29,21 @@ export default function Sidebar() {
   const [name, setName] = useState();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const profileRef = useRef();
   const router = useRouter();
+  const [categories, setCategories] = useState([]);
+
+  const toggledarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+    localStorage.setItem("darkMode", newMode);
+    if (newMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  };
 
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -38,20 +52,31 @@ export default function Sidebar() {
       setDesignation(user.designation);
       setName(user.name);
       setLoggedEmployeeId(user.employeeId);
-
       const fetchProfilePhoto = async () => {
         try {
           const value = await getEmployeeById(user.employeeId);
-          if (value && value.photo) {
-            setEmployeePhoto(value.photo);
-          }
+          if (value && value.photo) setEmployeePhoto(value.photo);
         } catch (error) {
           console.error("Error fetching employee photo:", error);
         }
       };
-
+      const fetchCategories = async () => {
+        try {
+          const response = await getAllCategories();
+          if (response && response.categoryList) {
+            setCategories(response.categoryList);
+          }
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+      };
+      fetchCategories();
       fetchProfilePhoto();
     }
+
+    const savedMode = localStorage.getItem("darkMode") === "true";
+    setIsDarkMode(savedMode);
+    if (savedMode) document.documentElement.classList.add("dark");
 
     let frameId;
     const updateTime = () => {
@@ -86,12 +111,6 @@ export default function Sidebar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    const closeOnRouteChange = () => setShowProfileMenu(false);
-    router.events?.on("routeChangeStart", closeOnRouteChange);
-    return () => router.events?.off("routeChangeStart", closeOnRouteChange);
-  }, [router]);
-
   const openLogoutModal = () => setShowLogoutModal(true);
   const closeLogoutModal = () => setShowLogoutModal(false);
 
@@ -103,19 +122,29 @@ export default function Sidebar() {
           <div className="hamburger-icon" onClick={() => setSidebarOpen(!isSidebarOpen)}>
             <FaBars />
           </div>
-          <Image
-            src="/assets/News4-logo.png"
-            alt="Logo"
-            width={120}
-            height={0}
-            className="logo"
-            priority
-          />
+          <Image src="/assets/News4-logo.png" alt="Logo" width={120} height={0} className="logo" priority />
         </div>
-        <div className="nav-links">
-          <div className="name-display">
-            👋 Hi, <strong>{name} / {designation}</strong>
+        <div className="nav-center">
+          <Link href="/posts" className="nav-page">Home</Link>
+          <span className="divider">|</span>
+          <Link href="/posts/AllPosts" className="nav-page">All posts</Link>
+          <span className="divider">|</span>
+          <div className="nav-dropdown">
+            <button className="nav-page dropdown-toggle">Categories</button>
+            <div className="dropdown-menu">
+              {categories.map((category) => (
+                <Link href={`/posts/CategoryPage/${category._id}`} className="dropdown-item" key={category._id}>
+                  {category.name}
+                </Link>
+              ))}
+            </div>
           </div>
+        </div>
+        <div className="dark-mode-toggle" onClick={toggledarkMode}>
+          {isDarkMode ? <MdDarkMode /> : <MdLightMode />}
+        </div>
+        <div className="name-display">
+          👋 Hi, <strong>{name} / {designation}</strong>
         </div>
         <div className="nav-right" ref={profileRef}>
           <p className="datetime">
@@ -123,37 +152,16 @@ export default function Sidebar() {
             <span className="date">{currentTime.date}, </span>
             <span className="time">{currentTime.time}</span>
           </p>
-
           <div className="social-icons-container">
-            <a href="https://news4tamil.com/" target="_blank" rel="noopener noreferrer" className="nav-icon">
-              <FaGlobe />
-            </a>
-            <a href="https://www.instagram.com/news4tamillive?igsh=MW9kd2Zkc2Zkc2I0dA==" target="_blank" rel="noopener noreferrer" className="nav-icon">
-              <FaInstagram />
-            </a>
-            <a href="https://www.facebook.com/share/1GBDKfKBSU/" target="_blank" rel="noopener noreferrer" className="nav-icon">
-              <FaFacebookF />
-            </a>
-            <a href="https://youtube.com/@news4tamil?si=zuFg8UJORCf_6yXV" target="_blank" rel="noopener noreferrer" className="nav-icon">
-              <FaYoutube />
-            </a>
+            <a href="https://news4tamil.com/" target="_blank" rel="noopener noreferrer" className="nav-icon"><FaGlobe /></a>
+            <a href="https://www.instagram.com/news4tamillive" target="_blank" rel="noopener noreferrer" className="nav-icon"><FaInstagram /></a>
+            <a href="https://www.facebook.com/share/1GBDKfKBSU/" target="_blank" rel="noopener noreferrer" className="nav-icon"><FaFacebookF /></a>
+            <a href="https://youtube.com/@news4tamil" target="_blank" rel="noopener noreferrer" className="nav-icon"><FaYoutube /></a>
           </div>
 
-          {/* Profile Image & Dropdown */}
-          <div
-            className="profile-container"
-            onClick={() => setShowProfileMenu(!showProfileMenu)}
-            style={{ cursor: "pointer" }}
-          >
+          <div className="profile-container" onClick={() => setShowProfileMenu(!showProfileMenu)} style={{ cursor: "pointer" }}>
             {employeephoto ? (
-              <img
-                src={employeephoto}
-                alt="User"
-                width={40}
-                height={40}
-                className="user-photo"
-                style={{ borderRadius: "50%" }}
-              />
+              <img src={employeephoto} alt="User" width={40} height={40} className="user-photo" style={{ borderRadius: "50%" }} />
             ) : (
               <div className="user-initial" style={{
                 width: "35px",
@@ -173,9 +181,7 @@ export default function Sidebar() {
             {showProfileMenu && (
               <div className="profile-dropdown">
                 <Link href="/posts/Profile" className="dropdown-item"><FaUser /> Profile</Link>
-                <button onClick={openLogoutModal} className="dropdown-item">
-                  <IoLogOut style={{ fontSize: "20px" }} /> Logout
-                </button>
+                <button onClick={openLogoutModal} className="dropdown-item"><IoLogOut /> Logout</button>
               </div>
             )}
           </div>
@@ -185,10 +191,7 @@ export default function Sidebar() {
       {/* Sidebar */}
       <div className={`sidebar ${isSidebarOpen ? "show" : ""}`}>
         <div className="sidebar-section">
-          <Link href="/posts" className="sidebar-link">
-            <FaPenFancy className="sidebar-icon" />
-            Posts
-          </Link>
+          <Link href="/posts" className="sidebar-link"><FaPenFancy className="sidebar-icon" /> Posts</Link>
           <div className="sidebar-submenu" style={{ marginTop: "-8px" }}>
             <Link href="/posts/AddNewPost" className="sidebar-sublink">Add New Post</Link>
             <Link href="/posts/CategoryPage" className="sidebar-sublink">Category</Link>
@@ -196,8 +199,8 @@ export default function Sidebar() {
             <Link href="/posts/StatusPage" className="sidebar-sublink">Status</Link>
             {designation === "admin" && (
               <>
-                <Link href="/posts/TaskList" className="sidebar-sublink">Task List</Link>
                 <Link href="/posts/Type" className="sidebar-sublink">Type</Link>
+                <Link href="/posts/TaskList" className="sidebar-sublink">Task List</Link>
               </>
             )}
           </div>
@@ -205,33 +208,20 @@ export default function Sidebar() {
 
         {designation === "admin" && (
           <>
-            <Link href="/posts/EmployeeRegister" className="sidebar-link">
-              <FaCashRegister className="sidebar-icon" />
-              Register
-            </Link>
-            <Link href="/posts/EmployeeDetails" className="sidebar-link">
-              <FaInfoCircle className="sidebar-icon" />
-              Details
-            </Link>
+            <Link href="/posts/EmployeeRegister" className="sidebar-link"><FaCashRegister className="sidebar-icon" /> Register</Link>
+            <Link href="/posts/EmployeeDetails" className="sidebar-link"><FaInfoCircle className="sidebar-icon" /> Details</Link>
           </>
         )}
 
-        <Link href="/posts/Profile" className="sidebar-link">
-          <FaUser className="sidebar-icon" />
-          Profile
-        </Link>
-        <Link href="#" onClick={(e) => {
-          e.preventDefault();
-          openLogoutModal();
-        }} className="sidebar-link"
-        >
-          <IoLogOut className="sidebar-icon" />
-          Logout
+        <Link href="/posts/Profile" className="sidebar-link"><FaUser className="sidebar-icon" /> Profile</Link>
+        <Link href="#" onClick={(e) => { e.preventDefault(); openLogoutModal(); }} className="sidebar-link">
+          <IoLogOut className="sidebar-icon" /> Logout
         </Link>
       </div>
       {isSidebarOpen && (
         <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)}></div>
       )}
+
       {/* Logout Modal */}
       {showLogoutModal && (
         <div className="modal-overlay">

@@ -1,9 +1,17 @@
-/* global.css */
+:root {
+  --body-bg: #131D4F;   /* Light mode default */
+  --text-color: #333;
+}
 
-/* Default body styles */
+.dark {
+  --body-bg: #0d0d0d;   /* Dark mode background */
+  --text-color: #333;
+}
+
 body {
   font-family: Arial, sans-serif;
-  background: #131D4F;
-  color: #333;
+  background: var(--body-bg);
+  color: var(--text-color);
   line-height: 1.6;
+  transition: background 0.3s ease, color 0.3s ease;
 }
