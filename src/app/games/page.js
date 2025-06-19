@@ -1,94 +1,92 @@
 "use client";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
-const sentences = [
-  "The quick brown fox jumps over the lazy dog.",
-  "Typing fast is fun and helpful for productivity.",
-  "React makes building UIs a breeze.",
-  "Practice daily to improve your typing speed.",
-];
+export default function NumberGuessingGame() {
+  const [target, setTarget] = useState(generateRandom());
+  const [guess, setGuess] = useState("");
+  const [message, setMessage] = useState("Guess a number between 1 and 100");
+  const [attempts, setAttempts] = useState(0);
+  const [gameOver, setGameOver] = useState(false);
 
-export default function TypingSpeedTest() {
-  const [quote, setQuote] = useState("");
-  const [userInput, setUserInput] = useState("");
-  const [startTime, setStartTime] = useState(null);
-  const [wpm, setWpm] = useState(null);
-  const [isFinished, setIsFinished] = useState(false);
-  const inputRef = useRef(null);
+  function generateRandom() {
+    return Math.floor(Math.random() * 100) + 1;
+  }
 
-  useEffect(() => {
-    generateNewQuote();
-  }, []);
-
-  const generateNewQuote = () => {
-    const random = sentences[Math.floor(Math.random() * sentences.length)];
-    setQuote(random);
-    setUserInput("");
-    setStartTime(null);
-    setWpm(null);
-    setIsFinished(false);
-    inputRef.current?.focus();
-  };
-
-  const handleInputChange = (e) => {
-    const value = e.target.value;
-    if (!startTime) setStartTime(Date.now());
-
-    if (value === quote) {
-      const endTime = Date.now();
-      const duration = (endTime - startTime) / 1000 / 60; // minutes
-      const words = value.trim().split(" ").length;
-      const wpmCalc = Math.round(words / duration);
-      setWpm(wpmCalc);
-      setIsFinished(true);
+  const handleGuess = () => {
+    const num = parseInt(guess);
+    if (isNaN(num) || num < 1 || num > 100) {
+      setMessage("❌ Please enter a number between 1 and 100.");
+      return;
     }
 
-    setUserInput(value);
+    setAttempts(attempts + 1);
+
+    if (num === target) {
+      setMessage(`🎉 Correct! You guessed it in ${attempts + 1} tries.`);
+      setGameOver(true);
+    } else if (num < target) {
+      setMessage("📉 Too low! Try again.");
+    } else {
+      setMessage("📈 Too high! Try again.");
+    }
+
+    setGuess("");
   };
 
-  const getHighlightedText = () => {
-    const correct = quote.slice(0, userInput.length);
-    return (
-      <>
-        <span style={{ color: "lightgreen" }}>{correct}</span>
-        <span style={{ color: "lightgray" }}>{quote.slice(userInput.length)}</span>
-      </>
-    );
+  const resetGame = () => {
+    setTarget(generateRandom());
+    setGuess("");
+    setMessage("Guess a number between 1 and 100");
+    setAttempts(0);
+    setGameOver(false);
   };
 
   return (
     <div style={{ textAlign: "center", padding: "2rem", color: "white" }}>
-      <h2>⌨️ Typing Speed Test</h2>
-      <p style={{ fontSize: "18px", marginBottom: "10px" }}>{getHighlightedText()}</p>
-      <textarea
-        ref={inputRef}
-        value={userInput}
-        onChange={handleInputChange}
-        rows="3"
-        style={{
-          width: "80%",
-          padding: "10px",
-          fontSize: "16px",
-          border: "2px solid #888",
-          borderRadius: "5px",
-        }}
-        disabled={isFinished}
-      ></textarea>
-      <br />
-      {isFinished && (
-        <p style={{ fontSize: "20px", marginTop: "15px", color: "#00ff00" }}>
-          🎉 Your speed: <strong>{wpm} WPM</strong>
-        </p>
+      <h2>🔢 Number Guessing Game</h2>
+      <p style={{ fontSize: "18px", marginBottom: "10px" }}>{message}</p>
+
+      {!gameOver && (
+        <>
+          <input
+            type="number"
+            value={guess}
+            onChange={(e) => setGuess(e.target.value)}
+            style={{
+              padding: "10px",
+              fontSize: "16px",
+              width: "100px",
+              textAlign: "center",
+              marginRight: "10px",
+            }}
+          />
+          <button
+            onClick={handleGuess}
+            style={{
+              padding: "10px 15px",
+              fontSize: "16px",
+              cursor: "pointer",
+              border: "2px solid #444",
+              borderRadius: "5px",
+              backgroundColor: "#f2f2f2",
+              color: "#000",
+            }}
+          >
+            Guess
+          </button>
+        </>
       )}
+
+      <br />
       <button
-        onClick={generateNewQuote}
+        onClick={resetGame}
         style={{
           marginTop: "20px",
-          padding: "8px 20px",
+          padding: "10px 20px",
           fontSize: "16px",
           backgroundColor: "#f2f2f2",
           color: "#000",
-          border: "2px solid #555",
+          border: "2px solid #444",
           borderRadius: "5px",
           cursor: "pointer",
         }}
