@@ -16,7 +16,7 @@ import {
 import { IoLogOut } from "react-icons/io5";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import "../Styles/Sidebar.css";
-import { logout, getEmployeeById, getAllCategories } from "../services/Api";
+import { logout, getEmployeeById } from "../services/Api";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
@@ -32,7 +32,6 @@ export default function Sidebar() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const profileRef = useRef();
   const router = useRouter();
-  const [categories, setCategories] = useState([]);
 
   const toggledarkMode = () => {
     const newMode = !isDarkMode;
@@ -60,17 +59,6 @@ export default function Sidebar() {
           console.error("Error fetching employee photo:", error);
         }
       };
-      const fetchCategories = async () => {
-        try {
-          const response = await getAllCategories();
-          if (response && response.categoryList) {
-            setCategories(response.categoryList);
-          }
-        } catch (error) {
-          console.error("Error fetching categories:", error);
-        }
-      };
-      fetchCategories();
       fetchProfilePhoto();
     }
 
@@ -129,16 +117,7 @@ export default function Sidebar() {
           <span className="divider">|</span>
           <Link href="/posts/AllPosts" className="nav-page">All posts</Link>
           <span className="divider">|</span>
-          <div className="nav-dropdown">
-            <button className="nav-page dropdown-toggle">Categories</button>
-            <div className="dropdown-menu">
-              {categories.map((category) => (
-                <Link href={`/posts/CategoryPage/${category._id}`} className="dropdown-item" key={category._id}>
-                  {category.name}
-                </Link>
-              ))}
-            </div>
-          </div>
+          <Link href="/games" className="nav-page">Games</Link>
         </div>
         <div className="dark-mode-toggle" onClick={toggledarkMode}>
           {isDarkMode ? <MdDarkMode /> : <MdLightMode />}
@@ -153,12 +132,11 @@ export default function Sidebar() {
             <span className="time">{currentTime.time}</span>
           </p>
           <div className="social-icons-container">
-            <a href="https://news4tamil.com/" target="_blank" rel="noopener noreferrer" className="nav-icon"><FaGlobe /></a>
-            <a href="https://www.instagram.com/news4tamillive" target="_blank" rel="noopener noreferrer" className="nav-icon"><FaInstagram /></a>
-            <a href="https://www.facebook.com/share/1GBDKfKBSU/" target="_blank" rel="noopener noreferrer" className="nav-icon"><FaFacebookF /></a>
-            <a href="https://youtube.com/@news4tamil" target="_blank" rel="noopener noreferrer" className="nav-icon"><FaYoutube /></a>
+            <a href="https://news4tamil.com/" target="_blank" rel="noopener noreferrer" className="nav-icon website"><FaGlobe /></a>
+            <a href="https://www.instagram.com/news4tamillive" target="_blank" rel="noopener noreferrer" className="nav-icon instagram"><FaInstagram /></a>
+            <a href="https://www.facebook.com/share/1GBDKfKBSU/" target="_blank" rel="noopener noreferrer" className="nav-icon facebook"><FaFacebookF /></a>
+            <a href="https://youtube.com/@news4tamil" target="_blank" rel="noopener noreferrer" className="nav-icon youtube"><FaYoutube /></a>
           </div>
-
           <div className="profile-container" onClick={() => setShowProfileMenu(!showProfileMenu)} style={{ cursor: "pointer" }}>
             {employeephoto ? (
               <img src={employeephoto} alt="User" width={40} height={40} className="user-photo" style={{ borderRadius: "50%" }} />

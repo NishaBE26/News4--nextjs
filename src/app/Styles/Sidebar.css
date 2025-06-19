@@ -222,7 +222,7 @@
 }
 
 .datetime {
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
   white-space: nowrap;
   margin-left: -60%;
@@ -247,24 +247,20 @@
 .social-icons-container {
   display: flex;
   align-items: center;
-  margin-right: -55px;
-  gap: 5px;
+  margin-right: -30px;
+  gap: 8px;
 }
 
 .nav-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
   border-radius: 50%;
   font-size: 20px;
   transition: background-color 0.3s ease, transform 0.2s ease;
   text-decoration: none;
-}
-
-.nav-icon:hover {
-  transform: scale(1.1);
 }
 
 .nav-icon svg {
@@ -272,10 +268,35 @@
   font-size: 16px;
 }
 
+.nav-icon:hover {
+  transform: scale(1.1);
+}
+
+.nav-icon.website {
+  background-color: #1a73e8;
+}
+.nav-icon.instagram {
+  background: radial-gradient(
+    circle at 30% 107%,
+    #fdf497 0%,
+    #fd5949 30%,
+    #d6249f 60%,
+    #285AEB 90%
+  );
+}
+.nav-icon.facebook {
+  background-color: #1877F2;
+}
+
+.nav-icon.youtube {
+  background-color: #FF0000;
+}
+
+
 .profile-container {
   position: relative;
   display: inline-block;
-  margin-left: 12%;
+  margin-left: 10%;
 }
 
 .profile-dropdown {
