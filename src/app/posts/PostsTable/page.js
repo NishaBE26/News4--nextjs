@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-export default function PostsTable ({
+export default function PostsTable({
   posts,
   currentPage,
   totalPages,
@@ -16,10 +16,12 @@ export default function PostsTable ({
   handleEdit,
   handleDelete,
   updatePostById,
+  selectedMonth,
+  setSelectedMonth,
 }) {
   const router = useRouter();
   const [loggedInUser, setLoggedInUser] = useState(null);
-  const [expandDropdown, setExpandDropdown] = useState(false);
+
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
@@ -39,115 +41,67 @@ export default function PostsTable ({
     updatePostById(postId, newStatus);
   };
 
+  const currentMonth = new Date().toLocaleString("default", {
+    month: "long",
+    year: "numeric",
+  });
+
+  const generateMonthOptions = () => {
+    const startMonth = new Date(2025, 3);
+    const now = new Date();
+    const endMonth = new Date(now.getFullYear(), now.getMonth() + 1);
+    const months = [];
+
+    while (startMonth <= endMonth) {
+      const label = startMonth.toLocaleString("default", {
+        month: "long",
+        year: "numeric",
+      });
+      months.push(label);
+      startMonth.setMonth(startMonth.getMonth() + 1);
+    }
+
+    return months;
+  };
+
+  const monthOptions = generateMonthOptions();
+
+  const handleClearFilter = () => setSelectedMonth("All");
+
   return (
     <div className="posts-table-container">
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: "15px",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <h1 className="allposts" style={{ margin: 0 }}>
-            All posts
-          </h1>
-          <button
-            style={{
-              padding: "8px 10px",
-              fontSize: "14px",
-              cursor: "pointer",
-              borderRadius: "5px",
-              backgroundColor: "#F0F8FF",
-              color: "#333",
-              border: "1px solid #ccc",
-            }}
-            onClick={() => router.push("/posts/AddNewPost")}
-          >
-            Add New Post
-          </button>
+      <div className="header-bar">
+        <div className="left">
+          <h1 className="allposts">All posts</h1>
+          <button onClick={() => router.push("/posts/AddNewPost")}>Add New Post</button>
+          <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
+            <option value="All">Filter by Month</option>
+            {monthOptions.map((month) => (
+              <option key={month} value={month}>
+                {month === currentMonth ? `${month} (Current)` : month}
+              </option>
+            ))}
+          </select>
+          <button onClick={handleClearFilter}>Clear</button>
         </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-            fontSize: "14px",
-          }}
-        >
+
+        <div className="pagination">
           <span>{posts.length} posts</span>
-          <button
-            onClick={() => paginate(1)}
-            disabled={currentPage === 1}
-            style={{
-              cursor: currentPage === 1 ? "not-allowed" : "pointer",
-              padding: "4px 8px",
-              borderRadius: "3px",
-              border: "1px solid #ccc",
-              backgroundColor: "#eee",
-            }}
-            title="First Page"
-          >
-            {"<<"}
-          </button>
-          <button
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-            style={{
-              cursor: currentPage === 1 ? "not-allowed" : "pointer",
-              padding: "4px 8px",
-              borderRadius: "3px",
-              border: "1px solid #ccc",
-              backgroundColor: "#eee",
-            }}
-            title="Previous Page"
-          >
-            {"<"}
-          </button>
-          <span>
-            {currentPage} of {totalPages}
-          </span>
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            style={{
-              cursor: currentPage === totalPages ? "not-allowed" : "pointer",
-              padding: "4px 8px",
-              borderRadius: "3px",
-              border: "1px solid #ccc",
-              backgroundColor: "#eee",
-            }}
-            title="Next Page"
-          >
-            {">"}
-          </button>
-          <button
-            onClick={() => paginate(totalPages)}
-            disabled={currentPage === totalPages}
-            style={{
-              cursor: currentPage === totalPages ? "not-allowed" : "pointer",
-              padding: "4px 8px",
-              borderRadius: "3px",
-              border: "1px solid #ccc",
-              backgroundColor: "#eee",
-            }}
-            title="Last Page"
-          >
-            {">>"}
-          </button>
+          <button onClick={() => paginate(1)} disabled={currentPage === 1}>{"<<"}</button>
+          <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>{"<"}</button>
+          <span>{currentPage} of {totalPages}</span>
+          <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>{">"}</button>
+          <button onClick={() => paginate(totalPages)} disabled={currentPage === totalPages}>{">>"}</button>
         </div>
       </div>
+
       <table className="posts-table">
         <thead>
           <tr>
             <th>S.No</th>
             <th>Image</th>
-            <th>Title</th>
-            <div className="dropdown-container" onClick={() => setExpandDropdown(!expandDropdown)}>
-              <IoMdArrowDropdown />
-            </div>
-            <th>Author Name</th>
+            <th>Title <IoMdArrowDropdown /></th>
+            <th>Author</th>
             <th>Words</th>
             <th>Category</th>
             <th>Status</th>
@@ -159,109 +113,42 @@ export default function PostsTable ({
         <tbody>
           {posts.length === 0 ? (
             <tr>
-              <td colSpan="10" style={{ textAlign: "center", padding: "20px" }}>
-                No posts found.
-              </td>
+              <td colSpan="10" style={{ textAlign: "center" }}>No posts found.</td>
             </tr>
           ) : (
             posts.map((post, index) => (
               <tr key={post._id}>
                 <td>{indexOfFirstPost + index + 1}</td>
                 <td>
-                  {post.file ? (
-                    <img
-                      src={post.file}
-                      alt="Post Thumbnail"
-                      width={80}
-                      height={60}
-                      style={{ objectFit: "cover", borderRadius: "7px" }}
-                    />
-                  ) : (
-                    <span style={{ color: "#888", fontSize: "12px" }}>
-                      No image
-                    </span>
-                  )}
+                  {post.file ? <img src={post.file} alt="" width={80} /> : <span>No image</span>}
                 </td>
-                <td style={{ color: "#007bff" }}>{post.title}</td>
-                <td>
-                  <span
-                    style={{
-                      cursor: "pointer",
-                      color: "#007bff",
-                    }}
-                  >
-                    {employeeNames[post.authorName] || "Unknown"}
-                  </span>
-                </td>
-                <td style={{ color: "#007bff" }}>{post.wordCount}</td>
-                <td style={{ color: "#007bff" }}>
-                  {categoryNames[post.category]}
-                </td>
+                <td>{post.title}</td>
+                <td>{employeeNames[post.authorName] || "Unknown"}</td>
+                <td>{post.wordCount}</td>
+                <td>{categoryNames[post.category]}</td>
                 <td>
                   <select
-                    className="status-select"
                     value={post.status}
                     onChange={(e) => handleStatusChange(post._id, e.target.value)}
                     disabled={loggedInUser?.designation !== "admin"}
                   >
                     {statusList.map((status) => (
-                      <option key={status} value={status}>
-                        {status}
-                      </option>
+                      <option key={status} value={status}>{status}</option>
                     ))}
                   </select>
                 </td>
+                <td>{new Date(post.createDate).toLocaleString("en-GB")}</td>
+                <td>{new Date(post.updatedAt).toLocaleString("en-GB")}</td>
                 <td>
-                  {(() => {
-                    const d = new Date(post.createDate);
-                    let hours = d.getHours();
-                    const minutes = String(d.getMinutes()).padStart(2, "0");
-                    const ampm = hours >= 12 ? "pm" : "am";
-                    hours = hours % 12 || 12;
-                    return `${String(d.getDate()).padStart(2, "0")}.${String(
-                      d.getMonth() + 1
-                    ).padStart(2, "0")}.${d.getFullYear()} ${hours}.${minutes}${ampm}`;
-                  })()}
-                </td>
-                <td>
-                  {(() => {
-                    const d = new Date(post.updatedAt);
-                    let hours = d.getHours();
-                    const minutes = String(d.getMinutes()).padStart(2, "0");
-                    const ampm = hours >= 12 ? "pm" : "am";
-                    hours = hours % 12 || 12;
-                    return `${String(d.getDate()).padStart(2, "0")}.${String(
-                      d.getMonth() + 1
-                    ).padStart(2, "0")}.${d.getFullYear()} ${hours}.${minutes}${ampm}`;
-                  })()}
-                </td>
-                <td>
-                  <span
-                    className="action-link"
-                    onClick={() => handleViewNewsDetail(post._id)}
-                  >
-                    View
-                  </span>{" "}
-                  |{" "}
-                  <span
-                    className="action-link"
-                    onClick={() => handleEdit(post._id)}
-                  >
-                    Edit
-                  </span>{" "}
-                  |{" "}
-                  <span
-                    className="action-link"
-                    onClick={() => handleDelete(post._id)}
-                  >
-                    Delete
-                  </span>
+                  <span onClick={() => handleViewNewsDetail(post._id)}>View</span> |{" "}
+                  <span onClick={() => handleEdit(post._id)}>Edit</span> |{" "}
+                  <span onClick={() => handleDelete(post._id)}>Delete</span>
                 </td>
               </tr>
             ))
           )}
         </tbody>
       </table>
-    </div >
+    </div>
   );
-};
+}

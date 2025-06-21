@@ -23,7 +23,6 @@ import AdminPostStatus from "../posts/AdminPostStatus/page";
 import { FaUser, FaClock } from "react-icons/fa";
 import "../Styles/posts.css";
 
-// ✅ COMPONENT: Scrollable Card Grid (shows non-Published posts now)
 const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
   const carouselRef = useRef();
 
@@ -40,7 +39,6 @@ const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
   return (
     <div className="carousel-wrapper">
       <button className="nav-button" onClick={scrollLeft}>&lt;</button>
-
       <div className="carousel" ref={carouselRef}>
         {posts.map((post) => {
           const d = new Date(post.createDate);
@@ -61,28 +59,23 @@ const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
                   <h3 className="post-card-title">{post.title}</h3>
                 </Link>
                 <p className="post-card-author">
-                  <FaUser style={{ marginRight: "6px", verticalAlign: "middle" }} />
-                  {employeeNames[post.authorName] || "Unknown"}
+                  <FaUser /> {employeeNames[post.authorName] || "Unknown"}
                 </p>
                 <p className="post-card-date">
-                  <FaClock style={{ marginRight: "6px", verticalAlign: "middle" }} />
-                  {dateStr}
+                  <FaClock /> {dateStr}
                 </p>
               </div>
             </div>
           );
         })}
       </div>
-
       <button className="nav-button" onClick={scrollRight}>&gt;</button>
     </div>
   );
 };
 
-// ✅ MAIN POSTS PAGE
 export default function PostsPage() {
   const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
   const [categoryNames, setCategoryNames] = useState({});
   const [employeeNames, setEmployeeNames] = useState({});
   const [typesList, setTypesList] = useState([]);
@@ -90,6 +83,7 @@ export default function PostsPage() {
   const [statusList, setStatusList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState("All");
 
   const postsPerPage = 10;
   const router = useRouter();
@@ -104,7 +98,6 @@ export default function PostsPage() {
       });
 
       setPosts(sortedPosts);
-      setFilteredPosts(sortedPosts);
 
       const uniqueCategoryIds = [...new Set(sortedPosts.map(p => p.category))];
       const uniqueAuthorIds = [...new Set(sortedPosts.map(p => p.authorName))];
@@ -149,8 +142,8 @@ export default function PostsPage() {
 
   const handleStatusChange = async (postId, newStatus) => {
     try {
-      const loggedInUser = JSON.parse(localStorage.getItem("user"));
-      if (!loggedInUser || loggedInUser.designation !== "admin") return;
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (!user || user.designation !== "admin") return;
 
       const postRes = await getPostById(postId);
       const post = postRes?.news || postRes?.data || postRes;
@@ -183,7 +176,6 @@ export default function PostsPage() {
     if (confirm("Are you sure you want to delete this post?")) {
       await deletePostById(id);
       setPosts(posts.filter((post) => post._id !== id));
-      setFilteredPosts(filteredPosts.filter((post) => post._id !== id));
     }
   };
 
@@ -200,14 +192,35 @@ export default function PostsPage() {
     fetchStatus();
   }, []);
 
+  // MONTH FILTER + SORT
+  const monthFilteredPosts =
+    selectedMonth === "All"
+      ? posts
+      : posts.filter((post) => {
+          const postDate = new Date(post.createDate);
+          if (isNaN(postDate)) return false;
+          const [monthName, year] = selectedMonth.split(" ");
+          const monthIndex = new Date(`${monthName} 1, ${year}`).getMonth();
+          return (
+            postDate.getFullYear() === Number(year) &&
+            postDate.getMonth() === monthIndex
+          );
+        });
+
+  const priority = { Pending: 1, Rejected: 2, Published: 3 };
+  const sortedFilteredPosts = monthFilteredPosts.sort((a, b) => {
+    if (a.status !== b.status)
+      return priority[a.status] - priority[b.status];
+    return new Date(b.createDate) - new Date(a.createDate);
+  });
+
+  const totalPages = Math.ceil(sortedFilteredPosts.length / postsPerPage);
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = filteredPosts.slice(indexOfFirstPost, indexOfLastPost);
-  const totalPages = Math.ceil(filteredPosts.length / postsPerPage);
+  const currentPosts = sortedFilteredPosts.slice(indexOfFirstPost, indexOfLastPost);
 
   if (!loggedInUser) return null;
 
-  // ✅ Show only non-published posts
   const remainingPosts = posts
     .filter((post) => post.status !== "Published")
     .sort((a, b) => new Date(b.updateDate) - new Date(a.updateDate));
@@ -245,6 +258,8 @@ export default function PostsPage() {
         handleEdit={handleEdit}
         handleDelete={handleDelete}
         updatePostById={handleStatusChange}
+        selectedMonth={selectedMonth}
+        setSelectedMonth={setSelectedMonth}
       />
     </div>
   );

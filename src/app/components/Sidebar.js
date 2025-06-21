@@ -16,7 +16,7 @@ import {
 import { IoLogOut } from "react-icons/io5";
 import { MdDarkMode, MdLightMode } from "react-icons/md";
 import "../Styles/Sidebar.css";
-import { logout, getEmployeeById } from "../services/Api";
+import { logout, getEmployeeById, getAllCategories } from "../services/Api";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
@@ -30,6 +30,7 @@ export default function Sidebar() {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [categories, setCategories] = useState([]);
   const profileRef = useRef();
   const router = useRouter();
 
@@ -59,7 +60,18 @@ export default function Sidebar() {
           console.error("Error fetching employee photo:", error);
         }
       };
+      const fetchCategories = async () => {
+        try {
+          const categoriesResponse = await getAllCategories();
+          if (categoriesResponse?.categories) {
+            setCategories(categoriesResponse.categories);
+          }
+        } catch (error) {
+          console.error("Error fetching categories:", error);
+        }
+      };
       fetchProfilePhoto();
+      fetchCategories();
     }
 
     const savedMode = localStorage.getItem("darkMode") === "true";
@@ -117,7 +129,20 @@ export default function Sidebar() {
           <span className="divider">|</span>
           <Link href="/posts/AllPosts" className="nav-page">All posts</Link>
           <span className="divider">|</span>
-          <Link href="/games" className="nav-page">Games</Link>
+          <div className="nav-dropdown">
+            <button className="nav-page dropdown-toggle">Categories</button>
+            <div className="dropdown-menu">
+              {categories.map((category) => (
+                <Link
+                  href={`/posts/Category/${category._id}`}
+                  className="dropdown-item"
+                  key={category._id}
+                >
+                  {category.name}
+                </Link>
+              ))}
+            </div>
+          </div>
         </div>
         <div className="dark-mode-toggle" onClick={toggledarkMode}>
           {isDarkMode ? <MdDarkMode /> : <MdLightMode />}

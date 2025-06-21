@@ -86,7 +86,7 @@ button[type="submit"]:hover {
 
 @media (max-width: 600px) {
   .employee-register-container {
-    padding: 15px;
+    padding: 9px;
     margin-left: 0;
     margin-top: 80px;
     width: 95%;
