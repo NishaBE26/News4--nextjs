@@ -1,17 +1,18 @@
 :root {
-  --body-bg: #131D4F;   /* Light mode default */
+  --body-bg: #131D4F;
   --text-color: #333;
 }
 
 .dark {
-  --body-bg: #0d0d0d;   /* Dark mode background */
+  --body-bg: #0d0d0d;
   --text-color: #333;
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: var(--body-bg);
+  background: #131D4F;
   color: var(--text-color);
-  line-height: 1.6;
+  font-family: 'Noto Sans Tamil', 'Roboto', sans-serif;
   transition: background 0.3s ease, color 0.3s ease;
 }
+
+/* =======================home page css ========================== */

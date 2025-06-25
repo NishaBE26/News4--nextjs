@@ -9,6 +9,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [isRegistering, setIsRegistering] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState(null);
 
   useEffect(() => {
     const checkLogin = async () => {
@@ -31,6 +32,8 @@ export default function LoginPage() {
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    setLoginError(null);
+
     const email = event.target.username.value;
     const password = event.target.password.value;
     const data = await login({ email, password });
@@ -40,6 +43,8 @@ export default function LoginPage() {
       localStorage.setItem("designation", data.user.designation);
       localStorage.setItem("user", JSON.stringify(data.user));
       router.push("/posts");
+    } else {
+      setLoginError("Invalid email or password.");
     }
   };
 
@@ -51,6 +56,7 @@ export default function LoginPage() {
     const data = await register({ name, email, password });
     if (data.success) setIsRegistering(false);
   };
+
   useEffect(() => {
     const container = document.querySelector(".login-wrapper");
     if (!container) return;
@@ -66,6 +72,7 @@ export default function LoginPage() {
       container.appendChild(dot);
     }
   }, []);
+
   return (
     <div className="login-wrapper">
       <div className="login-page">
@@ -89,6 +96,7 @@ export default function LoginPage() {
                   />
                 </div>
               )}
+
               <div className="form-group">
                 <label htmlFor="username">Email:</label>
                 <input
@@ -99,6 +107,7 @@ export default function LoginPage() {
                   placeholder="Enter your email"
                 />
               </div>
+
               <div className="form-group password-group" style={{ position: "relative" }}>
                 <label htmlFor="password">Password:</label>
                 <input
@@ -107,7 +116,11 @@ export default function LoginPage() {
                   name="password"
                   required
                   placeholder="Enter your password"
-                  style={{ paddingRight: "35px" }}
+                  style={{
+                    paddingRight: "35px",
+                    borderColor: loginError ? "red" : undefined,
+                    borderWidth: loginError ? "2px" : undefined,
+                  }}
                 />
                 <span
                   onClick={() => setShowPassword(!showPassword)}
@@ -124,9 +137,16 @@ export default function LoginPage() {
                 >
                   {showPassword ? <FaEye /> : <FaEyeSlash />}
                 </span>
+                {loginError && (
+                  <p style={{ color: "red", fontSize: "0.9rem", marginTop: "5px" }}>
+                    {loginError}
+                  </p>
+                )}
               </div>
+
               <button type="submit">{isRegistering ? "Register" : "Log in"}</button>
             </div>
+
             <div className="register-link">
               {isRegistering ? (
                 <p style={{ color: "black" }}>
@@ -155,5 +175,4 @@ export default function LoginPage() {
       </div>
     </div>
   );
-};
-
+}

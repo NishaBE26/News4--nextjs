@@ -8,7 +8,7 @@ import {
 } from '../../services/Api';
 import "../../Styles/CategoryPage.css";
 
-export default function CategoryPage  () {
+export default function CategoryPage() {
   const [categories, setCategories] = useState([]);
   const [newName, setNewName] = useState("");
   const [newDescription, setNewDescription] = useState("");
@@ -22,11 +22,13 @@ export default function CategoryPage  () {
 
   const loadCategories = async () => {
     const res = await getAllCategories();
-    setCategories(res.categories);
+    if (res?.categories) {
+      setCategories(res.categories);
+    }
   };
 
   const handleAdd = async () => {
-    if (newName.trim() && newDescription.trim()) {
+    if ((newName || "").trim() && (newDescription || "").trim()) {
       await createCategory({ name: newName, description: newDescription });
       setNewName("");
       setNewDescription("");
@@ -36,8 +38,8 @@ export default function CategoryPage  () {
 
   const startEditing = (id, name, description) => {
     setEditingId(id);
-    setEditingName(name);
-    setEditingDescription(description);
+    setEditingName(name || "");
+    setEditingDescription(description || "");
   };
 
   const cancelEditing = () => {
@@ -46,20 +48,24 @@ export default function CategoryPage  () {
     setEditingDescription("");
   };
 
-  const handleUpdate = async () => {
-    if (editingName.trim() && editingDescription.trim()) {
+ const handleUpdate = async () => {
+  if ((editingName || "").trim() && (editingDescription || "").trim()) {
+    try {
       await updateCategoryById(editingId, {
         name: editingName,
         description: editingDescription,
       });
       cancelEditing();
       loadCategories();
+    } catch (error) {
+      console.error("Error during update:", error);
     }
-  };
+  } 
+};
 
   const handleDelete = async (id) => {
-      await deleteCategoryById(id);
-      loadCategories();
+    await deleteCategoryById(id);
+    loadCategories();
   };
 
   return (
@@ -71,12 +77,20 @@ export default function CategoryPage  () {
             type="text"
             placeholder="Category Name"
             value={editingId ? editingName : newName}
-            onChange={(e) => editingId ? setEditingName(e.target.value) : setNewName(e.target.value)}
+            onChange={(e) =>
+              editingId
+                ? setEditingName(e.target.value)
+                : setNewName(e.target.value)
+            }
           />
           <textarea
             placeholder="Category Description"
             value={editingId ? editingDescription : newDescription}
-            onChange={(e) => editingId ? setEditingDescription(e.target.value) : setNewDescription(e.target.value)}
+            onChange={(e) =>
+              editingId
+                ? setEditingDescription(e.target.value)
+                : setNewDescription(e.target.value)
+            }
           />
           <div style={{ display: "flex", gap: "10px" }}>
             <button onClick={editingId ? handleUpdate : handleAdd}>
@@ -126,4 +140,4 @@ export default function CategoryPage  () {
       </div>
     </div>
   );
-};
+}

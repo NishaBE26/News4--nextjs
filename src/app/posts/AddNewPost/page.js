@@ -151,7 +151,7 @@ export default function AddNewPost() {
       updateForm.append("url", formData.url);
       updateForm.append("newsContent", formData.newsContent);
       updateForm.append("category", formData.category);
-      updateForm.append("tags", JSON.stringify(formData.tags));
+      updateForm.append("tags", formData.tags);
       updateForm.append("seoTitle", formData.seoTitle);
       updateForm.append("seoMetaDescription", formData.seoMetaDescription);
       updateForm.append("status", resubmitted ? "Resubmitted" : formData.status);

@@ -125,8 +125,6 @@ export default function Sidebar() {
           <Image src="/assets/News4-logo.png" alt="Logo" width={120} height={0} className="logo" priority />
         </div>
         <div className="nav-center">
-          <Link href="/posts" className="nav-page">Home</Link>
-          <span className="divider">|</span>
           <Link href="/posts/AllPosts" className="nav-page">All posts</Link>
           <span className="divider">|</span>
           <div className="nav-dropdown">

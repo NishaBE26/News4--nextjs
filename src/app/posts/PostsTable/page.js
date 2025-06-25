@@ -45,11 +45,10 @@ export default function PostsTable({
     month: "long",
     year: "numeric",
   });
-
   const generateMonthOptions = () => {
-    const startMonth = new Date(2025, 3);
+    const startMonth = new Date(2025, 3); // April 2025 (Month index is 0-based)
     const now = new Date();
-    const endMonth = new Date(now.getFullYear(), now.getMonth() + 1);
+    const endMonth = new Date(now.getFullYear(), now.getMonth() + 1); // up to next month
     const months = [];
 
     while (startMonth <= endMonth) {
@@ -68,13 +67,60 @@ export default function PostsTable({
 
   const handleClearFilter = () => setSelectedMonth("All");
 
+  const formatDateTime = (dateString) => {
+    const date = new Date(dateString);
+    const day = String(date.getDate()).padStart(2, "0");
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const year = date.getFullYear();
+
+    const hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const ampm = hours >= 12 ? "pm" : "am";
+    const hour12 = hours % 12 || 12;
+
+    return `${day}.${month}.${year} & ${hour12}.${minutes}${ampm}`;
+  };
+
   return (
     <div className="posts-table-container">
-      <div className="header-bar">
-        <div className="left">
-          <h1 className="allposts">All posts</h1>
-          <button onClick={() => router.push("/posts/AddNewPost")}>Add New Post</button>
-          <select value={selectedMonth} onChange={(e) => setSelectedMonth(e.target.value)}>
+      {/* Header */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "15px",
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <h1 className="allposts" style={{ margin: 0 }}>
+            All posts
+          </h1>
+          <button
+            style={{
+              padding: "8px 10px",
+              fontSize: "14px",
+              cursor: "pointer",
+              borderRadius: "5px",
+              backgroundColor: "#F0F8FF",
+              color: "#333",
+              border: "1px solid #ccc",
+            }}
+            onClick={() => router.push("/posts/AddNewPost")}
+          >
+            Add New Post
+          </button>
+          <select
+            style={{
+              padding: "8px",
+              fontSize: "14px",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+              backgroundColor: "#fff",
+            }}
+            value={selectedMonth}
+            onChange={(e) => setSelectedMonth(e.target.value)}
+          >
             <option value="All">Filter by Month</option>
             {monthOptions.map((month) => (
               <option key={month} value={month}>
@@ -82,26 +128,74 @@ export default function PostsTable({
               </option>
             ))}
           </select>
-          <button onClick={handleClearFilter}>Clear</button>
+          <button
+            onClick={handleClearFilter}
+            style={{
+              padding: "8px",
+              backgroundColor: "#eee",
+              border: "1px solid #ccc",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Clear
+          </button>
         </div>
 
-        <div className="pagination">
+        {/* Pagination */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            fontSize: "14px",
+          }}
+        >
           <span>{posts.length} posts</span>
-          <button onClick={() => paginate(1)} disabled={currentPage === 1}>{"<<"}</button>
-          <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>{"<"}</button>
-          <span>{currentPage} of {totalPages}</span>
-          <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>{">"}</button>
-          <button onClick={() => paginate(totalPages)} disabled={currentPage === totalPages}>{">>"}</button>
+          <button
+            onClick={() => paginate(1)}
+            disabled={currentPage === 1}
+            title="First Page"
+          >
+            {"<<"}
+          </button>
+          <button
+            onClick={() => paginate(currentPage - 1)}
+            disabled={currentPage === 1}
+            title="Previous Page"
+          >
+            {"<"}
+          </button>
+          <span>
+            {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() => paginate(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            title="Next Page"
+          >
+            {">"}
+          </button>
+          <button
+            onClick={() => paginate(totalPages)}
+            disabled={currentPage === totalPages}
+            title="Last Page"
+          >
+            {">>"}
+          </button>
         </div>
       </div>
 
+      {/* Table */}
       <table className="posts-table">
         <thead>
           <tr>
             <th>S.No</th>
             <th>Image</th>
-            <th>Title <IoMdArrowDropdown /></th>
-            <th>Author</th>
+            <th>
+              Title <IoMdArrowDropdown />
+            </th>
+            <th>Author Name</th>
             <th>Words</th>
             <th>Category</th>
             <th>Status</th>
@@ -113,36 +207,78 @@ export default function PostsTable({
         <tbody>
           {posts.length === 0 ? (
             <tr>
-              <td colSpan="10" style={{ textAlign: "center" }}>No posts found.</td>
+              <td colSpan="10" style={{ textAlign: "center", padding: "20px" }}>
+                No posts found.
+              </td>
             </tr>
           ) : (
             posts.map((post, index) => (
               <tr key={post._id}>
                 <td>{indexOfFirstPost + index + 1}</td>
                 <td>
-                  {post.file ? <img src={post.file} alt="" width={80} /> : <span>No image</span>}
+                  {post.file ? (
+                    <img
+                      src={post.file}
+                      alt="Post"
+                      width={80}
+                      height={60}
+                      style={{ objectFit: "cover", borderRadius: "7px" }}
+                    />
+                  ) : (
+                    <span style={{ color: "#888" }}>No image</span>
+                  )}
                 </td>
-                <td>{post.title}</td>
-                <td>{employeeNames[post.authorName] || "Unknown"}</td>
-                <td>{post.wordCount}</td>
-                <td>{categoryNames[post.category]}</td>
+                <td style={{ color: "#007bff" }}>{post.title}</td>
+                <td style={{ color: "#007bff" }}>
+                  {employeeNames[post.authorName] || "Unknown"}
+                </td>
+                <td style={{ color: "#007bff" }}>{post.wordCount}</td>
+                <td style={{ color: "#007bff" }}>
+                  {categoryNames[post.category]}
+                </td>
                 <td>
-                  <select
-                    value={post.status}
-                    onChange={(e) => handleStatusChange(post._id, e.target.value)}
-                    disabled={loggedInUser?.designation !== "admin"}
+                  {post.status === "Published" ? (
+                    <span style={{ color: "green", fontWeight: "bold" }}>
+                      {post.status}
+                    </span>
+                  ) : (
+                    <select
+                      className="status-select"
+                      value={post.status}
+                      onChange={(e) => handleStatusChange(post._id, e.target.value)}
+                      disabled={loggedInUser?.designation !== "admin"}
+                    >
+                      {statusList.map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
+                  )}
+                </td>
+                <td>{formatDateTime(post.createDate)}</td>
+                <td>{formatDateTime(post.updatedAt)}</td>
+                <td>
+                  <span
+                    className="action-link"
+                    onClick={() => handleViewNewsDetail(post._id)}
                   >
-                    {statusList.map((status) => (
-                      <option key={status} value={status}>{status}</option>
-                    ))}
-                  </select>
-                </td>
-                <td>{new Date(post.createDate).toLocaleString("en-GB")}</td>
-                <td>{new Date(post.updatedAt).toLocaleString("en-GB")}</td>
-                <td>
-                  <span onClick={() => handleViewNewsDetail(post._id)}>View</span> |{" "}
-                  <span onClick={() => handleEdit(post._id)}>Edit</span> |{" "}
-                  <span onClick={() => handleDelete(post._id)}>Delete</span>
+                    View
+                  </span>{" "}
+                  |{" "}
+                  <span
+                    className="action-link"
+                    onClick={() => handleEdit(post._id)}
+                  >
+                    Edit
+                  </span>{" "}
+                  |{" "}
+                  <span
+                    className="action-link"
+                    onClick={() => handleDelete(post._id)}
+                  >
+                    Delete
+                  </span>
                 </td>
               </tr>
             ))

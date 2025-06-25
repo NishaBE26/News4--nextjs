@@ -247,7 +247,7 @@
 .social-icons-container {
   display: flex;
   align-items: center;
-  margin-right: -30px;
+  margin-right: -40px;
   gap: 8px;
 }
 
@@ -275,15 +275,15 @@
 .nav-icon.website {
   background-color: #1a73e8;
 }
+
 .nav-icon.instagram {
-  background: radial-gradient(
-    circle at 30% 107%,
-    #fdf497 0%,
-    #fd5949 30%,
-    #d6249f 60%,
-    #285AEB 90%
-  );
+  background: radial-gradient(circle at 30% 107%,
+      #fdf497 0%,
+      #fd5949 30%,
+      #d6249f 60%,
+      #285AEB 90%);
 }
+
 .nav-icon.facebook {
   background-color: #1877F2;
 }
@@ -296,7 +296,7 @@
 .profile-container {
   position: relative;
   display: inline-block;
-  margin-left: 10%;
+  margin-left: 12%;
 }
 
 .profile-dropdown {
@@ -418,21 +418,23 @@
     display: block;
     font-size: 20px;
     color: white;
-    margin-left: 6px;
+    margin-left: 30px;
+    margin-top: 9px;
     cursor: pointer;
   }
 
   .logo {
-    max-width: 100px;
+    max-width: 90px;
     height: auto;
-    margin-top: -8px;
+    margin-top: 0px;
+    margin-left: -11%;
   }
 
   .dark-mode-toggle {
     display: flex;
     margin-left: 0px;
     z-index: 1000;
-    margin-right: 50%;
+    margin-right: 46%;
   }
 
   .nav-center,
@@ -447,8 +449,6 @@
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    margin-top: -95px;
-    margin-left: 32%;
   }
 
   .social-icons-container {
@@ -456,7 +456,8 @@
     justify-content: center;
     gap: 6px;
     width: 100%;
-    margin-top: 20px;
+    margin-top: -70px;
+    margin-left: 30%;
   }
 
   .nav-icon {
@@ -466,7 +467,8 @@
 
   .profile-container {
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: -88px;
+    margin-left: 87%;
     display: flex;
     justify-content: center;
     align-items: center;

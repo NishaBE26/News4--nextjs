@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getPostById, getEmployeeById } from "../../services/Api";
+import "../../Styles/NewsDetail.css";
 
 export default function NewsDetailPage() {
   const { id } = useParams();
@@ -33,33 +34,16 @@ export default function NewsDetailPage() {
   }
 
   return (
-    <div
-      style={{
-        Width: "90%",
-        margin: "50px auto auto 120px", 
-        padding: "20px",
-        backgroundColor: "whitesmoke",
-        borderRadius: "8px",
-        boxShadow: "0 2px 6px rgba(0, 0, 0, 0.1)" 
-      }}
-    >
-      <h1>{post.title}</h1>
+    <div className="news-detail-container">
+      <h1 className="news-title">{post.title}</h1>
 
       {post.file ? (
-        <img
-          src={post.file}
-          alt={post.title}
-          style={{
-            maxWidth: "100%",
-            borderRadius: "8px",
-            marginBottom: "15px"
-          }}
-        />
+        <img src={post.file} alt={post.title} className="news-image" />
       ) : (
         <p>No image available</p>
       )}
 
-      <p>
+      <p className="news-meta">
         <strong>Created At:</strong>{" "}
         {(() => {
           const date = new Date(post.createdAt);
@@ -71,11 +55,11 @@ export default function NewsDetailPage() {
         })()}
       </p>
 
-      <div style={{ whiteSpace: "pre-wrap", marginTop: "20px", fontSize: "16px" }}>
-        <strong>NewsContent:</strong>{post.newsContent || "No content available."}
+      <div className="news-content">
+        <strong>NewsContent:</strong> {post.newsContent || "No content available."}
       </div>
 
-      <p style={{ marginTop: "40px", fontStyle: "italic" }}>
+      <p className="news-author">
         <strong>By: {employee?.name || "Unknown Author"}</strong>
       </p>
     </div>

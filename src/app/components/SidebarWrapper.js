@@ -1,17 +1,16 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import Sidebar from './Sidebar';
+import Sidebar from '../components/Sidebar';
 
 export default function SidebarWrapper({ children }) {
   const pathname = usePathname();
 
-  
-const hideSidebarRoutes = ['/login', '/register'];
-const shouldHideSidebar = hideSidebarRoutes.some(route => pathname.startsWith(route));
+  const hideSidebarRoutes = ['/', '/login', '/register', "/posts/Home"];
+  const shouldHideSidebar = hideSidebarRoutes.includes(pathname);
 
   if (shouldHideSidebar) {
-    return <>{children}</>; 
+    return <>{children}</>;
   }
 
   return (
@@ -21,4 +20,3 @@ const shouldHideSidebar = hideSidebarRoutes.some(route => pathname.startsWith(ro
     </div>
   );
 }
- 

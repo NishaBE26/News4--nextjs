@@ -2,19 +2,48 @@
   padding: 2rem;
   margin-top: 60px;
   margin-left: 120px;
+  border-radius: 25px;
   background-color: #fff;
   min-height: 100vh;
 }
 
+/* Make the layout responsive */
 .posts-grid {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   gap: 24px;
-  justify-content: flex-start;
+}
+
+/* 3 columns on large tablets */
+@media (max-width: 1200px) {
+  .posts-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* 2 columns on tablets */
+@media (max-width: 900px) {
+  .posts-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 1 column on mobile */
+@media (max-width: 600px) {
+  .posts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .posts-container {
+    margin-left: 20px;
+    margin-right: 20px;
+    padding: 1rem;
+  }
 }
 
 .post-card {
-  width: 240px;
+  width: 100%;
+  max-width: 280px;
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
@@ -23,6 +52,7 @@
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
   cursor: pointer;
+  margin: auto;
 }
 
 .post-card:hover {
@@ -46,3 +76,4 @@
   line-height: 1.4;
   background-color: #f9f9f9;
 }
+

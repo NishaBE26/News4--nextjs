@@ -1,5 +1,5 @@
 import './globals.css';
-import SidebarWrapper from './components/SidebarWrapper'; // Use correct path
+import SidebarWrapper from './components/SidebarWrapper'; 
 
 export const metadata = {
   title: 'News4Tamil',

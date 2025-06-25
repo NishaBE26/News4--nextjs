@@ -6,18 +6,17 @@ import "../../Styles/AllPosts.css";
 
 export default function AllPostsPage() {
   const [posts, setPosts] = useState([]);
-
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await getAllPosts();
       const allPosts = response.newsList || [];
-      console.log("All Posts:", allPosts);
-      const publishedPosts = allPosts.filter(post => post.status === "Published");
+      const publishedPosts = allPosts
+        .filter(post => post.status === "Published")
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); 
       setPosts(publishedPosts);
     };
     fetchPosts();
   }, []);
-
   return (
     <div className="posts-container">
       <div className="posts-grid">

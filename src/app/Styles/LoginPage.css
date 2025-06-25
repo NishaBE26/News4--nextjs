@@ -1,16 +1,6 @@
 /* Reset and global layout */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  font-family: 'Segoe UI', sans-serif;
-}
 
 .login-wrapper {
-  background: #131D4F;
   height: 100vh;
   overflow: hidden;
   position: relative;
