@@ -119,12 +119,22 @@ export default function AddNewPost() {
     const name = storedUser.name;
     if (!formData.title.trim() || !formData.newsContent.trim()) return;
 
+    // ✅ Find and fallback to 'Uncategorized' if no category selected
+    const uncategorizedCategory = categories.find(cat => cat.name.toLowerCase() === "uncategorized");
+    const categoryName = formData.category?.trim()
+      ? formData.category
+      : uncategorizedCategory?.name || "";
+    const unknownTag = tags.find(tag => tag.name.toLowerCase() === "unknown tag");
+    const tagsName = formData.tags?.trim()
+      ? formData.tags
+      : unknownTag?.name || "";
+
     const cleanData = new FormData();
     cleanData.append("title", formData.title);
     cleanData.append("url", formData.url);
     cleanData.append("newsContent", formData.newsContent);
-    cleanData.append("category", formData.category);
-    cleanData.append("tags", formData.tags);
+    cleanData.append("category", categoryName);
+    cleanData.append("tags", tagsName);
     cleanData.append("seoTitle", formData.seoTitle);
     cleanData.append("seoMetaDescription", formData.seoMetaDescription);
     cleanData.append("status", storedUser.designation === "admin" ? formData.status : "Pending");
@@ -136,11 +146,11 @@ export default function AddNewPost() {
     if (formData.task && formData.task.trim() !== "") {
       cleanData.append("taskId", formData.task);
     }
-
     if (selectedfile) cleanData.append("file", selectedfile);
-    console.log("submitted post:", formData)
+
     let response;
     if (originalPost) {
+      // similar update logic...
       const authorEmp = await getEmployeeById(originalPost.authorName);
       const publishedEmp = await getEmployeeById(originalPost.publishedBy);
       const authorName = authorEmp?.name;
@@ -150,8 +160,8 @@ export default function AddNewPost() {
       updateForm.append("title", formData.title);
       updateForm.append("url", formData.url);
       updateForm.append("newsContent", formData.newsContent);
-      updateForm.append("category", formData.category);
-      updateForm.append("tags", formData.tags);
+      updateForm.append("category", categoryName); 
+      updateForm.append("tags", formData.tagsName);
       updateForm.append("seoTitle", formData.seoTitle);
       updateForm.append("seoMetaDescription", formData.seoMetaDescription);
       updateForm.append("status", resubmitted ? "Resubmitted" : formData.status);
@@ -160,17 +170,11 @@ export default function AddNewPost() {
       updateForm.append("publishedBy", publishedBy);
       updateForm.append("updatedBy", name);
       updateForm.append("taskId", formData.task || taskid || originalPost?.task || "");
-
-      if (selectedfile) {
-        updateForm.append("file", selectedfile);
-      }
+      if (selectedfile) updateForm.append("file", selectedfile);
 
       response = await updatePostById(id, updateForm);
-      console.log("api response:", response);
-    }
-    else {
+    } else {
       response = await createPost(cleanData);
-      console.log("api response:", response)
     }
 
     if (response?.message === "News Created" || response?.message === "News Updated") {

@@ -7,7 +7,8 @@
     background: #fff;
     color: #333;
     padding: 20px;
-    z-index: 1000;
+    z-index: 10000;
+    isolation: isolate;
     box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
     overflow-y: auto;
     scrollbar-width: none;
@@ -28,12 +29,14 @@
     list-style: none;
     padding: 0;
     margin-top: -20px;
+    font-size: 14px;
 }
 
 .sidebar-home nav ul li {
     margin-bottom: 20px;
     cursor: pointer;
-    font-weight: 500;
+    font-weight: 600;
+    font-family: 'Noto Sans Tamil', sans-serif;
 }
 
 .close-btn {
@@ -141,8 +144,9 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.4);
-    z-index: 999;
+    z-index: 9999;
 }
+
 
 /* Global styles */
 html,
@@ -157,10 +161,6 @@ body {
 html {
     scroll-behavior: smooth;
     scroll-padding-top: 120px;
-}
-
-.home {
-    position: static;
 }
 
 /* Header Bar */
@@ -184,7 +184,7 @@ html {
     transform: translateX(-50%);
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 4px;
 }
 
 .header-center img {
@@ -192,10 +192,11 @@ html {
 }
 
 .brand-text {
+    font-family: 'Noto Sans Tamil', sans-serif;
     font-size: 20px;
     font-weight: 600;
     display: flex;
-    gap: 6px;
+    gap: 2px;
 }
 
 .news4 {
@@ -242,18 +243,36 @@ html {
 }
 
 /* Category Bar */
-.category-bar {
-    position: sticky;
-    top: 60px;
-    z-index: 999;
-    background: white;
-    padding: 10px 100px;
-    display: flex;
-    gap: 10px;
-    overflow-x: auto;
-    white-space: nowrap;
-    border-bottom: 1px solid #eee;
+.hide-category {
+  display: none !important;
 }
+
+.category-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 100px;
+    position: sticky;
+    top: 0;
+    background-color: #fff;
+    box-sizing: border-box;
+    z-index: 100;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.category-bar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    background-color: red;
+    width: var(--underline-width, 10%);
+    /* dynamic width from JS */
+    transition: width 0.3s ease;
+}
+
 
 .category-bar::-webkit-scrollbar {
     display: none;
@@ -266,30 +285,21 @@ html {
 
 /* Category Item */
 .category-item {
+    font-family: 'Noto Sans Tamil', sans-serif;
     padding: 6px 12px;
     font-size: 14px;
     font-weight: 600;
     border-radius: 20px;
-    cursor: pointer;
     white-space: nowrap;
+    cursor: pointer;
     transition: background 0.2s ease;
     color: #333;
-}
-
-.category-item:hover {
-    background: #f0f0f0;
-}
-
-.category-item.active {
-    color: #e53935;
-    border-bottom: 3px solid #e53935;
-    font-weight: 700;
 }
 
 /* More Dropdown */
 .more-categories {
     position: relative;
-    margin-top:7px;
+    margin-top: 7px;
 }
 
 .more-icon {
@@ -298,11 +308,10 @@ html {
 }
 
 .dropdown {
-    position: fixed;
-    top: 100px;
+    position: absolute;
+    top: 50px;
     right: 100px;
     background: white;
-    border: 1px solid #ccc;
     border-radius: 6px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     z-index: 10000;
@@ -314,10 +323,6 @@ html {
     font-size: 14px;
     cursor: pointer;
     white-space: nowrap;
-}
-
-.dropdown-item:hover {
-    background: #f5f5f5;
 }
 
 @media (max-width: 1024px) {
@@ -429,5 +434,117 @@ html {
     .search-input {
         font-size: 12px;
         padding: 6px 10px;
+    }
+}
+
+/* =========================footer===================== */
+.site-footer {
+    background-color: #222;
+    padding: 30px 100px;
+    color: white;
+    margin: 0px 100px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    gap: 20px;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.footer-logo {
+    width: 50px;
+    height: auto;
+}
+
+.footer-brand {
+    font-family: 'Noto Sans Tamil', sans-serif;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.news4-red {
+    color: #d60000;
+}
+
+.tamil-green {
+    color: green;
+}
+
+.footer-links {
+    font-family: 'Noto Sans Tamil', sans-serif;
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.footer-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.footer-links a:hover {
+    color: #d60000;
+}
+
+.footer-social {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.footer-social a {
+    color: white;
+    transition: color 0.3s;
+}
+
+.footer-social a:hover {
+    color: #d60000;
+}
+
+.footer-bottom {
+    font-family: 'Noto Sans Tamil', sans-serif;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+}
+
+/* ✅ Responsive Design */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 30px 30px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .footer-left {
+        flex-direction: row;
+    }
+
+    .footer-social {
+        flex-wrap: wrap;
+        gap: 15px;
     }
 }

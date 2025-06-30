@@ -1,30 +1,32 @@
-// components/HomeNavBar.js
 'use client';
 import React, { useState, useEffect } from 'react';
 import { VscThreeBars, VscChromeClose } from "react-icons/vsc";
 import { FaSearch, FaUserCircle, FaGlobe, FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { getAllCategories } from '../services/Api';
 import { useRouter } from 'next/navigation';
+import { getAllCategories } from '../services/Api';
 import '../Styles/HomeNavBar.css';
 
-export default function HomeNavBar({ showsearch, setShowSearch, activeCategory }) {
-  const [navbarOpen, setNavbarOpen] = useState(false);
+export default function HomeNavBar({ showsearch, setShowSearch, navbarOpen, setNavbarOpen }) {
   const [categories, setCategories] = useState([]);
-  const [showMore, setShowMore] = useState(false);
   const router = useRouter();
 
   const toggleNavbar = () => setNavbarOpen(!navbarOpen);
   const handleLoginClick = () => router.push('/login');
 
   useEffect(() => {
+    document.body.style.overflow = navbarOpen ? "hidden" : "auto";
+  }, [navbarOpen]);
+
+  useEffect(() => {
     const fetchCategories = async () => {
       const data = await getAllCategories();
+      const catList = Array.isArray(data) ? data : data?.categories || [];
+
       const customOrder = [
-        "Home", "Breaking News", "Tamilnadu", "India", "World",
+        "Breaking News", "Tamilnadu", "India", "World",
         "Sports", "Cinema", "Lifestyles", "Health Tips", "Astrology"
       ];
-      let catList = Array.isArray(data) ? data : data?.categories || [];
+
       const sortByCustomOrder = (a, b) => {
         const indexA = customOrder.findIndex(name => name.toLowerCase() === a.name.toLowerCase());
         const indexB = customOrder.findIndex(name => name.toLowerCase() === b.name.toLowerCase());
@@ -33,29 +35,19 @@ export default function HomeNavBar({ showsearch, setShowSearch, activeCategory }
         if (indexB === -1) return -1;
         return indexA - indexB;
       };
-      const sortedCategories = [...catList].sort(sortByCustomOrder);
-      const filtered = sortedCategories.filter(cat => cat.name.toLowerCase() !== "home");
-      const withHome = [{ _id: 'home-static', name: 'Home' }, ...filtered];
-      setCategories(withHome);
+
+      const sorted = [...catList]
+        .filter(c => c.name.toLowerCase() !== 'home')
+        .sort(sortByCustomOrder);
+
+      setCategories(sorted);
     };
+
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    document.body.style.overflow = navbarOpen ? "hidden" : "auto";
-  }, [navbarOpen]);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!e.target.closest('.more-categories')) setShowMore(false);
-    };
-    if (showMore) document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [showMore]);
-
   return (
     <div className={`home ${navbarOpen ? "navbar-open" : ""}`}>
-      {/* Sticky wrapper starts */}
       <div className="sticky-header-wrapper">
         <header className="home-header">
           <div className="header-left">
@@ -72,29 +64,6 @@ export default function HomeNavBar({ showsearch, setShowSearch, activeCategory }
             <button className="login-button" onClick={handleLoginClick}><FaUserCircle /></button>
           </div>
         </header>
-
-        <div className="category-bar">
-          {categories.slice(0, 11).map(cat => (
-            <span
-              key={cat._id}
-              className={`category-item ${activeCategory === cat.name.toLowerCase().replace(/\s+/g, '') ? 'active' : ''}`}
-            >
-              {cat.name}
-            </span>
-          ))}
-          {categories.length > 11 && (
-            <div className="more-categories">
-              <span className="more-icon" onClick={() => setShowMore(prev => !prev)}><BsThreeDotsVertical /></span>
-              {showMore && (
-                <div className="dropdown">
-                  {categories.slice(11).map(cat => (
-                    <div key={cat._id} className="dropdown-item">{cat.name}</div>
-                  ))}
-                </div>
-              )}
-            </div>
-          )}
-        </div>
       </div>
 
       {showsearch && (
@@ -114,7 +83,14 @@ export default function HomeNavBar({ showsearch, setShowSearch, activeCategory }
           </div>
           <nav className="sidebar-nav">
             <ul>
-              {categories.map((cat) => <li key={cat._id}>{cat.name}</li>)}
+              {categories.map(cat => (
+                <li key={cat._id} onClick={() => {
+                  toggleNavbar();
+                  router.push(`/category/${cat.name.toLowerCase().replace(/\s+/g, '-')}`);
+                }}>
+                  {cat.name}
+                </li>
+              ))}
             </ul>
           </nav>
           <div className="social-icons">

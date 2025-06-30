@@ -6,8 +6,13 @@ import Sidebar from '../components/Sidebar';
 export default function SidebarWrapper({ children }) {
   const pathname = usePathname();
 
-  const hideSidebarRoutes = ['/', '/login', '/register', "/posts/Home"];
-  const shouldHideSidebar = hideSidebarRoutes.includes(pathname);
+
+  const hideSidebarRoutes = ['/', '/Mainpost', '/login','/author', '/register', '/posts/Home'];
+
+  // Check if the current route starts with `/category/` (e.g., /category/India)
+  const isCategoryPage = pathname.startsWith('/category/');
+
+  const shouldHideSidebar = hideSidebarRoutes.includes(pathname) || isCategoryPage;
 
   if (shouldHideSidebar) {
     return <>{children}</>;

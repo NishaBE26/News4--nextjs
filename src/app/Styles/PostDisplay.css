@@ -1,0 +1,231 @@
+/* Ensure body background is white */
+body {
+  background-color: white;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.category {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+}
+
+/* Container spacing */
+.mainpost-container {
+  display: flex;
+  gap: 40px;
+  margin: 0 100px;
+  padding: 40px 0;
+}
+
+.mainpost-left {
+  flex: 1.5;
+}
+
+.mainpost-right {
+  flex: 0.5;
+}
+
+/* Left post styles */
+.main-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 20px 0;
+}
+
+.post-category {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 16px;
+  font-weight: bold;
+  color: #d32f2f;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.post-title {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.author-date {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 14px;
+  color: #616161;
+}
+
+.news-content {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Right latest post styles */
+.display-title {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  font-weight: bold;
+  margin: 30px 0 20px
+}
+
+.display-title::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 20px;
+  background-color: #e60000;
+}
+.author-box {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-top: 1px solid #ccc;
+  padding-top: 20px;
+}
+
+.author-photo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-name {
+  font-weight: 500;
+  color: #333;
+  font-size: 16px;
+}
+
+.mainpost-right li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+.mainpost-right img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.latest-post-link {
+  font-family: 'Anek Tamil',sans-serif;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.latest-post-link:hover {
+  text-decoration: underline;
+}
+
+/* ===================================category display  css====================================== */
+.category-title {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  border-bottom: 1px solid #ddd;
+}
+
+.category-page {
+  max-width: 1100px;
+  margin: 20px auto;
+  padding: 10px;
+  min-height: 100vh;
+}
+
+.category-page {
+  padding: 0 100px;
+}
+
+/* Category Page Title */
+.category-heading {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 28px;
+  font-weight: bold;
+  margin: 30px 0 20px 20px;
+  border-left: 5px solid #0072c6;
+  padding-left: 10px;
+  color: #333;
+  text-transform: capitalize;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 800px;
+  margin: 20px;
+}
+
+.post-item-category {
+  display: grid;
+  grid-template-columns: 62% 35%;
+  column-gap: 3%;
+  row-gap: 10px;
+  border-bottom: 1px solid rgb(232, 233, 234);
+  padding-bottom: 15px;
+  cursor: pointer;
+}
+
+.post-left {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.post-title {
+  font-family: 'Anek Tamil', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+}
+
+.post-excerpt {
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 14px;
+  color: #444;
+  margin: 0;
+}
+
+.post-footer {
+  font-size: 13px;
+  color: #666;
+  font-style: italic;
+  margin: 0;
+}
+
+.post-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+@media (max-width: 768px) {
+  .post-item-category {
+    grid-template-columns: 1fr;
+  }
+
+  .post-right img {
+    width: 100%;
+    height: auto;
+    margin-top: 10px;
+  }
+}
+/* ================================== */
