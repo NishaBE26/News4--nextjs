@@ -65,13 +65,6 @@ export default function HomeNavBar({ showsearch, setShowSearch, navbarOpen, setN
           </div>
         </header>
       </div>
-
-      {showsearch && (
-        <div className="search-container">
-          <input type="text" className="search-input" placeholder="Search news or categories..." />
-        </div>
-      )}
-
       {navbarOpen && <div className="overlay" onClick={toggleNavbar}></div>}
 
       {navbarOpen && (

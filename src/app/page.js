@@ -27,7 +27,7 @@ export default function Home() {
   const [lifestylesNews, setLifeStylesNews] = useState([]);
   const [healthtipsNews, setHealthTipsNews] = useState([]);
   const [astrologyNews, setAstrologyNews] = useState([]);
-  const [terroristNews, setTerroristNews] = useState([]);
+  const [politicsNews, setPoliticsNews] = useState([]);
 
   const router = useRouter();
 
@@ -90,7 +90,7 @@ export default function Home() {
     fetchCategoryNews("LifeStyles", setLifeStylesNews);
     fetchCategoryNews("HealthTips", setHealthTipsNews);
     fetchCategoryNews("Astrology", setAstrologyNews);
-    fetchCategoryNews("Terrorist", setTerroristNews);
+    fetchCategoryNews("Politics", setPoliticsNews);
     // Add more: fetchCategoryNews("World", setWorldNews);
   }, []);
 
@@ -110,7 +110,7 @@ export default function Home() {
         </div>
         <div className="home-content">
 
-          {/* ⭐ Featured Section */}
+          {/* ⭐ Featured Section  E:\Website\news4-tamil\news4tamil\src\app\newsread\[slug]\page.js*/}
           <div className="grid-container">
             {mainPost && (
               <div className="main-post" onClick={() => router.push(`/Mainpost?id=${mainPost._id}`)}>
@@ -131,7 +131,7 @@ export default function Home() {
 
             {sidePosts.map((post) => (
               <div key={post._id} className="side-post">
-                <div className="text" onClick={() => router.push(`/Mainpost?id=${mainPost._id}`)}>
+                <div className="text" onClick={() => router.push(`/Mainpost?id=${post._id}`)}>
                   <p className="mini-title">{post.title}</p>
                   <p className="mini-meta">By {authorMap[post.authorName] || "Unknown"}</p>
                 </div>
@@ -212,7 +212,23 @@ export default function Home() {
               </div>
             </div>
           )}
-
+          {politicsNews.length > 0 && (
+            <div className="breaking-news">
+              <h2 className='breakingnews-title'>Politics</h2>
+              <div className="breaking-grid">
+                <div className="main-breaking" onClick={() => router.push(`/Mainpost?id=${politicsNews[0]._id}&category=Terrorist`)}>
+                  <img src={politicsNews[0]?.file} alt={politicsNews[0]?.title} />
+                  <p className="title">{politicsNews[0]?.title}</p>
+                </div>
+                {politicsNews.slice(1, 7).map((news) => (
+                  <div key={news._id} className="breaking-card" onClick={() => router.push(`/Mainpost?id=${news._id}&category=Terrorist`)}>
+                    <img src={news.file} alt={news.title} className="breaking-img" />
+                    <p className="breaking-title">{news.title}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           {sportsNews.length > 0 && (
             <div className="breaking-news" >
               <h2 className='breakingnews-title'>Sports</h2>
@@ -293,23 +309,6 @@ export default function Home() {
                 </div>
                 {astrologyNews.slice(1, 7).map((news) => (
                   <div key={news._id} className="breaking-card" onClick={() => router.push(`/Mainpost?id=${news._id}&category=Astrology`)}>
-                    <img src={news.file} alt={news.title} className="breaking-img" />
-                    <p className="breaking-title">{news.title}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          {terroristNews.length > 0 && (
-            <div className="breaking-news">
-              <h2 className='breakingnews-title'>Terrorist</h2>
-              <div className="breaking-grid">
-                <div className="main-breaking" onClick={() => router.push(`/Mainpost?id=${terroristNews[0]._id}&category=Terrorist`)}>
-                  <img src={terroristNews[0]?.file} alt={terroristNews[0]?.title} />
-                  <p className="title">{terroristNews[0]?.title}</p>
-                </div>
-                {terroristNews.slice(1, 7).map((news) => (
-                  <div key={news._id} className="breaking-card" onClick={() => router.push(`/Mainpost?id=${news._id}&category=Terrorist`)}>
                     <img src={news.file} alt={news.title} className="breaking-img" />
                     <p className="breaking-title">{news.title}</p>
                   </div>

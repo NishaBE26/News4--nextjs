@@ -1,12 +1,12 @@
 .employee-register-container {
-  margin-left: 120px;    /* space for sidebar */
-  margin-top: 60px;      /* space for top navbar */
+  margin-left: 120px;  
+  margin-top: 60px;     
   padding: 20px;
-  width: calc(98% - 140px); /* subtract margin and padding */
+  width: calc(98% - 140px); 
   background-color: #ffffff;
   border-radius: 25px;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
+  font-family: 'Notos Sans Tamil', sans-serif;
 }
 
 .employee-register-container h2 {

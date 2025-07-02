@@ -1,245 +1,357 @@
 .sidebar-home {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 220px;
-    height: 100%;
-    background: #fff;
-    color: #333;
-    padding: 20px;
-    z-index: 10000;
-    isolation: isolate;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-    overflow-y: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 220px;
+  height: 100%;
+  background: #fff;
+  color: #333;
+  padding: 20px;
+  z-index: 10000;
+  isolation: isolate;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
 
 .sidebar-home::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .sidebar-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .sidebar-home nav ul {
-    list-style: none;
-    padding: 0;
-    margin-top: -20px;
-    font-size: 14px;
+  list-style: none;
+  padding: 0;
+  margin-top: -20px;
+  font-size: 14px;
 }
 
 .sidebar-home nav ul li {
-    margin-bottom: 20px;
-    cursor: pointer;
-    font-weight: 600;
-    font-family: 'Noto Sans Tamil', sans-serif;
+  margin-bottom: 20px;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: 'Noto Sans Tamil', sans-serif;
 }
 
 .close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: #333;
-    font-size: 20px;
-    cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 20px;
+  cursor: pointer;
 }
 
 .navbar-toggle {
-    font-size: 24px;
-    background: none;
-    border: none;
-    color: #333;
-    cursor: pointer;
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #333;
+  cursor: pointer;
 }
 
 .sidebaricon {
-    display: flex;
-    align-items: center;
-    margin-bottom: 30px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ddd;
 }
 
 .sidebaricon img {
-    height: 40px;
-    width: auto;
+  height: 40px;
+  width: auto;
 }
 
 .sidebaricon .text {
-    font-family: 'Poppins', sans-serif;
-    font-size: 18px;
-    font-weight: 600;
-    margin: 0;
-    display: flex;
-    gap: 5px;
-    align-items: center;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 
 .news4-sidebar {
-    color: #e53935;
+  color: #e53935;
 }
 
 .tamil-sidebar {
-    color: #196F3D;
+  color: #196F3D;
 }
 
 .social-icons {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-top: 0px;
-    margin-bottom: 30px;
-    padding: 10px 0;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 0px;
+  margin-bottom: 30px;
+  padding: 10px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
 }
 
 .nav-icon {
-    width: 36px;
-    height: 36px;
-    background-color: white;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
-    transition: transform 0.2s ease;
+  width: 36px;
+  height: 36px;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
 }
 
 .nav-icon.website {
-    background-color: #4caf50;
+  background-color: #4caf50;
 }
 
 .nav-icon.instagram {
-    background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
 }
 
 .nav-icon.facebook {
-    background-color: #3b5998;
+  background-color: #3b5998;
 }
 
 .nav-icon.youtube {
-    background-color: #ff0000;
+  background-color: #ff0000;
 }
 
 .nav-icon:hover {
-    opacity: 0.8;
-    transform: scale(1.05);
-    transition: all 0.3s ease;
+  opacity: 0.8;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
 }
 
 /* Background overlay when sidebar is open */
 .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.4);
-    z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
 }
 
+/* ✅ Responsive Sidebar for screens smaller than 768px */
+@media (max-width: 768px) {
+  .sidebar-home {
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    box-shadow: none;
+    z-index: 10000;
+  }
 
+  .sidebaricon {
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .sidebaricon img {
+    height: 30px;
+  }
+
+  .sidebaricon .text {
+    font-size: 16px;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sidebar-nav {
+    align-items: center;
+    gap: 12px;
+  }
+
+  .sidebar-home nav ul {
+    font-size: 16px;
+    text-align: center;
+  }
+
+  .sidebar-home nav ul li {
+    margin-bottom: 16px;
+  }
+
+  .social-icons {
+    justify-content: center;
+    padding: 10px 0;
+  }
+
+  .nav-icon {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+/* ✅ For very small devices like phones < 480px */
+@media (max-width: 480px) {
+  .sidebaricon .text {
+    font-size: 14px;
+  }
+
+  .nav-icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sidebar-home nav ul {
+    font-size: 14px;
+  }
+  
+}
+
+/* =================header logo css============ */
 /* Global styles */
 html,
 body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Poppins', sans-serif;
-    background: #f9f9f9;
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  font-family: 'Notos Sans Tamil', sans-serif;
+  background: #f9f9f9;
 }
 
 html {
-    scroll-behavior: smooth;
-    scroll-padding-top: 120px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 120px;
 }
 
 /* Header Bar */
 .home-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: white;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 100px;
-    height: 60px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 100px;
+  height: 60px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
 /* Center Logo */
 .header-center {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .header-center img {
-    height: 45px;
+  height: 45px;
 }
 
 .brand-text {
-    font-family: 'Noto Sans Tamil', sans-serif;
-    font-size: 20px;
-    font-weight: 600;
-    display: flex;
-    gap: 2px;
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  display: flex;
+  gap: 2px;
 }
 
 .news4 {
-    color: #e53935;
+  color: #e53935;
 }
 
 .tamil {
-    color: #196F3D;
+  color: #196F3D;
 }
 
 /* Right Icons */
 .header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .search-button,
 .login-button {
-    font-size: 20px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #333;
+  font-size: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #333;
 }
 
-/* Search Box */
 .search-container {
-    margin: 10px 100px;
-    display: flex;
-    justify-content: center;
+  position: relative;
+  margin: 10px 100px;
 }
 
 .search-input {
-    width: 100%;
-    max-width: 600px;
-    padding: 10px 16px;
-    border: 1px solid #ccc;
-    border-radius: 25px;
-    font-size: 14px;
-    background: white;
-    box-sizing: border-box;
-    outline: none;
+  width: 100%;
+  padding: 8px 40px 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.search-icon-right {
+  position:absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  color: #555;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  max-height: 250px;
+  overflow-y: auto;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Individual search result */
+.search-result-item {
+  padding: 10px 15px;
+  cursor: pointer;
+  font-size: 14px;
+  border-bottom: 1px solid #f0f0f0;
+  transition: background-color 0.2s ease;
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: #f5f5f5;
+}
+
+.search-no-results {
+  padding: 10px 15px;
+  font-style: italic;
+  color: #999;
+  background-color: #f9f9f9;
 }
 
 /* Category Bar */
@@ -248,303 +360,317 @@ html {
 }
 
 .category-bar {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 100px;
-    position: sticky;
-    top: 0;
-    background-color: #fff;
-    box-sizing: border-box;
-    z-index: 100;
-    transform: translateZ(0);
-    will-change: transform;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap:2px;
+  padding: 10px 100px;
+  position: relative;
+  background-color: #fff;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
-
-.category-bar::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    height: 2px;
-    background-color: red;
-    width: var(--underline-width, 10%);
-    /* dynamic width from JS */
-    transition: width 0.3s ease;
-}
-
 
 .category-bar::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .category-bar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Category Item */
 .category-item {
-    font-family: 'Noto Sans Tamil', sans-serif;
-    padding: 6px 12px;
-    font-size: 14px;
-    font-weight: 600;
-    border-radius: 20px;
-    white-space: nowrap;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    color: #333;
+  font-family: 'Noto Sans Tamil', sans-serif;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  color: #333;
+  flex-shrink: 0;
 }
 
-/* More Dropdown */
-.more-categories {
-    position: relative;
-    margin-top: 7px;
-}
-
-.more-icon {
-    padding: 6px;
-    cursor: pointer;
-}
-
-.dropdown {
-    position: absolute;
-    top: 50px;
-    right: 100px;
-    background: white;
-    border-radius: 6px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    z-index: 10000;
-    min-width: 150px;
-}
-
-.dropdown-item {
-    padding: 10px;
-    font-size: 14px;
-    cursor: pointer;
-    white-space: nowrap;
+.category-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background-color: red;
+  transition: width 0.3s ease;
 }
 
 @media (max-width: 1024px) {
-    .home-header {
-        margin: 0 40px;
-    }
+  .home-header {
+    margin: 0 40px;
+  }
 
-    .category-bar {
-        margin: 10px 40px;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
+  .category-bar {
+    margin: 10px 40px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 
-    .search-container {
-        margin: 10px 40px;
-    }
+  .search-container {
+    margin: 10px 40px;
+  }
 }
 
 @media (max-width: 768px) {
-    .home-header {
-        margin: 0 20px;
-        padding: 8px;
-        height: auto;
-        flex-direction: row;
-        justify-content: space-between;
-    }
+  .home-header {
+    margin: 0 20px;
+    padding: 8px;
+    height: auto;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-    .header-center {
-        position: static;
-        transform: none;
-    }
+  .header-center {
+    position: static;
+    transform: none;
+  }
 
-    .category-bar {
-        margin: 10px 20px;
-        flex-wrap: wrap;
-        gap: 6px;
-    }
+  .category-bar {
+    padding: 10px 20px;
+    overflow-x: auto;
+    overflow-y: auto;
+    white-space: nowrap;
+    flex-wrap: nowrap;
+    direction: ltr;
+    scroll-behavior: smooth;
+  }
 
-    .brand-text {
-        font-size: 18px;
-    }
+  .brand-text {
+    font-size: 18px;
+  }
 
-    .category-item,
-    .more-icon {
-        font-size: 12px;
-        padding: 5px 10px;
-    }
+  .category-item {
+    display: inline-block;
+    margin-right: 8px;
+  }
 
-    .dropdown {
-        top: 28px;
-    }
+  .category-bar::after {
+    left: 0;
+    right: unset;
+  }
 
-    .search-container {
-        margin: 10px 20px;
-    }
+  .search-container {
+    margin: 10px 20px;
+  }
 }
 
 @media (max-width: 480px) {
-    .home-header {
-        margin: 0 10px;
-    }
+  .home-header {
+    margin: 0 10px;
+  }
 
-    .header-center img {
-        height: 40px;
-    }
+  .header-center img {
+    height: 40px;
+  }
 
-    .brand-text {
-        font-size: 16px;
-    }
+  .brand-text {
+    font-size: 16px;
+  }
 
-    .category-bar {
-        margin: 10px 10px;
-        gap: 5px;
-    }
+  .category-bar {
+    margin: 10px 10px;
+    gap: 5px;
+  }
 
-    .category-item,
-    .more-icon {
-        font-size: 11px;
-        padding: 4px 8px;
-    }
+  .category-item,
+  .more-icon {
+    font-size: 11px;
+    padding: 4px 8px;
+  }
 
-    .dropdown {
-        top: 24px;
-        min-width: 120px;
-    }
+  .dropdown {
+    top: 24px;
+    min-width: 120px;
+  }
 
-    .dropdown-item {
-        font-size: 13px;
-        padding: 6px 10px;
-    }
+  .dropdown-item {
+    font-size: 13px;
+    padding: 6px 10px;
+  }
 
-    .sidebar-home {
-        width: 180px;
-        padding: 15px;
-    }
+  .sidebar-home {
+    width: 180px;
+    padding: 15px;
+  }
 
-    .sidebaricon img {
-        height: 35px;
-    }
+  .sidebaricon img {
+    height: 35px;
+  }
 
-    .text {
-        font-size: 15px;
-    }
+  .text {
+    font-size: 15px;
+  }
 
-    .search-container {
-        margin: 10px 10px;
-    }
+  .search-container {
+    margin: 10px 10px;
+  }
 
-    .search-input {
-        font-size: 12px;
-        padding: 6px 10px;
-    }
+  .search-input {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
 }
 
 /* =========================footer===================== */
 .site-footer {
-    background-color: #222;
-    padding: 30px 100px;
-    color: white;
-    margin: 0px 100px;
-    font-family: 'Segoe UI', sans-serif;
+  background-color: #222;
+  padding: 30px 100px;
+  color: white;
+  margin: 0px 100px;
+  font-family: 'Notos Sans Tamil', sans-serif;
 }
 
 .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-    gap: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  gap: 20px;
 }
 
 .footer-left {
-    display: flex;
-    align-items: center;
-    gap: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .footer-logo {
-    width: 50px;
-    height: auto;
+  width: 50px;
+  height: auto;
 }
 
 .footer-brand {
-    font-family: 'Noto Sans Tamil', sans-serif;
-    font-size: 24px;
-    font-weight: bold;
+  font-family: 'Noto Sans Tamil', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .news4-red {
-    color: #d60000;
+  color: #d60000;
 }
 
 .tamil-green {
-    color: green;
+  color: green;
 }
 
 .footer-links {
-    font-family: 'Noto Sans Tamil', sans-serif;
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+  font-family: 'Noto Sans Tamil', sans-serif;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .footer-links a {
-    text-decoration: none;
-    color: white;
-    font-weight: 500;
-    transition: color 0.3s;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: color 0.3s;
 }
 
 .footer-links a:hover {
-    color: #d60000;
+  color: #d60000;
 }
 
 .footer-social {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    font-size: 20px;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 20px;
+  margin-bottom: 10px;
 }
 
 .footer-social a {
-    color: white;
-    transition: color 0.3s;
+  color: white;
+  transition: color 0.3s;
 }
 
 .footer-social a:hover {
-    color: #d60000;
+  color: #d60000;
 }
 
 .footer-bottom {
-    font-family: 'Noto Sans Tamil', sans-serif;
-    text-align: center;
-    font-size: 14px;
-    color: white;
+  font-family: 'Noto Sans Tamil', sans-serif;
+  text-align: center;
+  font-size: 14px;
+  color: white;
 }
 
 /* ✅ Responsive Design */
+@media (max-width: 1024px) {
+  .site-footer {
+    padding: 30px 50px;
+    margin: 0 50px;
+  }
+}
+
 @media (max-width: 768px) {
-    .site-footer {
-        padding: 30px 30px;
-    }
+  .site-footer {
+    padding: 30px 30px;
+    margin: 0 30px;
+  }
 
-    .footer-content {
-        flex-direction: column;
-        align-items: flex-start;
-    }
+  .footer-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
 
-    .footer-links {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-    }
+  .footer-links {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 10px;
+  }
 
-    .footer-left {
-        flex-direction: row;
-    }
+  .footer-social {
+    flex-wrap: wrap;
+    gap: 15px;
+  }
 
-    .footer-social {
-        flex-wrap: wrap;
-        gap: 15px;
-    }
+  .footer-brand {
+    font-size: 20px;
+  }
+
+  .footer-links a {
+    font-size: 14px;
+  }
+
+  .footer-bottom {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .site-footer {
+    padding: 30px 15px;
+    margin: 0 15px;
+  }
+
+  .footer-logo {
+    width: 40px;
+  }
+
+  .footer-brand {
+    font-size: 18px;
+  }
+
+  .footer-links a {
+    font-size: 13px;
+  }
+
+  .footer-bottom {
+    font-size: 12px;
+  }
+
+  .footer-social {
+    gap: 10px;
+    font-size: 18px;
+  }
 }

@@ -1,8 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
-export default function TaskAssign ({ employees, typesList, onTaskSubmit, loggedInAdmin }) {
+export default function TaskAssign({ employees, typesList, onTaskSubmit, loggedInAdmin }) {
   const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null); // ✅ for resetting file input
 
   const [taskassign, setTaskAssign] = useState({
     title: "",
@@ -21,10 +22,7 @@ export default function TaskAssign ({ employees, typesList, onTaskSubmit, logged
   };
 
   const handleSubmit = async () => {
-    if (!taskassign.title || !selectedFile || !taskassign.author || !taskassign.types) {
-      alert("Please fill all required fields: Title, File, Author, and Type.");
-      return;
-    }
+    if (!taskassign.title || !selectedFile || !taskassign.author || !taskassign.types) return;
 
     const formData = new FormData();
     formData.append("title", taskassign.title);
@@ -35,23 +33,20 @@ export default function TaskAssign ({ employees, typesList, onTaskSubmit, logged
     formData.append("status", taskassign.status);
     formData.append("types", taskassign.types);
 
-    try {
-      const response = await onTaskSubmit(formData);
-      console.log("Response from server:", response);
-      alert("Task Assigned Successfully");
+    await onTaskSubmit(formData);
 
-      setTaskAssign({
-        title: "",
-        link: "",
-        author: "",
-        assignedBy: loggedInAdmin?.name || "admin",
-        status: "Assigned",
-        types: "",
-      });
-      setSelectedFile(null);
-    } catch (error) {
-      alert("Failed to assign task. Please check console.");
-      console.error("Task Submit Error:", error);
+    // ✅ Reset form values and file input
+    setTaskAssign({
+      title: "",
+      link: "",
+      author: "",
+      assignedBy: loggedInAdmin?.name || "admin",
+      status: "Assigned",
+      types: "",
+    });
+    setSelectedFile(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; 
     }
   };
 
@@ -64,9 +59,7 @@ export default function TaskAssign ({ employees, typesList, onTaskSubmit, logged
             className="title"
             placeholder="Enter Title"
             value={taskassign.title}
-            onChange={(e) =>
-              setTaskAssign({ ...taskassign, title: e.target.value })
-            }
+            onChange={(e) => setTaskAssign({ ...taskassign, title: e.target.value })}
           />
         </label>
 
@@ -74,31 +67,30 @@ export default function TaskAssign ({ employees, typesList, onTaskSubmit, logged
           Upload File:
           <input
             type="file"
+            ref={fileInputRef} // ✅ attach ref
             accept="image/*,video/*,audio/*,.doc,.docx,.pdf,.xls,.xlsx,.txt,.csv"
             onChange={handleFileChange}
           />
         </label>
+
         <label>
           Reference Link:
           <input
             className="link"
             placeholder="Reference Link"
             value={taskassign.link}
-            onChange={(e) =>
-              setTaskAssign({ ...taskassign, link: e.target.value })
-            }
+            onChange={(e) => setTaskAssign({ ...taskassign, link: e.target.value })}
           />
         </label>
       </div>
+
       <div className="task-row">
         <label>
           Select Author:
           <select
             className="author"
             value={taskassign.author}
-            onChange={(e) =>
-              setTaskAssign({ ...taskassign, author: e.target.value })
-            }
+            onChange={(e) => setTaskAssign({ ...taskassign, author: e.target.value })}
           >
             <option value="">Select Author</option>
             {employees
@@ -110,13 +102,10 @@ export default function TaskAssign ({ employees, typesList, onTaskSubmit, logged
               ))}
           </select>
         </label>
+
         <label>
           Assigned By:
-          <input
-            className="assignedby"
-            value={taskassign.assignedBy}
-            readOnly
-          />
+          <input className="assignedby" value={taskassign.assignedBy} readOnly />
         </label>
 
         <label>
@@ -124,13 +113,14 @@ export default function TaskAssign ({ employees, typesList, onTaskSubmit, logged
           <select
             className="types"
             value={taskassign.types}
-            onChange={(e) =>
-              setTaskAssign({ ...taskassign, types: e.target.value })
-            }
+            onChange={(e) => setTaskAssign({ ...taskassign, types: e.target.value })}
           >
             <option value="">Select Type</option>
             {typesList.map((type, index) => (
-              <option key={index} value={typeof type.name === "object" ? type.name.name : type.name}>
+              <option
+                key={index}
+                value={typeof type.name === "object" ? type.name.name : type.name}
+              >
                 {typeof type.name === "object" ? type.name.name : type.name}
               </option>
             ))}
@@ -143,4 +133,4 @@ export default function TaskAssign ({ employees, typesList, onTaskSubmit, logged
       </div>
     </div>
   );
-};
+}

@@ -103,21 +103,82 @@ export default function MainPost() {
           <h1 className="post-category">{categoryName}</h1>
           <h1 className="post-title">{post.title}</h1>
           <p className="author-date">
-            By {authorName} | Posted on{' '}
+            By{' '}
+            <span
+              style={{ cursor: 'pointer' }}
+              onClick={() => router.push(`/author?id=${post?.authorName}`)}
+            >
+              {authorName}
+            </span>{' '}
+            | Posted on{' '}
             {post?.createDate
               ? new Date(post.createDate).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })
               : 'Unknown date'}
           </p>
           <img
-            src={post?.file || '/default-image.jpg'}
+            src={post?.file}
             alt={post?.title}
             className="main-image"
           />
-          <p className="news-content">{post.newsContent}</p>
+          <div className="news-content" style={{ whiteSpace: "pre-wrap" }}>
+            {post.newsContent.split("\n").map((line, index) => {
+              const trimmedLine = line.trim();
+
+              const isHeading =
+                (
+                  /^[★🚨💔✓✔️•●*]/.test(trimmedLine) || 
+                  /^\d+\./.test(trimmedLine) ||        
+                  /[:?]$/.test(trimmedLine)            
+                ) &&
+                !/\.$/.test(trimmedLine);              
+
+              return isHeading ? (
+                <h3
+                  key={index}
+                  style={{
+                    color: "#D60000",
+                    fontWeight: "bold",
+                    fontSize: "20px",
+                    marginBottom: "10px",
+                    marginTop: "20px",
+                  }}
+                >
+                  {trimmedLine}
+                </h3>
+              ) : (
+                <p
+                  key={index}
+                  style={{
+                    fontSize: "16px",
+                    lineHeight: "1.8",
+                    marginBottom: "10px",
+                    textAlign: "justify",
+                  }}
+                >
+                  {trimmedLine}
+                </p>
+              );
+            })}
+          </div>
+          {authorPhoto && (
+            <div className="author-box">
+              <img
+                src={authorPhoto}
+                alt={authorName}
+                className="author-photo"
+                onClick={() => router.push(`/author?id=${post?.authorName}`)}
+                style={{ cursor: "pointer" }}
+              />
+              <div className="author-info">
+                <p className="author-name">{authorName}</p>
+                <span className="author-department">Digital Content Writer</span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right */}

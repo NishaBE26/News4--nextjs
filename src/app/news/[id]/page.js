@@ -5,9 +5,16 @@ import { getPostById, getEmployeeById } from "../../services/Api";
 import "../../Styles/NewsDetail.css";
 
 export default function NewsDetailPage() {
-  const { id } = useParams();
+  const params = useParams();
+  const [id, setId] = useState(null);
   const [post, setPost] = useState(null);
   const [employee, setEmployee] = useState(null);
+
+  useEffect(() => {
+    if (params?.id) {
+      setId(params.id);
+    }
+  }, [params]);
 
   useEffect(() => {
     if (!id) return;
@@ -54,10 +61,10 @@ export default function NewsDetailPage() {
           return `${String(date.getDate()).padStart(2, "0")}.${String(date.getMonth() + 1).padStart(2, "0")}.${date.getFullYear()} ${hours}.${minutes}${ampm}`;
         })()}
       </p>
-
-      <div className="news-content">
-        <strong>NewsContent:</strong> {post.newsContent || "No content available."}
-      </div>
+      <div
+        className="news-content"
+        dangerouslySetInnerHTML={{ __html: post.newsContent }}
+      />
 
       <p className="news-author">
         <strong>By: {employee?.name || "Unknown Author"}</strong>

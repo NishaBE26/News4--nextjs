@@ -14,7 +14,6 @@ import {
   FaBars,
 } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
-import { MdDarkMode, MdLightMode } from "react-icons/md";
 import "../Styles/Sidebar.css";
 import { logout, getEmployeeById, getAllCategories } from "../services/Api";
 import { useEffect, useState, useRef } from "react";
@@ -29,22 +28,11 @@ export default function Sidebar() {
   const [name, setName] = useState();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
   const [categories, setCategories] = useState([]);
   const profileRef = useRef();
   const router = useRouter();
 
-  const toggledarkMode = () => {
-    const newMode = !isDarkMode;
-    setIsDarkMode(newMode);
-    localStorage.setItem("darkMode", newMode);
-    if (newMode) {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  };
-
+  
   useEffect(() => {
     const userData = localStorage.getItem("user");
     if (userData) {
@@ -74,10 +62,7 @@ export default function Sidebar() {
       fetchCategories();
     }
 
-    const savedMode = localStorage.getItem("darkMode") === "true";
-    setIsDarkMode(savedMode);
-    if (savedMode) document.documentElement.classList.add("dark");
-
+  
     let frameId;
     const updateTime = () => {
       const now = new Date();
@@ -141,9 +126,6 @@ export default function Sidebar() {
               ))}
             </div>
           </div>
-        </div>
-        <div className="dark-mode-toggle" onClick={toggledarkMode}>
-          {isDarkMode ? <MdDarkMode /> : <MdLightMode />}
         </div>
         <div className="name-display">
           👋 Hi, <strong>{name} / {designation}</strong>

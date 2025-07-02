@@ -6,7 +6,7 @@ import {
   getAllCategories,
   getPostsByCategoryId,
   getEmployeeById,
-  getAllTags
+  getAllTags,
 } from '../../services/Api';
 import CategoryBar from '@/app/components/CategoryBar';
 import Footer from '@/app/components/Footer';
@@ -17,6 +17,8 @@ export default function CategoryPage() {
   const { category } = useParams();
   const [posts, setPosts] = useState([]);
   const [authorMap, setAuthorMap] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 20;
   const router = useRouter();
 
   useEffect(() => {
@@ -29,7 +31,9 @@ export default function CategoryPage() {
         if (!matchCat) return;
 
         const res = await getPostsByCategoryId(matchCat._id);
-        const published = res.newsList.filter((p) => p.status === 'Published');
+        const published = res.newsList
+          .filter((p) => p.status === 'Published')
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
         const tagsRes = await getAllTags();
         const tagMap = {};
@@ -41,7 +45,7 @@ export default function CategoryPage() {
           ...p,
           tags: (Array.isArray(p.tags) ? p.tags : [p.tags]).map(
             (tagId) => tagMap[tagId] || 'Unknown Tag'
-          )
+          ),
         }));
 
         setPosts(postsWithTags);
@@ -63,6 +67,12 @@ export default function CategoryPage() {
     fetchData();
   }, [category]);
 
+  // Pagination logic
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const totalPages = Math.ceil(posts.length / postsPerPage);
+
   return (
     <div style={{ background: '#fff' }}>
       <div className="category-title">
@@ -71,7 +81,7 @@ export default function CategoryPage() {
       <div className="category-page">
         <h2 className="category-heading">{category.replace(/-/g, ' ')}</h2>
         <div className="post-list">
-          {posts.map((post) => (
+          {currentPosts.map((post) => (
             <div
               key={post._id}
               className="post-item-category"
@@ -81,8 +91,16 @@ export default function CategoryPage() {
             >
               <div className="post-left">
                 <h3 className="post-title">{post.title}</h3>
-                <p className="post-excerpt">
-                  {post.newsContent.slice(0, 100)}...
+                <p
+                  className="post-excerpt"
+                  style={{
+                    whiteSpace: "pre-line",
+                    fontFamily: "'Noto Sans Tamil', sans-serif",
+                    fontSize: "14px",
+                    marginTop: "10px",
+                  }}
+                >
+                  {post.newsContent.replace(/<[^>]+>/g, "").slice(0, 100)}...
                 </p>
                 <p className="post-footer">
                   {post.tags?.join(', ') || 'No tags'} ·{' '}
@@ -98,6 +116,54 @@ export default function CategoryPage() {
             </div>
           ))}
         </div>
+
+        {/* Pagination controls */}
+        {posts.length > postsPerPage && (
+          <div className="pagination">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Prev
+            </button>
+
+            {[...Array(totalPages)].map((_, index) => {
+              const page = index + 1;
+              const shouldShow =
+                page === 1 ||
+                page === totalPages ||
+                Math.abs(page - currentPage) <= 1;
+
+              if (shouldShow) {
+                return (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={page === currentPage ? 'active' : ''}
+                  >
+                    {page}
+                  </button>
+                );
+              } else if (
+                (page === currentPage - 2 && page > 2) ||
+                (page === currentPage + 2 && page < totalPages - 1)
+              ) {
+                return <span key={page}>...</span>;
+              }
+
+              return null;
+            })}
+
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+            >
+              Next
+            </button>
+          </div>
+        )}
       </div>
       <Footer />
     </div>

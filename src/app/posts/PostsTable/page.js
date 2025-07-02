@@ -21,6 +21,7 @@ export default function PostsTable({
 }) {
   const router = useRouter();
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [authorFilter, setAuthorFilter] = useState(null);
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -45,10 +46,11 @@ export default function PostsTable({
     month: "long",
     year: "numeric",
   });
+
   const generateMonthOptions = () => {
-    const startMonth = new Date(2025, 3); // April 2025 (Month index is 0-based)
+    const startMonth = new Date(2025, 3); // April 2025
     const now = new Date();
-    const endMonth = new Date(now.getFullYear(), now.getMonth() + 1); // up to next month
+    const endMonth = new Date(now.getFullYear(), now.getMonth() + 1);
     const months = [];
 
     while (startMonth <= endMonth) {
@@ -65,21 +67,23 @@ export default function PostsTable({
 
   const monthOptions = generateMonthOptions();
 
-  const handleClearFilter = () => setSelectedMonth("All");
+  const handleClearMonthFilter = () => setSelectedMonth("All");
 
   const formatDateTime = (dateString) => {
     const date = new Date(dateString);
     const day = String(date.getDate()).padStart(2, "0");
     const month = String(date.getMonth() + 1).padStart(2, "0");
     const year = date.getFullYear();
-
     const hours = date.getHours();
     const minutes = String(date.getMinutes()).padStart(2, "0");
     const ampm = hours >= 12 ? "pm" : "am";
     const hour12 = hours % 12 || 12;
-
     return `${day}.${month}.${year} & ${hour12}.${minutes}${ampm}`;
   };
+
+  const filteredPosts = authorFilter
+    ? posts.filter((post) => post.authorName === authorFilter)
+    : posts;
 
   return (
     <div className="posts-table-container">
@@ -92,10 +96,45 @@ export default function PostsTable({
           marginBottom: "15px",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
           <h1 className="allposts" style={{ margin: 0 }}>
             All posts
           </h1>
+
+          {/* Author Filter Display with Clear Button */}
+          {authorFilter && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                backgroundColor: "#fdecea",
+                padding: "6px 12px",
+                borderRadius: "5px",
+                border: "1px solid #f5c6cb",
+                fontSize: "13px",
+                color: "#b71c1c",
+              }}
+            >
+              <span>Showing posts by: {employeeNames[authorFilter]}</span>
+              <button
+                onClick={() => setAuthorFilter(null)}
+                style={{
+                  backgroundColor: "#fff",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  padding: "4px 8px",
+                  fontSize: "12px",
+                  cursor: "pointer",
+                  color: "#b71c1c",
+                }}
+              >
+                Clear Filter
+              </button>
+            </div>
+          )}
+
+          {/* Add Post */}
           <button
             style={{
               padding: "8px 10px",
@@ -110,6 +149,8 @@ export default function PostsTable({
           >
             Add New Post
           </button>
+
+          {/* Month Filter */}
           <select
             style={{
               padding: "8px",
@@ -128,8 +169,9 @@ export default function PostsTable({
               </option>
             ))}
           </select>
+
           <button
-            onClick={handleClearFilter}
+            onClick={handleClearMonthFilter}
             style={{
               padding: "8px",
               backgroundColor: "#eee",
@@ -138,7 +180,7 @@ export default function PostsTable({
               cursor: "pointer",
             }}
           >
-            Clear
+            Clear Month
           </button>
         </div>
 
@@ -151,36 +193,22 @@ export default function PostsTable({
             fontSize: "14px",
           }}
         >
-          <span>{posts.length} posts</span>
-          <button
-            onClick={() => paginate(1)}
-            disabled={currentPage === 1}
-            title="First Page"
-          >
+          <span>
+            {authorFilter ? filteredPosts.length : posts.length} posts
+          </span>
+          <button onClick={() => paginate(1)} disabled={currentPage === 1}>
             {"<<"}
           </button>
-          <button
-            onClick={() => paginate(currentPage - 1)}
-            disabled={currentPage === 1}
-            title="Previous Page"
-          >
+          <button onClick={() => paginate(currentPage - 1)} disabled={currentPage === 1}>
             {"<"}
           </button>
           <span>
             {currentPage} of {totalPages}
           </span>
-          <button
-            onClick={() => paginate(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            title="Next Page"
-          >
+          <button onClick={() => paginate(currentPage + 1)} disabled={currentPage === totalPages}>
             {">"}
           </button>
-          <button
-            onClick={() => paginate(totalPages)}
-            disabled={currentPage === totalPages}
-            title="Last Page"
-          >
+          <button onClick={() => paginate(totalPages)} disabled={currentPage === totalPages}>
             {">>"}
           </button>
         </div>
@@ -205,14 +233,14 @@ export default function PostsTable({
           </tr>
         </thead>
         <tbody>
-          {posts.length === 0 ? (
+          {filteredPosts.length === 0 ? (
             <tr>
               <td colSpan="10" style={{ textAlign: "center", padding: "20px" }}>
                 No posts found.
               </td>
             </tr>
           ) : (
-            posts.map((post, index) => (
+            filteredPosts.map((post, index) => (
               <tr key={post._id}>
                 <td>{indexOfFirstPost + index + 1}</td>
                 <td>
@@ -229,7 +257,13 @@ export default function PostsTable({
                   )}
                 </td>
                 <td style={{ color: "#007bff" }}>{post.title}</td>
-                <td style={{ color: "#007bff" }}>
+                <td
+                  style={{
+                    color: "#007bff",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setAuthorFilter(post.authorName)}
+                >
                   {employeeNames[post.authorName] || "Unknown"}
                 </td>
                 <td style={{ color: "#007bff" }}>{post.wordCount}</td>

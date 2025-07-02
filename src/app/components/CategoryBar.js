@@ -1,64 +1,103 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { BsThreeDotsVertical } from "react-icons/bs";
-import { getAllCategories } from '../services/Api';
 import { useRouter } from 'next/navigation';
+import { FaSearch } from 'react-icons/fa';
+import { getAllCategories, getAllPosts } from '../services/Api';
 import '../Styles/HomeNavBar.css';
 
 export default function CategoryBar({ showSearch, navbarOpen }) {
   const [categories, setCategories] = useState([]);
-  const [showMore, setShowMore] = useState(false);
   const [underlineWidth, setUnderlineWidth] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [allPosts, setAllPosts] = useState([]);
+  const [allCategories, setAllCategories] = useState([]);
+  const [filteredResults, setFilteredResults] = useState([]);
+
   const router = useRouter();
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      const data = await getAllCategories();
+    const fetchData = async () => {
+      const postsRes = await getAllPosts();
+      const categoriesRes = await getAllCategories();
+      const postList = postsRes?.newsList || [];
+      const categoryList = categoriesRes?.categories || [];
+
+      setAllPosts(postList);
+      setAllCategories(categoryList);
+
+      // Order categories for bar display
       const customOrder = [
-        "Home", "Breaking News", "Tamilnadu", "India", "World",
-        "Sports", "Cinema", "Lifestyles", "Health Tips", "Astrology"
+        'Home', 'Breaking News', 'Tamilnadu', 'India', 'World','Politics',
+        'Sports', 'Cinema', 'Lifestyles', 'Health Tips', 'Astrology', 'UnCategorized'
       ];
-      let catList = Array.isArray(data) ? data : data?.categories || [];
-      const sortByCustomOrder = (a, b) => {
-        const indexA = customOrder.findIndex(name => name.toLowerCase() === a.name.toLowerCase());
-        const indexB = customOrder.findIndex(name => name.toLowerCase() === b.name.toLowerCase());
-        if (indexA === -1 && indexB === -1) return 0;
-        if (indexA === -1) return 1;
-        if (indexB === -1) return -1;
-        return indexA - indexB;
-      };
-      const sortedCategories = [...catList].sort(sortByCustomOrder);
-      const filtered = sortedCategories.filter(cat => cat.name.toLowerCase() !== "home");
-      const withHome = [{ _id: 'home-static', name: 'Home' }, ...filtered];
+      const filteredList = categoryList.filter(cat =>
+        customOrder.some(name => name.toLowerCase() === cat.name.toLowerCase())
+      );
+      const sortByOrder = (a, b) =>
+        customOrder.findIndex(name => name.toLowerCase() === a.name.toLowerCase()) -
+        customOrder.findIndex(name => name.toLowerCase() === b.name.toLowerCase());
+      const sorted = [...filteredList].sort(sortByOrder);
+      const withHome = [{ _id: 'home-static', name: 'Home' }, ...sorted.filter(c => c.name.toLowerCase() !== 'home')];
+
       setCategories(withHome);
     };
-    fetchCategories();
+
+    fetchData();
   }, []);
 
   useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (!e.target.closest('.more-categories')) setShowMore(false);
-    };
-    if (showMore) document.addEventListener('click', handleClickOutside);
-    return () => document.removeEventListener('click', handleClickOutside);
-  }, [showMore]);
-
-  useEffect(() => {
-    const handleScroll = () => {
+    const scrollHandler = () => {
       const scrollTop = window.scrollY;
       const docHeight = document.body.scrollHeight - window.innerHeight;
       const scrollPercent = Math.min(100, Math.max(10, (scrollTop / docHeight) * 100));
       setUnderlineWidth(scrollPercent);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', scrollHandler);
+    return () => window.removeEventListener('scroll', scrollHandler);
   }, []);
+
+  useEffect(() => {
+    const normalize = (text) => text.toLowerCase().trim().replace(/\s+/g, ' ');
+
+    const term = normalize(searchTerm);
+
+    const matchedPosts = allPosts
+      .filter(p => normalize(p.title || '').includes(term))
+      .map(p => ({ ...p, type: 'post' }));
+
+    const matchedCategories = allCategories
+      .filter(c => normalize(c.name || '').includes(term))
+      .map(c => ({ ...c, type: 'category' }));
+
+    setFilteredResults([...matchedCategories, ...matchedPosts]);
+  }, [searchTerm, allPosts, allCategories]);
+
+ const handleSearchClick = (item) => {
+  if (!item || !item.type) return; // Prevent runtime crash
+
+  if (item.type === 'category') {
+    const slug = item.name.toLowerCase().replace(/\s+/g, '-');
+    router.push(`/category/${slug}`);
+  } else if (item.type === 'post') {
+    router.push(`/Mainpost?id=${item._id}&category=${item.category}`);
+  }
+
+  setSearchTerm('');
+};
+
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      const firstResult = filteredResults[0];
+      if (firstResult) handleSearchClick(firstResult);
+    }
+  };
 
   return (
     <div className={`categorymenu ${navbarOpen ? 'hide-category' : ''}`}>
       <div className="category-bar">
-        {categories.slice(0, 11).map(cat => (
+        {categories.map(cat => (
           <span
             key={cat._id}
             className="category-item"
@@ -66,41 +105,49 @@ export default function CategoryBar({ showSearch, navbarOpen }) {
               if (cat.name.toLowerCase() === 'home') {
                 router.push('/');
               } else {
-                router.push(`/category/${cat.name.toLowerCase().replace(/\s+/g, '-')}`);
+                const slug = cat.name.toLowerCase().replace(/\s+/g, '-');
+                router.push(`/category/${slug}`);
               }
             }}
           >
             {cat.name}
           </span>
         ))}
-
-        {categories.length > 11 && (
-          <div className="more-categories">
-            <span className="more-icon" onClick={() => setShowMore(prev => !prev)}>
-              <BsThreeDotsVertical />
-            </span>
-            {showMore && (
-              <div className="dropdown">
-                {categories.slice(11).map(cat => (
-                  <div
-                    key={cat._id}
-                    className="dropdown-item"
-                    onClick={() =>
-                      router.push(`/category/${cat.name.toLowerCase().replace(/\s+/g, '-')}`)
-                    }
-                  >
-                    {cat.name}
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        )}
+        <div className="category-underline" style={{ width: `${underlineWidth}%` }} />
       </div>
 
       {showSearch && (
         <div className="search-container">
-          <input type="text" className="search-input" placeholder="Search news or categories..." />
+          <div className="search-box-wrapper">
+            <input
+              type="text"
+              className="search-input"
+              placeholder="Search news or categories..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown} // Trigger on Enter key
+            />
+            <FaSearch className="search-icon-right" onClick={() => handleSearchClick(filteredResults[0])} />
+          </div>
+          {searchTerm && (
+            <div className="search-results">
+              {filteredResults.length > 0 ? (
+                filteredResults.map((item, index) => (
+                  <div
+                    key={index}
+                    className="search-result-item"
+                    onClick={() => handleSearchClick(item)}
+                  >
+                    {item.type === 'category'
+                      ? `Category: ${item.name}`
+                      : `Post: ${item.title}`}
+                  </div>
+                ))
+              ) : (
+                <div className="search-no-results">No matching categories or posts.</div>
+              )}
+            </div>
+          )}
         </div>
       )}
     </div>
