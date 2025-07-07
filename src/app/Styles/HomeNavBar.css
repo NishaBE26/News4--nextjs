@@ -364,7 +364,7 @@ html {
   flex-wrap: nowrap;
   overflow-x: auto;
   white-space: nowrap;
-  gap:2px;
+  gap:6px;
   padding: 10px 100px;
   position: relative;
   background-color: #fff;

@@ -15,6 +15,10 @@ export default function CategoryBar({ showSearch, navbarOpen }) {
 
   const router = useRouter();
 
+  // Capitalize first letter of every word
+  const toAllCaps = (text) => text.toUpperCase();
+
+
   useEffect(() => {
     const fetchData = async () => {
       const postsRes = await getAllPosts();
@@ -25,17 +29,19 @@ export default function CategoryBar({ showSearch, navbarOpen }) {
       setAllPosts(postList);
       setAllCategories(categoryList);
 
-      // Order categories for bar display
       const customOrder = [
-        'Home', 'Breaking News', 'Tamilnadu', 'India', 'World','Politics',
-        'Sports', 'Cinema', 'Lifestyles', 'Health Tips', 'Astrology', 'UnCategorized'
+        'Home', 'Breaking News', 'Tamilnadu', 'India', 'World', 'Politics',
+        'Sports', 'Cinema', 'Lifestyles', 'Health Tips', 'Astrology'
       ];
+
       const filteredList = categoryList.filter(cat =>
         customOrder.some(name => name.toLowerCase() === cat.name.toLowerCase())
       );
+
       const sortByOrder = (a, b) =>
         customOrder.findIndex(name => name.toLowerCase() === a.name.toLowerCase()) -
         customOrder.findIndex(name => name.toLowerCase() === b.name.toLowerCase());
+
       const sorted = [...filteredList].sort(sortByOrder);
       const withHome = [{ _id: 'home-static', name: 'Home' }, ...sorted.filter(c => c.name.toLowerCase() !== 'home')];
 
@@ -73,19 +79,18 @@ export default function CategoryBar({ showSearch, navbarOpen }) {
     setFilteredResults([...matchedCategories, ...matchedPosts]);
   }, [searchTerm, allPosts, allCategories]);
 
- const handleSearchClick = (item) => {
-  if (!item || !item.type) return; // Prevent runtime crash
+  const handleSearchClick = (item) => {
+    if (!item || !item.type) return;
 
-  if (item.type === 'category') {
-    const slug = item.name.toLowerCase().replace(/\s+/g, '-');
-    router.push(`/category/${slug}`);
-  } else if (item.type === 'post') {
-    router.push(`/Mainpost?id=${item._id}&category=${item.category}`);
-  }
+    if (item.type === 'category') {
+      const slug = item.name.toLowerCase().replace(/\s+/g, '-');
+      router.push(`/category/${slug}`);
+    } else if (item.type === 'post') {
+      router.push(`/Mainpost?id=${item._id}&category=${item.category}`);
+    }
 
-  setSearchTerm('');
-};
-
+    setSearchTerm('');
+  };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -96,26 +101,6 @@ export default function CategoryBar({ showSearch, navbarOpen }) {
 
   return (
     <div className={`categorymenu ${navbarOpen ? 'hide-category' : ''}`}>
-      <div className="category-bar">
-        {categories.map(cat => (
-          <span
-            key={cat._id}
-            className="category-item"
-            onClick={() => {
-              if (cat.name.toLowerCase() === 'home') {
-                router.push('/');
-              } else {
-                const slug = cat.name.toLowerCase().replace(/\s+/g, '-');
-                router.push(`/category/${slug}`);
-              }
-            }}
-          >
-            {cat.name}
-          </span>
-        ))}
-        <div className="category-underline" style={{ width: `${underlineWidth}%` }} />
-      </div>
-
       {showSearch && (
         <div className="search-container">
           <div className="search-box-wrapper">
@@ -125,9 +110,12 @@ export default function CategoryBar({ showSearch, navbarOpen }) {
               placeholder="Search news or categories..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown} // Trigger on Enter key
+              onKeyDown={handleKeyDown}
             />
-            <FaSearch className="search-icon-right" onClick={() => handleSearchClick(filteredResults[0])} />
+            <FaSearch
+              className="search-icon-right"
+              onClick={() => handleSearchClick(filteredResults[0])}
+            />
           </div>
           {searchTerm && (
             <div className="search-results">
@@ -139,8 +127,9 @@ export default function CategoryBar({ showSearch, navbarOpen }) {
                     onClick={() => handleSearchClick(item)}
                   >
                     {item.type === 'category'
-                      ? `Category: ${item.name}`
-                      : `Post: ${item.title}`}
+                      ? `Category: ${toAllCaps(item.name)}`
+                      : `Post: ${toAllCaps(item.title)}`}
+
                   </div>
                 ))
               ) : (
@@ -150,6 +139,22 @@ export default function CategoryBar({ showSearch, navbarOpen }) {
           )}
         </div>
       )}
+
+      <div className="category-bar">
+        {categories.map(cat => (
+          <span
+            key={cat._id}
+            className="category-item"
+            onClick={() => {
+              const slug = cat.name.toLowerCase().replace(/\s+/g, '-');
+              router.push(cat.name.toLowerCase() === 'home' ? '/' : `/category/${slug}`);
+            }}
+          >
+            {toAllCaps(cat.name)}
+          </span>
+        ))}
+        <div className="category-underline" style={{ width: `${underlineWidth}%` }} />
+      </div>
     </div>
   );
 }

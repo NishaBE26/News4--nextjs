@@ -65,7 +65,6 @@ export default function NewsDetailPage() {
         className="news-content"
         dangerouslySetInnerHTML={{ __html: post.newsContent }}
       />
-
       <p className="news-author">
         <strong>By: {employee?.name || "Unknown Author"}</strong>
       </p>

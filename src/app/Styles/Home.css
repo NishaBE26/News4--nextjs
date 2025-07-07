@@ -16,7 +16,7 @@
   grid-template-columns: 2.5fr 2fr;
   grid-template-rows: repeat(4, auto);
   gap: 10px;
-  margin: 40px 100px;
+  margin: 20px 100px;
 }
 
 .main-post {

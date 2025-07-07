@@ -124,46 +124,10 @@ export default function MainPost() {
             alt={post?.title}
             className="main-image"
           />
-          <div className="news-content" style={{ whiteSpace: "pre-wrap" }}>
-            {post.newsContent.split("\n").map((line, index) => {
-              const trimmedLine = line.trim();
-
-              const isHeading =
-                (
-                  /^[★🚨💔✓✔️•●*]/.test(trimmedLine) || 
-                  /^\d+\./.test(trimmedLine) ||        
-                  /[:?]$/.test(trimmedLine)            
-                ) &&
-                !/\.$/.test(trimmedLine);              
-
-              return isHeading ? (
-                <h3
-                  key={index}
-                  style={{
-                    color: "#D60000",
-                    fontWeight: "bold",
-                    fontSize: "20px",
-                    marginBottom: "10px",
-                    marginTop: "20px",
-                  }}
-                >
-                  {trimmedLine}
-                </h3>
-              ) : (
-                <p
-                  key={index}
-                  style={{
-                    fontSize: "16px",
-                    lineHeight: "1.8",
-                    marginBottom: "10px",
-                    textAlign: "justify",
-                  }}
-                >
-                  {trimmedLine}
-                </p>
-              );
-            })}
-          </div>
+          <div
+            className="news-content"
+            dangerouslySetInnerHTML={{ __html: post.newsContent }}
+          />
           {authorPhoto && (
             <div className="author-box">
               <img

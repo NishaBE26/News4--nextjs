@@ -1,5 +1,5 @@
 import './globals.css';
-import SidebarWrapper from './components/SidebarWrapper'; 
+import SidebarWrapper from './components/SidebarWrapper';
 
 export const metadata = {
   title: 'News4Tamil',
@@ -12,9 +12,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <SidebarWrapper>
-          {children}
-        </SidebarWrapper>
+        <div className='page-wrapper'>
+          <SidebarWrapper>
+            {children}
+          </SidebarWrapper>
+        </div>
       </body>
     </html>
   );

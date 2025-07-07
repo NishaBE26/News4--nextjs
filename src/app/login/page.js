@@ -72,7 +72,12 @@ export default function LoginPage() {
       container.appendChild(dot);
     }
   }, []);
-
+useEffect(() => {
+    document.body.style.backgroundColor = "#131D4F";
+    return () => {
+      document.body.style.backgroundColor = ""; 
+    };
+  }, []);
   return (
     <div className="login-wrapper">
       <div className="login-page">

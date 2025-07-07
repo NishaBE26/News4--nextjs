@@ -91,25 +91,17 @@ export default function CategoryPage() {
             >
               <div className="post-left">
                 <h3 className="post-title">{post.title}</h3>
-                <p
-                  className="post-excerpt"
-                  style={{
-                    whiteSpace: "pre-line",
-                    fontFamily: "'Noto Sans Tamil', sans-serif",
-                    fontSize: "14px",
-                    marginTop: "10px",
-                  }}
-                >
-                  {post.newsContent.replace(/<[^>]+>/g, "").slice(0, 100)}...
-                </p>
-                <p className="post-footer">
-                  {post.tags?.join(', ') || 'No tags'} ·{' '}
+                  <p className="post-excerpt">
+                    {post.newsContent.replace(/<[^>]+>/g, "").slice(0, 100)}...
+                  </p>                                            
+               <p className="post-footer">
+                  {post.tags?.join(', ')} ·{' '}
                   {Math.ceil(post.newsContent.split(' ').length / 100)} min read
                 </p>
               </div>
               <div className="post-right">
                 <img
-                  src={post.file || '/default-image.jpg'}
+                  src={post.file}
                   alt={post.title}
                 />
               </div>

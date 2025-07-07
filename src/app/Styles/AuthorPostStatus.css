@@ -1,5 +1,5 @@
 .correction-container {
-  width: 101%;
+  width: 100%;
   background-color: #fff;
   max-height: 500px;
   border-radius: 12px;
@@ -99,6 +99,66 @@
 .edit-resubmit-button:hover {
   color: #3cad40;
   font-weight: 600;
+}
+@media (max-width: 768px) {
+  .correction-container {
+    max-width: 95%;
+    margin: 16px auto;
+  }
+
+  .correction-scroll-area {
+    max-height: 300px;
+    padding: 5px 12px;
+  }
+
+  .correction-box {
+    padding: 10px 12px;
+  }
+
+  .fixed-messages h2 {
+    font-size: 1rem; /* 16px */
+  }
+
+  .fixed-messages p,
+  .correction-box p,
+  .status-row span,
+  .edit-resubmit-button,
+  .correction-status {
+    font-size: 0.875rem; /* 14px */
+  }
+
+  .correction-status {
+    padding: 4px 10px;
+  }
+
+  .status-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .correction-container {
+    max-width: 98%;
+    margin: 12px auto;
+  }
+
+  .fixed-messages h2 {
+    font-size: 0.95rem;
+  }
+
+  .correction-box {
+    padding: 8px 10px;
+  }
+
+  .correction-box p {
+    font-size: 0.85rem;
+  }
+
+  .correction-status {
+    font-size: 0.8rem;
+  }
 }
 
 /* ================admin post status================= */

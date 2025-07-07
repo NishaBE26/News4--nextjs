@@ -67,30 +67,26 @@ select {
   box-sizing: border-box;
   resize: vertical;
 }
-.editable-div {
-  min-height: 200px;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-family: 'Noto Sans Tamil', sans-serif;
-  font-size: 15px;
-  line-height: 26.1px;
-  outline: none;
-  white-space: pre-wrap;
-  margin-top: 10px;
-}
 
-
-.editable-div h1,
-.editable-div h2,
-.editable-div strong {
+/* Optional label for editor */
+.editor-label {
+  font-size: 16px;
   font-weight: bold;
-  font-size: 22px;
-  line-height: 30px;
+  margin-bottom: 10px;
+  display: block;
 }
 
-.editable-div p {
-  margin-bottom: 10px;
+/* CKEditor Textarea Height */
+.ckeditor-container .ck-editor__editable {
+  min-height: 300px;
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 16px;
+}
+
+/* Optional: space around the editor */
+.ckeditor-container .ck-editor {
+  border-radius: 8px;
 }
 
 .image-upload-button {

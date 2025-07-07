@@ -51,7 +51,12 @@ export default function Home() {
 
     setter(published);
   };
-
+  useEffect(() => {
+    document.body.style.backgroundColor = "#f9f9f9";
+    return () => {
+      document.body.style.backgroundColor = ""; 
+    };
+  }, []);
 
   useEffect(() => {
     const fetchPostsAndAuthors = async () => {

@@ -57,7 +57,7 @@ export default function TaskNotification (){
 
   return (
     <div className="task-notification-wrapper">
-      <h2 className="task-notification-title" style={{ marginTop: "-7px" }}>
+      <h2 className="task-notification-title" style={{ marginTop: "5px" }}>
         Task Notifications
       </h2>
 

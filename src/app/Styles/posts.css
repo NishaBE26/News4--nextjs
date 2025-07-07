@@ -1,6 +1,7 @@
 .posts-wrapper {
   margin-top: 50px;
   margin-left: 120px;
+  width:88%;
   height: calc(100% - 50px);
   padding: 11px;
   background-color: whitesmoke;
