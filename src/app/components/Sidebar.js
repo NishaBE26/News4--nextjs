@@ -19,6 +19,7 @@ import { logout, getEmployeeById, getAllCategories } from "../services/Api";
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 
+
 export default function Sidebar() {
   const [loggedEmployeeId, setLoggedEmployeeId] = useState();
   const [employeephoto, setEmployeePhoto] = useState();
@@ -107,7 +108,7 @@ export default function Sidebar() {
           <div className="hamburger-icon" onClick={() => setSidebarOpen(!isSidebarOpen)}>
             <FaBars />
           </div>
-          <Image src="/assets/News4-logo.png" alt="Logo" width={120} height={0} className="logo" priority />
+          <Image src="/assets/News4-logo.png" alt="Logo" width={1200} height={675} className="logo" priority />
         </div>
         <div className="nav-center">
           <Link href="/posts/AllPosts" className="nav-page">All posts</Link>
@@ -144,7 +145,7 @@ export default function Sidebar() {
           </div>
           <div className="profile-container" onClick={() => setShowProfileMenu(!showProfileMenu)} style={{ cursor: "pointer" }}>
             {employeephoto ? (
-              <img src={employeephoto} alt="User" width={40} height={40} className="user-photo" style={{ borderRadius: "50%" }} />
+              <Image src={employeephoto} alt="User" width={1200} height={675} className="user-photo" style={{ borderRadius: "50%" }} />
             ) : (
               <div className="user-initial" style={{
                 width: "35px",

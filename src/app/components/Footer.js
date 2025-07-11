@@ -1,24 +1,27 @@
 'use client';
 import React from 'react';
+import Image from "next/image";
 import { FaGlobe, FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa";
 import '../Styles/HomeNavBar.css';
+import Link from 'next/link';
+
 
 export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="footer-content">
         <div className="footer-left">
-          <img src="/assets/News4-logo.png" alt="News4 Tamil" className="footer-logo" />
+          <Image src="/assets/News4-logo.png" alt="News4 Tamil" className="footer-logo"  width={1200} height={675}/>
           <h1 className="footer-brand">
             <span className="news4-red">NEWS4</span> <span className="tamil-green">TAMIL</span>
           </h1>
         </div>
 
         <div className="footer-links">
-          <a href="/">Home</a>
-          <a href="/">About Us</a>
-          <a href="/">Contact</a>
-          <a href="/">Terms & Conditions</a>
+          <Link href="/">Home</Link>
+          <Link href="/">About Us</Link>
+          <Link href="/">Contact</Link>
+          <Link href="/">Terms & Conditions</Link>
         </div>
       </div>
 

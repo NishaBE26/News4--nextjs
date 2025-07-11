@@ -4,6 +4,7 @@ import { VscThreeBars, VscChromeClose } from "react-icons/vsc";
 import { FaSearch, FaUserCircle, FaGlobe, FaInstagram, FaFacebookF, FaYoutube } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 import { getAllCategories } from '../services/Api';
+import Image from 'next/image';
 import '../Styles/HomeNavBar.css';
 
 export default function HomeNavBar({ showsearch, setShowSearch, navbarOpen, setNavbarOpen }) {
@@ -54,7 +55,7 @@ export default function HomeNavBar({ showsearch, setShowSearch, navbarOpen, setN
             <button className="navbar-toggle" onClick={toggleNavbar}><VscThreeBars /></button>
           </div>
           <div className="header-center">
-            <img src="/assets/News4-logo.png" alt="News4 Tamil" />
+            <Image src="/assets/News4-logo.png" alt="News4 Tamil" width={1200} height={675}/>
             <h1 className="brand-text">
               <span className="news4">NEWS4</span> <span className="tamil">TAMIL</span>
             </h1>
@@ -71,7 +72,7 @@ export default function HomeNavBar({ showsearch, setShowSearch, navbarOpen, setN
         <aside className="sidebar-home">
           <button className="close-btn" onClick={toggleNavbar}><VscChromeClose /></button>
           <div className='sidebaricon'>
-            <img src="/assets/News4-logo.png" alt="News4 Tamil" />
+            <Image src="/assets/News4-logo.png" alt="News4 Tamil" width={1200}height={675}/>
             <h1 className="text"><span className="news4-sidebar">NEWS4</span> <span className="tamil-sidebar">TAMIL</span></h1>
           </div>
           <nav className="sidebar-nav">

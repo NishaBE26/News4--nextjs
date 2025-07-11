@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { getPostById, getEmployeeById } from "../../services/Api";
 import "../../Styles/NewsDetail.css";
+import Image from "next/image";
 
 export default function NewsDetailPage() {
   const params = useParams();
@@ -45,7 +46,7 @@ export default function NewsDetailPage() {
       <h1 className="news-title">{post.title}</h1>
 
       {post.file ? (
-        <img src={post.file} alt={post.title} className="news-image" />
+        <Image src={post.file} alt={post.title}  width={1200} height={675} className="news-image" />
       ) : (
         <p>No image available</p>
       )}

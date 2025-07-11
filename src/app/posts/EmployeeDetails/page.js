@@ -7,6 +7,7 @@ import {
   deleteEmployeeById,
 } from "../../services/Api";
 import "../../Styles/EmployeeDetails.css";
+import Image from 'next/image';
 
 export default function EmployeeDetails  ()  {
   const [employees, setEmployees] = useState([]);
@@ -81,10 +82,12 @@ export default function EmployeeDetails  ()  {
             <tr key={emp._id}>
               <td>
                 {emp.photo ? (
-                  <img
+                  <Image
                     src={emp.photo}
                     alt="Profile"
                     className="profile-thumbnail"
+                    width={1200}
+                    height={675}
                   />
                 ) : (
                   <span className="initial">{emp.name?.charAt(0)}</span>

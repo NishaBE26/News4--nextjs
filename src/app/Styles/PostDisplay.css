@@ -17,7 +17,7 @@
 }
 
 .mainpost-left {
-  flex: 1.5;
+  flex: 2;
 }
 
 .mainpost-right {
@@ -27,7 +27,8 @@
 /* Left post styles */
 .main-image {
   width: 100%;
-  max-height: 400px;
+  height: auto;
+  max-width: 100%;
   object-fit: cover;
   border-radius: 8px;
 }
@@ -68,7 +69,7 @@
   gap: 10px;
   font-size: 15px;
   font-weight: bold;
-  margin: 30px 0 20px;
+  margin: 30px 38px 20px;
 }
 
 .display-title::before {
@@ -122,10 +123,11 @@
 }
 
 .mainpost-right img {
-  width: 60px;
-  height: 60px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 5px;
+  border-radius: 10px;
+  display: block;
+  margin-bottom: 10px;
 }
 
 .latest-post-link {

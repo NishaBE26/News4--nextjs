@@ -1,95 +1,166 @@
-/* Toolbar Styles */
+.editor-box {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  background: #fff;
+  font-family: sans-serif;
+  position: relative;
+}
+
 .toolbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 5;
 }
 
 .toolbar button {
-    padding: 6px 10px;
-    background: #f5f5f5;
-    border: 1px solid #ccc;
-    font-size: 14px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background 0.2s ease;
+  background: none;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 .toolbar button:hover {
-    background-color: #e0e0e0;
+  background-color: #f0f0f0;
 }
 
-.toolbar button:active {
-    background-color: #d0d0d0;
+/* === Format Dropdown === */
+.format-dropdown-wrapper {
+  position: relative;
+  width: 220px;
 }
 
-/* Link Input Box */
+.format-dropdown-toggle {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 6px 12px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-size: 14px;
+  min-height: 20px;
+}
+
+.format-dropdown-icon {
+  font-size: 18px;
+}
+
+.format-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 150%;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  margin-top: 4px;
+  z-index: 10;
+}
+
+.format-dropdown-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 14px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.format-dropdown-item:hover {
+  background-color:#3498DB ;
+}
+
+.format-option-text {
+  font-size: 14px;
+}
+
+.format-shortcut {
+  font-size: 12px;
+  color: #999;
+  margin-left: 10px;
+}
+
+/* === Editor Content Area === */
+.editor-content-area {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 12px;
+  min-height: 300px;
+}
+
+/* === Link Input Box === */
 .link-input-box {
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  margin-top: 10px;
+  background: #fafafa;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 6px;
 }
 
-.link-input-box input[type="text"] {
-    padding: 6px 10px;
-    width: 280px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 14px;
+.link-input-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.link-input-box button {
-    padding: 6px 12px;
-    background-color: #0070f3;
-    border: none;
-    color: white;
-    font-size: 14px;
-    border-radius: 4px;
-    cursor: pointer;
+.link-input-inner input[type="text"] {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid #bbb;
+  font-size: 14px;
 }
 
-.link-input-box button:hover {
-    background-color: #005bb5;
+.link-actions button {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
-/* Editor Content Box */
-.editor-box {
-    border: 1px solid #ccc;
-    padding: 15px;
-    min-height: 250px;
-    max-height: 400px;
-    overflow-y: auto;
-    font-family: 'Noto Sans Tamil', sans-serif;
-    font-size: 15px;
-    line-height: 1.7;
-    border-radius: 4px;
-    background-color: #fff;
-}
-.ProseMirror:focus {
-    outline: none;
-}
-.editor-box h1,
-.editor-box h2,
-.editor-box h3,
-.editor-box h4,
-.editor-box h5,
-.editor-box h6 {
-    margin: 16px 0 8px;
+.link-actions button.cancel-link {
+  background: #dc3545;
 }
 
-.editor-box p {
-    margin: 10px 0;
+/* === Editor Footer === */
+.editor-footer {
+  margin-top: 10px;
+  text-align: right;
+  font-size: 13px;
+  color: #666;
+}
+button[data-tooltip]::after,
+div[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  background-color: #333;
+  color: #fff;
+  font-size: 12px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  top: 100%;
+  left: 0;
+  white-space: nowrap;
+  margin-top: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(4px);
+  transition: all 0.2s ease;
 }
 
-/* List styles */
-.editor-box ul {
-    padding-left: 20px;
-    list-style-type: disc;
-}
-
-.editor-box ol {
-    padding-left: 20px;
-    list-style-type: decimal;
+button[data-tooltip]:hover::after,
+div[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateY(0);
 }

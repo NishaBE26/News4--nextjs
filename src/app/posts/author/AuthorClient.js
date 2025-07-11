@@ -1,15 +1,15 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
+import Image from 'next/image';
 import {
   getAllPosts,
   getEmployeeById,
   getAllCategories
-} from '../services/Api';
-import CategoryBar from '../components/CategoryBar';
-import Footer from '../components/Footer';
-import '../Styles/PostDisplay.css';
+} from '../../services/Api';
+import CategoryBar from '../../components/CategoryBar';
+import Footer from '../../components/Footer';
+import '../../Styles/PostDisplay.css';
 
 export default function AuthorPosts() {
   const searchParams = useSearchParams();
@@ -69,9 +69,11 @@ export default function AuthorPosts() {
       {/* Author Profile Section */}
       <div className='author-box-wrapper'>
         <div className="author-profile-top">
-          <img
+          <Image
             src={author.photo}
             alt={author.name}
+            width={1200}
+            height={675}
             className="author-profile-img"
           />
           <div>
@@ -94,10 +96,11 @@ export default function AuthorPosts() {
               onClick={() => router.push(`/Mainpost?id=${post._id}`)}
               style={{ cursor: 'pointer' }}
             >
-              <img
+              <Image
                 src={post.file}
                 alt={post.title}
                 className="styled-thumbnail"
+                width={1200} height={675}
               />
               <p className="styled-title">{post.title}</p>
             </div>

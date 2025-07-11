@@ -1,8 +1,9 @@
+'use client';
 import React, { useEffect, useState } from "react";
 import "../../Styles/TaskNotification.css";
 import { getTasksByAuthorId, getTypeById } from "@/app/services/Api";
 import { useRouter } from "next/navigation";
-
+import Image from 'next/image';
 export default function TaskNotification (){
   const [tasks, setTasks] = useState([]);
   const [typeNames, setTypeNames] = useState({});
@@ -66,7 +67,7 @@ export default function TaskNotification (){
           {[...tasks].reverse().map((task) => (
             <div key={task._id} className="task-card">
               {task.file && (
-                <img src={task.file} alt="Task visual" className="task-image" />
+                <Image src={task.file} alt="Task visual" className="task-image" width={1200} height={675} />
               )}
               <div className="task-content">
                 <h3>{task.title}</h3>

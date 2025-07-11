@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { useParams } from 'next/navigation';
 import {
   getAllCategories,
@@ -100,9 +101,11 @@ export default function CategoryPage() {
                 </p>
               </div>
               <div className="post-right">
-                <img
+                <Image
                   src={post.file}
                   alt={post.title}
+                  width={1200}
+                  height={675}
                 />
               </div>
             </div>

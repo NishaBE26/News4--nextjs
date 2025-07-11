@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { getEmployeeById, updateEmployeeById } from "../../services/Api";
 import "../../Styles/Profile.css";
+import Image from 'next/image';
 
 export default function Profile () {
   const [loggedInEmployeeId, setLoggedInEmployeeId] = useState(null);
@@ -62,7 +63,7 @@ export default function Profile () {
     <div className="container">
       <div className="profileHeader">
         {profilePicPreview ? (
-          <img src={profilePicPreview} alt="Profile" className="profileImageHeader" />
+          <Image src={profilePicPreview} alt="Profile" className="profileImageHeader"  width={1200} height={675}/>
         ) : (
           <div className="profileImagePlaceholderHeader">
             {employee?.name?.charAt(0)?.toUpperCase()}
@@ -108,7 +109,7 @@ export default function Profile () {
           <div className="formGroup">
             <label>Profile Picture</label>
             <input type="file" accept="image/*" onChange={onProfilePicChange} />
-            {profilePicPreview && <img src={profilePicPreview} alt="Preview" className="profilePreview" />}
+            {profilePicPreview && <Image src={profilePicPreview} alt="Preview" className="profilePreview" width={1200} height={675}/>}
           </div>
           <div className="buttonGroup">
             <button type="submit" className="button">Save Changes</button>

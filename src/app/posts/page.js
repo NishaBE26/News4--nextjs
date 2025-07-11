@@ -2,6 +2,7 @@
 import Link from "next/link";
 import React, { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 import {
   getAllPosts,
   deletePostById,
@@ -49,10 +50,12 @@ const PublishedPostsCardGrid = ({ posts, employeeNames }) => {
 
           return (
             <div key={post._id} className="post-card">
-              <img
+              <Image
                 src={post.file || "/placeholder.png"}
                 alt={post.title}
                 className="post-card-image"
+                width={1200}
+                height={675}
               />
               <div className="vertical-line" />
               <div className="post-card-content">

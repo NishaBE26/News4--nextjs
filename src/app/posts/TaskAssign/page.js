@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 
 export default function TaskAssign({ employees, typesList, onTaskSubmit, loggedInAdmin }) {
   const [selectedFile, setSelectedFile] = useState(null);
-  const fileInputRef = useRef(null); // ✅ for resetting file input
+  const fileInputRef = useRef(null); 
 
   const [taskassign, setTaskAssign] = useState({
     title: "",
@@ -46,7 +46,7 @@ export default function TaskAssign({ employees, typesList, onTaskSubmit, loggedI
     });
     setSelectedFile(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = ""; 
+      fileInputRef.current.value = "";
     }
   };
 
@@ -93,13 +93,14 @@ export default function TaskAssign({ employees, typesList, onTaskSubmit, loggedI
             onChange={(e) => setTaskAssign({ ...taskassign, author: e.target.value })}
           >
             <option value="">Select Author</option>
-            {employees
-              ?.filter((emp) => emp.designation === "author")
-              .map((emp) => (
-                <option key={emp._id} value={emp.name}>
-                  {emp.name}
-                </option>
-              ))}
+            {Array.isArray(employees) &&
+              employees
+                .filter((emp) => emp.designation === "author")
+                .map((emp) => (
+                  <option key={emp._id} value={emp.name}>
+                    {emp.name}
+                  </option>
+                ))}
           </select>
         </label>
 
@@ -116,14 +117,15 @@ export default function TaskAssign({ employees, typesList, onTaskSubmit, loggedI
             onChange={(e) => setTaskAssign({ ...taskassign, types: e.target.value })}
           >
             <option value="">Select Type</option>
-            {typesList.map((type, index) => (
-              <option
-                key={index}
-                value={typeof type.name === "object" ? type.name.name : type.name}
-              >
-                {typeof type.name === "object" ? type.name.name : type.name}
-              </option>
-            ))}
+            {Array.isArray(typesList) &&
+              typesList.map((type, index) => (
+                <option
+                  key={index}
+                  value={typeof type.name === "object" ? type.name.name : type.name}
+                >
+                  {typeof type.name === "object" ? type.name.name : type.name}
+                </option>
+              ))}
           </select>
         </label>
 

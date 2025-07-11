@@ -39,7 +39,6 @@
   flex: 1;
   max-height: 600px;
   overflow-y: auto;
-  border-left: 1px solid #ccc;
   padding-left: 20px;
   display: flex;
   flex-direction: column;
@@ -67,28 +66,6 @@ select {
   box-sizing: border-box;
   resize: vertical;
 }
-
-/* Optional label for editor */
-.editor-label {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  display: block;
-}
-
-/* CKEditor Textarea Height */
-.ckeditor-container .ck-editor__editable {
-  min-height: 300px;
-  font-size: 16px;
-  line-height: 1.6;
-  padding: 16px;
-}
-
-/* Optional: space around the editor */
-.ckeditor-container .ck-editor {
-  border-radius: 8px;
-}
-
 .image-upload-button {
   padding: 10px 20px;
   background-color: #4a90e2;

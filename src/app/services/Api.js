@@ -1,4 +1,4 @@
-const BACKEND_URL = "http://192.168.1.9:5000/api";
+const BACKEND_URL = "http://192.168.1.14:5000/api";
 
 const request = async (endpoint, method = "GET", body = null, headers = {}) => {
   const isFormData = body instanceof FormData;

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { createEmployee } from "../../services/Api";
 import { useRouter } from "next/navigation";
+import Image from 'next/image';
 import "../../Styles/EmployeeRegister.css";
 
 const EmployeeRegister = () => {
@@ -123,7 +124,7 @@ const EmployeeRegister = () => {
 
         {previewUrl && (
           <div className="full-width">
-            <img src={previewUrl} alt="Preview" />
+            <Image src={previewUrl} alt="Preview" width={1200} height={675} />
           </div>
         )}
 

@@ -254,11 +254,10 @@ html {
   align-items: center;
   gap: 4px;
 }
-
-.header-center img {
-  height: 45px;
+.header-center img{
+  width:70px;
+  height:auto;
 }
-
 .brand-text {
   font-family: 'Noto Sans Tamil', sans-serif;
   font-size: 20px;
@@ -544,7 +543,7 @@ html {
 }
 
 .footer-logo {
-  width: 50px;
+  width: 70px;
   height: auto;
 }
 

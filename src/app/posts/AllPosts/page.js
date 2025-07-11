@@ -1,6 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { getAllPosts } from "@/app/services/Api";
 import "../../Styles/AllPosts.css";
 
@@ -23,7 +24,7 @@ export default function AllPostsPage() {
         {posts.map((post) => (
           <Link key={post._id} href={`/news/${post._id}`}>
             <div className="post-card">
-              <img src={post.file} alt={post.title} className="post-image" />
+              <Image src={post.file} alt={post.title} className="post-image" width={1200} height={675} />
               <div className="post-title">{post.title}</div>
             </div>
           </Link>

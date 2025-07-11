@@ -2,14 +2,14 @@
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
-const MainPostClient = dynamic(() => import('./MainpostClient'), {
+const AuthorClient = dynamic(() => import('./AuthorClient'), {
   ssr: false,
 });
 
 export default function Page() {
   return (
     <Suspense>
-      <MainPostClient />
+      <AuthorClient />
     </Suspense>
   );
 }

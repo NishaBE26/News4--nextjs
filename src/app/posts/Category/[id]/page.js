@@ -1,5 +1,6 @@
 import { getPostsByCategoryId } from "@/app/services/Api";
 import Link from "next/link";
+import Image from "next/image";
 import "../../../Styles/AllPosts.css";
 
 export default async function CategoryPage({ params }) {
@@ -15,7 +16,7 @@ export default async function CategoryPage({ params }) {
         {posts.map((post) => (
           <Link key={post._id} href={`/news/${post._id}`}>
           <div className="post-card" key={post._id}>
-            <img src={post.file} alt={post.title} className="post-image" />
+            <Image src={post.file} alt={post.title} className="post-image"  width={1200} height={675}/>
             <div className="post-title">{post.title}</div>
           </div>
           </Link>

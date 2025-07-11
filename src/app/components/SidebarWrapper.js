@@ -7,7 +7,7 @@ export default function SidebarWrapper({ children }) {
   const pathname = usePathname();
 
 
-  const hideSidebarRoutes = ['/', '/Mainpost', '/login','/author', '/register', '/posts/Home'];
+  const hideSidebarRoutes = ['/', '/Mainpost', '/login','/posts/author', '/register', '/posts/Home'];
 
   // Check if the current route starts with `/category/` (e.g., /category/India)
   const isCategoryPage = pathname.startsWith('/category/');

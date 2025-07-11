@@ -6,6 +6,7 @@ import {
     deleteTaskById,
     getEmployeeById,
 } from "@/app/services/Api";
+import Image from 'next/image';
 import "../../Styles/TaskList.css";
 
 export default function TaskList (){
@@ -143,7 +144,7 @@ export default function TaskList (){
                                         ) : (
                                             task.file &&
                                             /\.(jpeg|jpg|gif|png|svg|webp)$/i.test(task.file) && (
-                                                <img
+                                                <Image
                                                     src={task.file}
                                                     alt="Task"
                                                     className="task-image"

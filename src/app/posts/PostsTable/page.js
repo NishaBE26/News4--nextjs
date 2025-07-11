@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { IoMdArrowDropdown } from "react-icons/io";
+import Image from 'next/image';
 
 export default function PostsTable({
   posts,
@@ -81,9 +82,10 @@ export default function PostsTable({
     return `${day}.${month}.${year} & ${hour12}.${minutes}${ampm}`;
   };
 
-  const filteredPosts = authorFilter
-    ? posts.filter((post) => post.authorName === authorFilter)
-    : posts;
+ const filteredPosts = authorFilter
+  ? (posts || []).filter((post) => post.authorName === authorFilter)
+  : (posts || []);
+
 
   return (
     <div className="posts-table-container">
@@ -194,7 +196,7 @@ export default function PostsTable({
           }}
         >
           <span>
-            {authorFilter ? filteredPosts.length : posts.length} posts
+            {authorFilter ? (filteredPosts?.length || 0) : (posts?.length || 0)} posts
           </span>
           <button onClick={() => paginate(1)} disabled={currentPage === 1}>
             {"<<"}
@@ -245,11 +247,11 @@ export default function PostsTable({
                 <td>{indexOfFirstPost + index + 1}</td>
                 <td>
                   {post.file ? (
-                    <img
+                    <Image
                       src={post.file}
                       alt="Post"
-                      width={80}
-                      height={60}
+                      width={1200}
+                      height={675}
                       style={{ objectFit: "cover", borderRadius: "7px" }}
                     />
                   ) : (
